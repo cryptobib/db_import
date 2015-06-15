@@ -4,9 +4,11 @@
 # TODO
 # - manage correctly tags inside tags ! (xml.etree.ElementTree.tostringlist(...)
 
+# Parts of this file come from eprint-update.py from Paul Baecher
+
 from __future__ import print_function
 
-import sys
+import os, sys
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(scriptdir, "..", "lib"))
 sys.path.append(os.path.join(scriptdir, "..", "db"))
@@ -77,14 +79,13 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
                 logging.exception("Error {} on URL: \"{}\"".format(e.code, url))
                 sys.exit(1)
 
+pattern_split_authors = re.compile(r'\s+and\s+|,\s+and|,\s+')
+
 def split_authors(s):
     """ return a list of others from an author string from EPRINT - from eprint-update.py """
-    names = re.split('( and |,  ?and|, )', s);
-    nn = []
-    for i,n in enumerate(names):
-        if i % 2 == 0:
-            nn.append(n.strip())
-    return nn
+    names = pattern_split_authors.split(s)
+    names = [n.strip() for n in names]
+    return names
 
 def make_brackets_balanced(s):
     """ balance the brackets - from eprint-update.py """
