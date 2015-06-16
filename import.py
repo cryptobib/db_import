@@ -384,8 +384,6 @@ def run(confkey, year, dis, overwrite=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", dest="overwrite", action="store_true", help="overwrite existing files")
-    parser.add_argument("-e", "--extract-bib", metavar="database.bib", dest="extract_bib", default=[], action="append", type=str, help="extract the conference from the provided bibfile in confyear_extract_database.bib")
-    parser.add_argument("-c", "--clean", dest="clean", action="store_true", help="output clean version _clean.bib of all bib files")
     parser.add_argument("confyears", metavar="confyear", type=str, help="list of conferences (ex.: C2012 ac11 stoc95 c2013-1)", nargs="*")
     args = parser.parse_args()
 
@@ -404,27 +402,6 @@ def main():
         short_year = "{0:02d}".format(year % 100)
 
         run(confkey, year, dis, overwrite = args.overwrite)
-
-        for ext in args.extract_bib:
-            filename = "{0}{1}_extract_{2}".format(confkey, short_year, os.path.basename(ext))
-            logging.info("Write \"{0}\"".format(filename))
-            if not can_write(filename, args.overwrite):
-                continue
-            f = file(filename, "w")
-            cmd = ["./clean_bib.sh", ext, confkey, short_year]
-            logging.info("run: ")
-            subprocess.call(cmd, stdout=f)
-            f.close()
-
-        if args.clean:
-            for name, fields in fields_add.iteritems():
-                filename = "{0}{1}_{2}_clean.bib".format(confkey, short_year, name)
-                logging.info("Write \"{0}\"".format(filename))
-                if not can_write(filename, args.overwrite):
-                    continue
-                f = file(filename, "w")
-                subprocess.call(["./clean_bib.sh", "{0}{1}_{2}.bib".format(confkey, short_year, name)], stdout=f)
-                f.close()
 
 if __name__ == "__main__":
     main()
