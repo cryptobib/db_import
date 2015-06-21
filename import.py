@@ -80,6 +80,7 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
                 sys.exit(1)
 
 pattern_split_authors = re.compile(r'\s+and\s+|,\s+and|,\s+')
+pattern_multiple_spaces = re.compile(r' +')
 
 def split_authors(s):
     """ return a list of others from an author string from EPRINT - from eprint-update.py """
@@ -107,6 +108,9 @@ def make_brackets_balanced(s):
 
     return s + '}' * level
 
+def fix_eprint_spaces(s):
+    """ fix spaces used by eprint html (multiple spaces instead of just 1) """
+    return pattern_multiple_spaces.sub(" ", s)
 
 def clean_author(author):
     """ clean author name given by DBLP (remove last numbers if multiple authors) """
@@ -306,10 +310,10 @@ def run(confkey, year, dis, overwrite=False):
             entry["year"] = pub.group(1)
             eprint_id = pub.group(2)
             entry["title"] = html_to_bib_value(
-                make_brackets_balanced(html_parser.unescape(pub.group(3))), 
+                make_brackets_balanced(fix_eprint_spaces(html_parser.unescape(pub.group(3)))), 
                 True
             )
-            authors = split_authors(html_parser.unescape(pub.group(4)))
+            authors = split_authors(fix_eprint_spaces(html_parser.unescape(pub.group(4))))
 
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
             entry["note"] = '"\url{{http://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
