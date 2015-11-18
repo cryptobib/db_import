@@ -138,16 +138,18 @@ def authors_to_key(authors, confkey, short_year):
             authors = authors[:6]
         return confkey + ":" + "".join((get_author_name(strip_accents(a))[0] for a in authors)) + str(short_year)
 
-pattern_white_car = re.compile(r'(\W+)')
+pattern_non_alphanum = re.compile(r'(\W+)')
 pattern_normal_case =       re.compile(r'^(\W*|[0-9_]+|[a-z0-9_]|[A-Za-z0-9_][a-z_]+)$')
 pattern_normal_case_first = re.compile(r'^(\W*|[0-9_]+|[A-Za-z0-9_]|[A-Za-z0-9_][a-z_]+)$')
+punctuation_followed_by_upper_case = re.compile(r'^\s*[?!]\s*')
+  # we do not include "." because it is mostly used with "vs." and "et al."
 
 html_parser = HTMLParser.HTMLParser()
 
 def html_to_bib_value(s,title=False):
     """ transform an xml string into a bib value (add {,}, transform html tags, ...) """
     if title:
-        s = pattern_white_car.split(s)
+        s = pattern_non_alphanum.split(s)
         for i in range(len(s)):
             if i==0:
                 if not pattern_normal_case_first.search(s[i]):
@@ -155,7 +157,18 @@ def html_to_bib_value(s,title=False):
             else:
                 if not pattern_normal_case.search(s[i]):
                     s[i] = "{" + s[i] + "}"
+                elif len(s[i]) > 0 and \
+                     punctuation_followed_by_upper_case.search(s[i-1]) and \
+                     s[i][0].isalpha() and s[i][0].isupper():
+                    # Protect the first letter after . or ? or !
+                    s[i] = "{" + s[i][0] + "}" + s[i][1:]
+                elif i == 2 and s[i-1] in ["(", '"'] and s[i][0].isalpha() and s[i][0].isupper():
+                    # Protect the first letter of the first word if the title starts with a parenthesis or a quote
+                    # in that case s[0] = "" and s[1] = "("
+                    s[i] = "{" + s[i][0] + "}" + s[i][1:]
         s = "".join(s)
+    if len(s) > 0 and s[0] == '"':
+        s = "``" + s[1:]
     s = unicode_to_latex(s.replace(' "',"``").replace('"',"''"))
     if s.isdigit():
         return s
