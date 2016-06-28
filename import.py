@@ -199,6 +199,8 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
     for e in elt:
         if e.tag == "author":
             authors.append(clean_author(unicode(e.text)))
+        elif e.tag == "editor" and entry_type == "Book":
+            authors.append(clean_author(unicode(e.text)))
         elif e.tag in fields:
             val = xml_get_value(e)#e.text
             if e.tag == "pages":
@@ -226,6 +228,14 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                     entry["doi"] = html_to_bib_value(e.text[len(doi_ee_url):])
 
     entry["author"] = html_to_bib_value((u" and \n"+" "*18).join(authors))
+    
+    if short_year == None:
+        try:
+            short_year = entry["year"]
+        except ElementTree.ParseError, e:
+            logging.exception("No year")
+            return None, None
+
     key = authors_to_key(authors, confkey, short_year)
     
     if pages_error != None:
@@ -270,11 +280,16 @@ def can_write(filename, overwrite = False):
 def run(confkey, year, dis, overwrite=False):
     """ overwrite: if True, overwrite files """
 
-    short_year = "{0:02d}".format(year % 100)
-    if year < 2000:
-        url_year = short_year
+    if year:
+        short_year = "{0:02d}".format(year % 100)
+        if year < 2000:
+            url_year = short_year
+        else:
+            url_year = year
     else:
-        url_year = year
+        short_year = None
+        url_year = None
+
     conf_dict = confs[confkey]
     if conf_dict["type"] == "journal":
         volume = year - conf_dict["first_year"] + 1
@@ -346,7 +361,7 @@ def run(confkey, year, dis, overwrite=False):
                 entries[key] = entry
     else:
         # DBLP
-        for pub in re.finditer(r'href="(http://dblp.uni-trier.de/rec/(?:bibtex|xml)/(?:conf|journals)/[^"]*.xml)"', html_conf):
+        for pub in re.finditer(r'href="(http://dblp.uni-trier.de/rec/(?:bibtex|xml)/(?:conf|journals|series)/[^"]*.xml)"', html_conf):
             url_pub = pub.group(1)
             logging.info("Parse: <{}>".format(url_pub))
             xml = get_url(url_pub)
@@ -368,8 +383,16 @@ def run(confkey, year, dis, overwrite=False):
                 entries[key] = entry
 
     # write result !
-    filename = "{}{}{}.bib".format(confkey, short_year, dis)
-    logging.info("Write \"{0}\"".format(filename))
+    if short_year == None and dis == None:
+        filename = "{}.bib".format(confkey)
+    elif short_year == None:
+        filename = "{}{}.bib".format(confkey, dis)
+    elif dis == None:
+        filename = "{}{}.bib".format(confkey, short_year)
+    else:
+        filename = "{}{}{}.bib".format(confkey, short_year, dis)
+
+     logging.info("Write \"{0}\"".format(filename))
     if not can_write(filename, overwrite):
         return
     f = file(filename, "w")
@@ -407,8 +430,12 @@ def main():
     for conf_year in args.confyears:
         res = re.search(r'^([a-zA-Z]+)([0-9]{2,4})([a-zA-A0-9_-]*)$', conf_year)
         if res == None:
-            logging.error("bad format for conference \"{0}\" (ex.: crypto2012 crypto11 stoc95 crypto13-1)".format(conf_year))
-            sys.exit(1)
+            if conf_year == "ISCSERIES":
+                run("ISCSERIES", None, None, overwrite = args.overwrite)
+                continue
+            else:
+                logging.error("bad format for conference \"{0}\" (ex.: crypto2012 crypto11 stoc95 crypto13-1)".format(conf_year))
+                sys.exit(1)
         confkey = res.group(1).upper()
         year = int(res.group(2))
         dis = res.group(3)
