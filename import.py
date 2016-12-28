@@ -405,7 +405,7 @@ def main():
     args = parser.parse_args()
 
     for conf_year in args.confyears:
-        res = re.search(r'^([a-zA-Z]+)([0-9]{2,4})([a-zA-A0-9_-]*)$', conf_year)
+        res = re.search(r'^([a-zA-Z]+)([0-9]{2,4})([a-zA-Z0-9_-]*)$', conf_year)
         if res == None:
             logging.error("bad format for conference \"{0}\" (ex.: crypto2012 crypto11 stoc95 crypto13-1)".format(conf_year))
             sys.exit(1)
