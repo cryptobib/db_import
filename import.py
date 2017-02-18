@@ -179,7 +179,7 @@ def xml_get_value(e):
     """ get the value of the tag "e" (including subtags) """
     return (e.text or '') + ''.join(xml.etree.ElementTree.tostring(ee) for ee in e)
 
-re_pages = re.compile(r'^(\d*)(-(\d*))?$')
+re_pages = re.compile(r'^([0-9:]*)(--?([0-9:]*))?$') # LIPIcs uses pages of the form "5:1-5:10"
 
 def xml_to_entry(xml, confkey, entry_type, fields, short_year):
     """ transform a DBLP xml entry of type "entry_type" into a dictionnary ready to be output as bibtex """
@@ -384,12 +384,12 @@ def run(confkey, year, dis, overwrite=False):
             num = 0
         if "pages" in e:
             if e["pages"].isdigit():
-                pages = int(e["pages"])
+                pages = e["pages"]
             else:
-                pages = int(e["pages"][1:-1].split("--")[0])
+                pages = e["pages"][1:-1].split("--")[0]
         else:
-            pages = 0
-        return "{:0>5d}-{:0>10d}-{}".format(num, pages, howpublished)
+            pages = "0"
+        return "{:0>5d}-{:>10}-{}".format(num, pages, howpublished)
     for (key,e) in sorted(entries.iteritems(), key=sort_pages):
         fields_add_cur = fields_add.copy()
         if "month" in fields_add_cur and fields_add_cur["month"]=="%months":
