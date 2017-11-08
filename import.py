@@ -331,6 +331,7 @@ def run(confkey, year, dis, overwrite=False):
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
             entry["note"] = '"\url{{http://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
             entry["author"] = html_to_bib_value((u" and \n"+" "*18).join(authors))
+            entry["eprint_id"] = eprint_id
             key = authors_to_key(authors, confkey, short_year)
 
             if key in entries:
@@ -374,6 +375,10 @@ def run(confkey, year, dis, overwrite=False):
         return
     f = file(filename, "w")
     def sort_pages((k,e)):
+        if "eprint_id" in e:
+            # EPRINT
+            key = "{:0>5d}".format(int(e["eprint_id"]))
+            return key
         if "howpublished" in e:
             howpublished = e["howpublished"]
         else:
