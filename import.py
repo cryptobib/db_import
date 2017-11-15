@@ -373,9 +373,21 @@ def run(confkey, year, dis, overwrite=False):
     if not can_write(filename, overwrite):
         return
     f = file(filename, "w")
+
+    pattern_eprint = re.compile(r"^\"Cryptology ePrint Archive, Report (\d*)/(\d*)\"")
     def sort_pages((k,e)):
         if "howpublished" in e:
             howpublished = e["howpublished"]
+
+            match_eprint = pattern_eprint.match(e["howpublished"])
+            if match_eprint:
+                # special case for eprint:
+                # we cannot use directly howpublished for eprint because of eprint number > 1000
+                # as the format is "Cryptology ePrint Archive, Report yyyy/xxx"
+                howpublished = u"{:0>4d}/{:0>5d}".format(
+                    int(match_eprint.group(1)),
+                    int(match_eprint.group(2))
+                )
         else:
             howpublished = ""
         if "number" in e:
@@ -390,6 +402,7 @@ def run(confkey, year, dis, overwrite=False):
         else:
             pages = "0"
         return "{:0>5d}-{:>10}-{}".format(num, pages, howpublished)
+
     for (key,e) in sorted(entries.iteritems(), key=sort_pages):
         fields_add_cur = fields_add.copy()
         if "month" in fields_add_cur and fields_add_cur["month"]=="%months":
