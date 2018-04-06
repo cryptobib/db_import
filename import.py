@@ -220,10 +220,11 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                     val = val[:-1]
             entry[e.tag] = html_to_bib_value(val, title = (e.tag == "title"))
         if e.tag == "ee" and "doi" in fields:
-            doi_ee_url = "http://dx.doi.org/"
-            if e.text.startswith(doi_ee_url):
+            doi_ee_re = re.compile(r"^https?://(?:dx.)?doi.org/(.*)$")
+            p = doi_ee_re.match(e.text)
+            if p:
                 if "doi" not in entry:
-                    entry["doi"] = html_to_bib_value(e.text[len(doi_ee_url):])
+                    entry["doi"] = html_to_bib_value(p.group(1))
 
     entry["author"] = html_to_bib_value((u" and \n"+" "*18).join(authors))
     key = authors_to_key(authors, confkey, short_year)
