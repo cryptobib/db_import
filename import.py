@@ -324,13 +324,13 @@ def run(confkey, year, dis, overwrite=False):
             entry["year"] = pub.group(1)
             eprint_id = pub.group(2)
             entry["title"] = html_to_bib_value(
-                make_brackets_balanced(fix_eprint_spaces(html_parser.unescape(pub.group(3)))), 
+                make_brackets_balanced(fix_eprint_spaces(html_parser.unescape(pub.group(3)))),
                 True
             )
             authors = split_authors(fix_eprint_spaces(html_parser.unescape(pub.group(4))))
 
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
-            entry["note"] = '"\url{{http://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
+            entry["note"] = '"\url{{https://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
             entry["author"] = html_to_bib_value((u" and \n"+" "*18).join(authors))
             key = authors_to_key(authors, confkey, short_year)
 
