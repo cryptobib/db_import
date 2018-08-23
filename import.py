@@ -95,7 +95,7 @@ def make_brackets_balanced(s):
     for i in range(len(s)):
         if s[i] == '{':
             level += 1
-        elif s[i] == '}': 
+        elif s[i] == '}':
             if level == 0:
                 delete.append(i)
             else:
@@ -347,7 +347,7 @@ def run(confkey, year, dis, overwrite=False):
                 entries[key] = entry
     else:
         # DBLP
-        for pub in re.finditer(r'href="(http://dblp.uni-trier.de/rec/(?:bibtex|xml)/(?:conf|journals)/[^"]*.xml)"', html_conf):
+        for pub in re.finditer(r'href="(https://dblp.uni-trier.de/rec/(?:bibtex|xml)/(?:conf|journals)/[^"]*.xml)"', html_conf):
             url_pub = pub.group(1)
             logging.info("Parse: <{}>".format(url_pub))
             xml = get_url(url_pub)
