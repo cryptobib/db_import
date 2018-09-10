@@ -95,7 +95,7 @@ def make_brackets_balanced(s):
     for i in range(len(s)):
         if s[i] == '{':
             level += 1
-        elif s[i] == '}': 
+        elif s[i] == '}':
             if level == 0:
                 delete.append(i)
             else:
