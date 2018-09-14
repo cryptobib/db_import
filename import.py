@@ -23,6 +23,7 @@ import re
 import time
 import sys
 import logging
+import logging_colorer
 from unidecode import unidecode
 import os.path
 import argparse
@@ -30,8 +31,8 @@ import HTMLParser
 
 from config import *
 
+logging_colorer.init()
 logging.basicConfig(level=logging.DEBUG)
-
 
 # Remove accents
 # http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
