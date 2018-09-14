@@ -238,7 +238,7 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                     val = val[:-1]
             entry[e.tag] = html_to_bib_value(val, title=(e.tag == "title"))
         if e.tag == "ee" and "doi" in fields:
-            doi_ee_re = re.compile(r"^https?://(?:dx.)?doi.org/(.*)$")
+            doi_ee_re = re.compile(r"^https?://(?:(?:dx.)?doi.org|doi.acm.org)/(.*)$")
             p = doi_ee_re.match(e.text)
             if p:
                 if "doi" not in entry:
