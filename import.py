@@ -8,7 +8,9 @@
 
 from __future__ import print_function
 
-import os, sys
+import os
+import sys
+
 scriptdir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(scriptdir, "..", "lib"))
 sys.path.append(os.path.join(scriptdir, "..", "db"))
@@ -20,25 +22,23 @@ import urllib2
 import re
 import time
 import sys
-import unicodedata
 import logging
-import logging_colorer
 from unidecode import unidecode
-from string import Template
 import os.path
 import argparse
-import subprocess
 import HTMLParser
 
 from config import *
 
 logging.basicConfig(level=logging.DEBUG)
 
+
 # Remove accents
 # http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
 def strip_accents(s):
     return unidecode(s)
-    #return ''.join((c for c in unicodedata.normalize('NFD', unicode(s)) if unicodedata.category(c) != 'Mn'))
+    # return ''.join((c for c in unicodedata.normalize('NFD', unicode(s)) if unicodedata.category(c) != 'Mn'))
+
 
 # Translation table from UTF8 to pure latex symbols
 # http://stackoverflow.com/questions/4578912/replace-all-accented-characters-by-their-latex-equivalent
@@ -47,8 +47,9 @@ for line in open('utf8ienc.dtx'):
     m = re.match(r'%.*\DeclareUnicodeCharacter\{(\w+)\}\{(.*)\}', line)
     if m:
         codepoint, latex = m.groups()
-        latex = latex.replace('@tabacckludge', '') # remove useless (??) '@tabacckludge'
-        translation_table[int(codepoint, 16)] = "{"+unicode(latex)+"}"
+        latex = latex.replace('@tabacckludge', '')  # remove useless (??) '@tabacckludge'
+        translation_table[int(codepoint, 16)] = "{" + unicode(latex) + "}"
+
 
 def unicode_to_latex(s):
     """ transform a unicode string to a ascii string with latex symbols """
@@ -62,6 +63,7 @@ def unicode_to_latex(s):
     s = s.replace(u"z\u030c", u"{\v{z}}")
     return s
 
+
 def get_url(url, exit_on_failure=True, encoding="utf-8"):
     """ return the content of the url (in unicode) """
     waitsec = 60
@@ -70,7 +72,7 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
             f = urllib2.urlopen(url)
             content = f.read().decode(encoding)
             return content
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
             if e.code == 429:
                 logging.warning("Error 429 on URL: \"{}\"\n\tReason: {}\n\tWait {}s".format(url, e.reason, waitsec))
                 time.sleep(waitsec)
@@ -79,14 +81,17 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
                 logging.exception("Error {} on URL: \"{}\"".format(e.code, url))
                 sys.exit(1)
 
+
 pattern_split_authors = re.compile(r'\s+and\s+|,\s+and|,\s+')
 pattern_multiple_spaces = re.compile(r' +')
+
 
 def split_authors(s):
     """ return a list of others from an author string from EPRINT - from eprint-update.py """
     names = pattern_split_authors.split(s)
     names = [n.strip() for n in names]
     return names
+
 
 def make_brackets_balanced(s):
     """ balance the brackets - from eprint-update.py """
@@ -95,7 +100,7 @@ def make_brackets_balanced(s):
     for i in range(len(s)):
         if s[i] == '{':
             level += 1
-        elif s[i] == '}': 
+        elif s[i] == '}':
             if level == 0:
                 delete.append(i)
             else:
@@ -103,14 +108,16 @@ def make_brackets_balanced(s):
 
     o = 0
     for d in delete:
-        s = s[0:d+o] + s[d+o+1:]
+        s = s[0:d + o] + s[d + o + 1:]
         o -= 1
 
     return s + '}' * level
 
+
 def fix_eprint_spaces(s):
     """ fix spaces used by eprint html (multiple spaces instead of just 1) """
     return pattern_multiple_spaces.sub(" ", s)
+
 
 def clean_author(author):
     """ clean author name given by DBLP (remove last numbers if multiple authors) """
@@ -119,73 +126,80 @@ def clean_author(author):
     else:
         return author
 
+
 def get_author_name(author):
     """ return the author last name """
     # TODO: this is not always OK, we should use pybtex.Person...
     return author.split(" ")[-1]
+
 
 def authors_to_key(authors, confkey, short_year):
     """ return the author bibtext key part """
     if len(authors) <= 0:
         logging.error("Entry with no author => replaced by ???")
         return confkey + ":" + "???" + str(short_year)
-    elif len(authors)==1:
+    elif len(authors) == 1:
         return confkey + ":" + strip_accents(get_author_name(authors[0])) + str(short_year)
-    elif len(authors)<=3:
+    elif len(authors) <= 3:
         return confkey + ":" + "".join((get_author_name(strip_accents(a))[:3] for a in authors)) + str(short_year)
     else:
-        if len(authors)>=6:
+        if len(authors) >= 6:
             authors = authors[:6]
         return confkey + ":" + "".join((get_author_name(strip_accents(a))[0] for a in authors)) + str(short_year)
 
+
 pattern_non_alphanum = re.compile(r'(\W+)')
-pattern_normal_case =       re.compile(r'^(\W*|[0-9_]+|[a-z0-9_]|[A-Za-z0-9_][a-z_]+)$')
+pattern_normal_case = re.compile(r'^(\W*|[0-9_]+|[a-z0-9_]|[A-Za-z0-9_][a-z_]+)$')
 pattern_normal_case_first = re.compile(r'^(\W*|[0-9_]+|[A-Za-z0-9_]|[A-Za-z0-9_][a-z_]+)$')
 punctuation_followed_by_upper_case = re.compile(r'^\s*[?!]\s*')
-  # we do not include "." because it is mostly used with "vs." and "et al."
+# we do not include "." because it is mostly used with "vs." and "et al."
 
 html_parser = HTMLParser.HTMLParser()
 
-def html_to_bib_value(s,title=False):
+
+def html_to_bib_value(s, title=False):
     """ transform an xml string into a bib value (add {,}, transform html tags, ...) """
     if title:
         s = pattern_non_alphanum.split(s)
         for i in range(len(s)):
-            if i==0:
+            if i == 0:
                 if not pattern_normal_case_first.search(s[i]):
                     s[i] = "{" + s[i] + "}"
             else:
                 if not pattern_normal_case.search(s[i]):
                     s[i] = "{" + s[i] + "}"
                 elif len(s[i]) > 0 and \
-                     punctuation_followed_by_upper_case.search(s[i-1]) and \
-                     s[i][0].isalpha() and s[i][0].isupper():
+                        punctuation_followed_by_upper_case.search(s[i - 1]) and \
+                        s[i][0].isalpha() and s[i][0].isupper():
                     # Protect the first letter after . or ? or !
                     s[i] = "{" + s[i][0] + "}" + s[i][1:]
-                elif i == 2 and s[i-1] in ["(", '"'] and s[i][0].isalpha() and s[i][0].isupper():
+                elif i == 2 and s[i - 1] in ["(", '"'] and s[i][0].isalpha() and s[i][0].isupper():
                     # Protect the first letter of the first word if the title starts with a parenthesis or a quote
                     # in that case s[0] = "" and s[1] = "("
                     s[i] = "{" + s[i][0] + "}" + s[i][1:]
         s = "".join(s)
     if len(s) > 0 and s[0] == '"':
         s = "``" + s[1:]
-    s = unicode_to_latex(s.replace(' "',"``").replace('"',"''"))
+    s = unicode_to_latex(s.replace(' "', "``").replace('"', "''"))
     if s.isdigit():
         return s
     else:
         return '"' + s + '"'
 
+
 def xml_get_value(e):
     """ get the value of the tag "e" (including subtags) """
     return (e.text or '') + ''.join(xml.etree.ElementTree.tostring(ee) for ee in e)
 
-re_pages = re.compile(r'^([0-9:]*)(--?([0-9:]*))?$') # LIPIcs uses pages of the form "5:1-5:10"
+
+re_pages = re.compile(r'^([0-9:]*)(--?([0-9:]*))?$')  # LIPIcs uses pages of the form "5:1-5:10"
+
 
 def xml_to_entry(xml, confkey, entry_type, fields, short_year):
     """ transform a DBLP xml entry of type "entry_type" into a dictionnary ready to be output as bibtex """
     try:
         tree = XML(xml)
-    except ElementTree.ParseError, e:
+    except ElementTree.ParseError as e:
         logging.exception("XML Parsing Error")
         return None, None
     elt = tree.find(entry_type.lower())
@@ -200,25 +214,25 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
         if e.tag == "author":
             authors.append(clean_author(unicode(e.text)))
         elif e.tag in fields:
-            val = xml_get_value(e)#e.text
+            val = xml_get_value(e)  # e.text
             if e.tag == "pages":
                 r = re_pages.match(val)
-                if r==None:
+                if r is None:
                     pages_error = val
                 else:
                     a = r.group(1)
                     b = r.group(2)
                     c = r.group(3)
-                    if a=="" or (b!=None and c==""):
+                    if a == "" or (b is not None and c == ""):
                         pages_error = val
-                    if b==None:
+                    if b is None:
                         val = a
                     else:
                         val = a + "--" + c
             elif e.tag == "title":
-                if val[-1]==".":
+                if val[-1] == ".":
                     val = val[:-1]
-            entry[e.tag] = html_to_bib_value(val, title = (e.tag == "title"))
+            entry[e.tag] = html_to_bib_value(val, title=(e.tag == "title"))
         if e.tag == "ee" and "doi" in fields:
             doi_ee_re = re.compile(r"^https?://(?:dx.)?doi.org/(.*)$")
             p = doi_ee_re.match(e.text)
@@ -226,21 +240,24 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                 if "doi" not in entry:
                     entry["doi"] = html_to_bib_value(p.group(1))
 
-    entry["author"] = html_to_bib_value((u" and \n"+" "*18).join(authors))
+    entry["author"] = html_to_bib_value((u" and \n" + " " * 18).join(authors))
     key = authors_to_key(authors, confkey, short_year)
-    
-    if pages_error != None:
+
+    if pages_error is not None:
         logging.error("Entry \"{}\": error in pages (\"{}\")".format(key, pages_error))
 
-    return (key, entry)
+    return key, entry
+
 
 def write_entry(f, key, entry, entry_type):
     """ write the bibtex entry "entry" with key "key" in file "f" """
+
     def key_sort(key):
         if key in first_keys:
-            return "{0:03d}:{1}".format(first_keys.index(key),key)
+            return "{0:03d}:{1}".format(first_keys.index(key), key)
         else:
-            return "{0:03d}:{1}".format(len(first_keys),key)
+            return "{0:03d}:{1}".format(len(first_keys), key)
+
     try:
         f.write("@{0}{{{1},\n".format(entry_type, key))
         for k in sorted(entry.iterkeys(), key=key_sort):
@@ -248,25 +265,30 @@ def write_entry(f, key, entry, entry_type):
             try:
                 venc = v.encode("ascii")
             except UnicodeEncodeError, ex:
-                logging.warning("Problem of encoding in entry \"{0}\", key \"{1}\", value \"{2}\" -> replace bad caracter(s) with '?'".format(key,k,repr(v)))
+                logging.warning(
+                    "Problem of encoding in entry \"{0}\", key \"{1}\", value \"{2}\" -> replace bad caracter(s) with '?'".format(
+                        key, k, repr(v)))
                 venc = v.encode("ascii", "replace")
             if ("<" in venc) or (">" in venc) or ("&" in venc):
-                logging.warning("Caracter <, >, or & in entry \"{0}\", key \"{1}\", value \"{2}\"".format(key,k,repr(v)))
+                logging.warning(
+                    "Caracter <, >, or & in entry \"{0}\", key \"{1}\", value \"{2}\"".format(key, k, repr(v)))
             f.write("  {0:<15}{1},\n".format((k + " ="), venc))
         f.write("}\n\n")
     except UnicodeEncodeError, ex:
-        logging.exception("Problem of encoding of:\n" + repr((key,entry)))
+        logging.exception("Problem of encoding of:\n" + repr((key, entry)))
 
-def can_write(filename, overwrite = False):
+
+def can_write(filename, overwrite=False):
     """ check whether we can write to the file (ask the user if overwrite=False and the file already exists) """
     if overwrite == False and os.path.exists(filename):
         print("File \"{0}\" already exists. Do you want to delete it (Y/N) ?".format(filename))
         rep = ""
-        while rep.lower() not in ["y","n","yes","no"]:
+        while rep.lower() not in ["y", "n", "yes", "no"]:
             rep = raw_input()
-        if rep.lower()[0]!="y":
+        if rep.lower()[0] != "y":
             return False
     return True
+
 
 def run(confkey, year, dis, overwrite=False):
     """ overwrite: if True, overwrite files """
@@ -285,18 +307,17 @@ def run(confkey, year, dis, overwrite=False):
     def subs(s):
         """ replace ${...} in confs information """
         return Template(s).substitute(
-            year = year,
-            confkey = confkey,
-            short_year = short_year,
-            url_year = url_year,
-            volume = volume,
-            dis = dis
+            year=year,
+            confkey=confkey,
+            short_year=short_year,
+            url_year=url_year,
+            volume=volume,
+            dis=dis
         )
 
     entry_type = conf_dict["entry_type"]
     fields_dblp = conf_dict["fields_dblp"]
     fields_add = dict(((key, subs(value)) for key, value in conf_dict["fields_add"].iteritems()))
-
 
     if conf_dict["type"] == "misc":
         encoding = "iso-8859-1"
@@ -306,10 +327,10 @@ def run(confkey, year, dis, overwrite=False):
     html_conf = None
     for url in confs[confkey]["url"]:
         logging.info("Parse: <{}>".format(subs(url)))
-        html_conf = get_url(subs(url), False, encoding = encoding)
-        if html_conf != None:
+        html_conf = get_url(subs(url), False, encoding=encoding)
+        if html_conf is not None:
             break
-    if html_conf == None:
+    if html_conf is None:
         logging.exception("No valid URL")
         sys.exit(1)
     entries = {}
@@ -318,10 +339,11 @@ def run(confkey, year, dis, overwrite=False):
     # retrieve entries
     if conf_dict["type"] == "misc":
         # EPRINT
-        for pub in reversed(list(re.finditer('^<a href="[^"]*">([0-9]{4})/([0-9]{3,})</a>.*\n<dd><b>(.*?)</b>\n<dd><em>(.*?)</em>$', html_conf, re.MULTILINE))) :
+        for pub in reversed(list(
+                re.finditer('^<a href="[^"]*">([0-9]{4})/([0-9]{3,})</a>.*\n<dd><b>(.*?)</b>\n<dd><em>(.*?)</em>$',
+                            html_conf, re.MULTILINE))):
             # reversed = to have the a/b/c in the correct order
-            entry = {}
-            entry["year"] = pub.group(1)
+            entry = {"year": pub.group(1)}
             eprint_id = pub.group(2)
             entry["title"] = html_to_bib_value(
                 make_brackets_balanced(fix_eprint_spaces(html_parser.unescape(pub.group(3)))),
@@ -331,7 +353,7 @@ def run(confkey, year, dis, overwrite=False):
 
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
             entry["note"] = '"\url{{https://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
-            entry["author"] = html_to_bib_value((u" and \n"+" "*18).join(authors))
+            entry["author"] = html_to_bib_value((u" and \n" + " " * 18).join(authors))
             key = authors_to_key(authors, confkey, short_year)
 
             if key in entries:
@@ -341,19 +363,20 @@ def run(confkey, year, dis, overwrite=False):
 
             if key in multiple_entries:
                 i = multiple_entries[key]
-                multiple_entries[key]+=1
-                entries[key+chr(ord('a')+i)] = entry
+                multiple_entries[key] += 1
+                entries[key + chr(ord('a') + i)] = entry
             else:
                 entries[key] = entry
     else:
         # DBLP
-        for pub in re.finditer(r'href="(https://dblp.uni-trier.de/rec/(?:bibtex|xml)/(?:conf|journals)/[^"]*.xml)"', html_conf):
+        for pub in re.finditer(r'href="(https://dblp.uni-trier.de/rec/(?:bibtex|xml)/(?:conf|journals)/[^"]*.xml)"',
+                               html_conf):
             url_pub = pub.group(1)
             logging.info("Parse: <{}>".format(url_pub))
             xml = get_url(url_pub)
             key, entry = xml_to_entry(xml, confkey, entry_type, fields_dblp, short_year)
 
-            if key==None:
+            if key is None:
                 continue
 
             if key in entries:
@@ -363,8 +386,8 @@ def run(confkey, year, dis, overwrite=False):
 
             if key in multiple_entries:
                 i = multiple_entries[key]
-                multiple_entries[key]+=1
-                entries[key+chr(ord('a')+i)] = entry
+                multiple_entries[key] += 1
+                entries[key + chr(ord('a') + i)] = entry
             else:
                 entries[key] = entry
 
@@ -376,7 +399,8 @@ def run(confkey, year, dis, overwrite=False):
     f = file(filename, "w")
 
     pattern_eprint = re.compile(r"^\"Cryptology ePrint Archive, Report (\d*)/(\d*)\"")
-    def sort_pages((k,e)):
+
+    def sort_pages((k, e)):
         if "howpublished" in e:
             howpublished = e["howpublished"]
 
@@ -392,7 +416,7 @@ def run(confkey, year, dis, overwrite=False):
         else:
             howpublished = ""
         if "number" in e:
-            num = 99999-int(e["number"])
+            num = 99999 - int(e["number"])
         else:
             num = 0
         if "pages" in e:
@@ -404,9 +428,9 @@ def run(confkey, year, dis, overwrite=False):
             pages = "0"
         return "{:0>5d}-{:>10}-{}".format(num, pages, howpublished)
 
-    for (key,e) in sorted(entries.iteritems(), key=sort_pages):
+    for (key, e) in sorted(entries.iteritems(), key=sort_pages):
         fields_add_cur = fields_add.copy()
-        if "month" in fields_add_cur and fields_add_cur["month"]=="%months":
+        if "month" in fields_add_cur and fields_add_cur["month"] == "%months":
             fields_add_cur["month"] = conf_dict["months"][int(e["number"]) - 1]
         write_entry(f, key, dict(fields_add_cur, **e), entry_type)
     f.close()
@@ -415,13 +439,15 @@ def run(confkey, year, dis, overwrite=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", dest="overwrite", action="store_true", help="overwrite existing files")
-    parser.add_argument("confyears", metavar="confyear", type=str, help="list of conferences (ex.: C2012 ac11 stoc95 c2013-1)", nargs="*")
+    parser.add_argument("confyears", metavar="confyear", type=str,
+                        help="list of conferences (ex.: C2012 ac11 stoc95 c2013-1)", nargs="*")
     args = parser.parse_args()
 
     for conf_year in args.confyears:
         res = re.search(r'^([a-zA-Z]+)([0-9]{2,4})([a-zA-Z0-9_-]*)$', conf_year)
-        if res == None:
-            logging.error("bad format for conference \"{0}\" (ex.: crypto2012 crypto11 stoc95 crypto13-1)".format(conf_year))
+        if res is None:
+            logging.error(
+                "bad format for conference \"{0}\" (ex.: crypto2012 crypto11 stoc95 crypto13-1)".format(conf_year))
             sys.exit(1)
         confkey = res.group(1).upper()
         year = int(res.group(2))
@@ -432,7 +458,8 @@ def main():
             year += 1900
         short_year = "{0:02d}".format(year % 100)
 
-        run(confkey, year, dis, overwrite = args.overwrite)
+        run(confkey, year, dis, overwrite=args.overwrite)
+
 
 if __name__ == "__main__":
     main()
