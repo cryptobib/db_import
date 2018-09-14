@@ -78,9 +78,12 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
                 logging.warning("Error 429 on URL: \"{}\"\n\tReason: {}\n\tWait {}s".format(url, e.reason, waitsec))
                 time.sleep(waitsec)
                 waitsec *= 2
-            elif exit_on_failure:
+            else:
                 logging.exception("Error {} on URL: \"{}\"".format(e.code, url))
-                sys.exit(1)
+                if exit_on_failure:
+                    sys.exit(1)
+                else:
+                    return None
 
 
 pattern_split_authors = re.compile(r'\s+and\s+|,\s+and|,\s+')
