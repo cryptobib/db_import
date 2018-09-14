@@ -131,10 +131,14 @@ def clean_author(author):
         return author
 
 
-def get_author_name(author):
-    """ return the author last name """
+def get_author_name_for_key(author):
+    """ return the author last name for key """
     # TODO: this is not always OK, we should use pybtex.Person...
-    return author.split(" ")[-1]
+    last_name = author.split(" ")[-1]
+    if last_name == "Jr." and len(author) > 1:
+        last_name = "".join(author.split(" ")[-2:])
+    # remove "." from the name if any as it is not allowed by pybtex in keys
+    return last_name.replace(".", "")
 
 
 def authors_to_key(authors, confkey, short_year):
@@ -143,13 +147,13 @@ def authors_to_key(authors, confkey, short_year):
         logging.error("Entry with no author => replaced by ???")
         return confkey + ":" + "???" + str(short_year)
     elif len(authors) == 1:
-        return confkey + ":" + strip_accents(get_author_name(authors[0])) + str(short_year)
+        return confkey + ":" + strip_accents(get_author_name_for_key(authors[0])) + str(short_year)
     elif len(authors) <= 3:
-        return confkey + ":" + "".join((get_author_name(strip_accents(a))[:3] for a in authors)) + str(short_year)
+        return confkey + ":" + "".join((get_author_name_for_key(strip_accents(a))[:3] for a in authors)) + str(short_year)
     else:
         if len(authors) >= 6:
             authors = authors[:6]
-        return confkey + ":" + "".join((get_author_name(strip_accents(a))[0] for a in authors)) + str(short_year)
+        return confkey + ":" + "".join((get_author_name_for_key(strip_accents(a))[0] for a in authors)) + str(short_year)
 
 
 pattern_non_alphanum = re.compile(r'(\W+)')
