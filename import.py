@@ -34,6 +34,40 @@ from config import *
 logging_colorer.init()
 logging.basicConfig(level=logging.DEBUG)
 
+# Fix for authors names (used by `author_subs_replace`)
+
+# A dictionary of regex to fix authors names
+# If the author matches the key, it is replace (using re.sub) by the value
+author_subs_re = {
+    ur"Angelo [dD]e Caro": ur"Angelo {De Caro}",
+    ur"Juan Gonz[áa]lez Nieto": ur"Juan {Gonz{\\'a}lez Nieto}",
+    ur"Juan Manuel Gonz[aá]lez Nieto": ur"Juan Manuel {Gonz{\\'a}lez Nieto}",
+    ur"Juanma Gonz[áa]lez Nieto": ur"Juanma {Gonz{\\'a}lez Nieto}",
+}
+
+author_subs_re_compiled = {
+    re.compile(r): s
+    for r, s in author_subs_re.iteritems()
+}
+author_subs_re_all = re.compile("|".join(author_subs_re.keys()))
+print(u"|".join(author_subs_re.keys()))
+
+
+def author_subs_replace(author):
+    """ fix the author name using author_subs_re"""
+
+    # For efficiency, we first use author_subs_re_all to find the places to
+    # replace, but then manually sub
+    def sub(text):
+        print("---" + text)
+        for r, s in author_subs_re_compiled.iteritems():
+            if r.match(text):
+                return r.sub(s, text)
+
+    res = author_subs_re_all.sub(lambda match: sub(match.group(0)), author)
+    return res
+
+
 # Remove accents
 # http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
 def strip_accents(s):
@@ -220,7 +254,7 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
     pages_error = None
     for e in elt:
         if e.tag == "author":
-            authors.append(clean_author(unicode(e.text)))
+            authors.append(author_subs_replace(clean_author(unicode(e.text))))
         elif e.tag in fields:
             val = xml_get_value(e)  # e.text
             if e.tag == "pages":
