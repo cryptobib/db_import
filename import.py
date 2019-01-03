@@ -152,7 +152,7 @@ def get_author_name_for_key(author):
     if last_name == "Jr." and len(author) > 1:
         last_name = "".join(author.split(" ")[-2:])
     # remove "." from the name if any as it is not allowed by pybtex in keys
-    return last_name.replace(".", "")
+    return last_name.replace(".", "").replace("{", "").replace("}", "")
 
 
 def get_author_name_and_for_key(author):
