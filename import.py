@@ -154,7 +154,7 @@ author_subs_re = {
     ur"Peter [vV]an Rossum": (ur"Peter {van Rossum}", ur"vanRossum"),
     ur"Johan [vV]an Tilburg": (ur"Johan {van Tilburg}", ur"vanTilburg"),
     ur"Nicolas Veyrat-Charvillon": (ur"Nicolas {Veyrat-Charvillon}", ur"Veyrat-Charvillon"),
-    ur"Luis [vV]on Ahn": (ur"{Luis von} Ahn", ur"Ahn"),
+    ur"Luis [vV]on Ahn": (ur"Luis {von Ahn}", ur"vonAhn"),
     ur"Ronny Wichers Schreur": (ur"Ronny {Wichers Schreur}", ur"WichersSchreur"),
     ur"Zooko Wilcox-O'Hearn": (ur"Zooko {Wilcox-O'Hearn}", ur"Wilcox-OHearn"),
     ur"Santiago Zanella[- ]B[ée]guelin": (ur"Santiago {Zanella-B{\'e}guelin}", ur"Zanella-Beguelin"),
