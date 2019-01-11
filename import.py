@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+Aner Ben-EfraimCarlos Aguilar Melchor#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 # TODO
@@ -44,7 +44,7 @@ logging.basicConfig(level=logging.DEBUG)
 #      and the second part of the pair is the last name used for the BibTeX key
 author_subs_re = {
     ur"Ruba Abu-Salma": (ur"Ruba {Abu-Salma}", ur"Abu-Salma"),
-    ur"Carlos Aguilar Melchor": (ur"Carlos {Aguilar Melchor}", ur"Aguilar Melchor"),
+    ur"Carlos Aguilar Melchor": (ur"Carlos {Aguilar Melchor}", ur"AguilarMelchor"),
     ur"Sattam S. Al-Riyami": (ur"Sattam S. {Al-Riyami}", ur"Al-Riyami"),
     ur"Jacob Alperin-Sheriff": (ur"Jacob {Alperin-Sheriff}", ur"Alperin-Sheriff"),
     ur"Aner Ben-Efraim": (ur"Aner {Ben-Efraim}", ur"Ben-Efraim"),
@@ -55,9 +55,11 @@ author_subs_re = {
     ur"Vincent Cohen-Addad": (ur"Vincent {Cohen-Addad}", ur"Cohen-Addad"),
     ur"Katriel Cohn-Gordon": (ur"Katriel {Cohn-Gordon}", ur"Cohn-Gordon"),
     ur"Beno[îi]t Chevallier-Mames": (ur"Beno{\^\i}t {Chevallier-Mames}", ur"Chevallier-Mames"),
-    ur"Nora Cuppens-Boulahia": (ur"Nora {Cuppens-Boulahia}", ur"Cuppens-Boulahia"),
+    ur"[ÉE]ric Colin de Verdi[èe]re": (ur"{\'E}ric {Colin de Verdi{\`e}re}", ur"ColindeVerdiere"),
     ur"Henry Corrigan-Gibbs": (ur"Henry {Corrigan-Gibbs}", ur"Corrigan-Gibbs"),
+    ur"Nora Cuppens-Boulahia": (ur"Nora {Cuppens-Boulahia}", ur"Cuppens-Boulahia"),
     ur"Dana Dachman-Soled": (ur"Dana {Dachman-Soled}", ur"Dachman-Soled"),
+    ur"Paolo D'Arco": (ur"Paolo {D'Arco}", ur"DArco"),
     ur"Christophe [dD]e Canni[èe]re": (ur"Christophe {De Canni{\`e}re}", ur"DeCanniere"),
     ur"Sabrina [dD]e Capitani [dD]i Vimercati": (ur"Sabrina {De Capitani di Vimercati}", ur"DeCapitanidiVimercati"),
     ur"Angelo [dD]e Caro": (ur"Angelo {De Caro}", ur"DeCaro"),
@@ -68,6 +70,7 @@ author_subs_re = {
     ur"Peter [Dd]e Gersem": (ur"Peter {De Gersem}", ur"DeGersem"),
     ur"Wiebren [dD]e Jonge": (ur"Wiebren {de Jonge}", ur"deJonge"),
     ur"Breno de Medeiros": (ur"Breno {de Medeiros}", ur"deMedeiros"),
+    ur"Roberto [dD]e Prisco": (ur"Roberto {De Prisco}", ur"DePrisco"),
     ur"Alfredo [dD]e Santis": (ur"Alfredo {De Santis}", ur"DeSantis"),
     ur"Fabrizio [Dd]e Santis": (ur"Fabrizio {De Santis}", ur"DeSantis"),
     ur"Domenico [Dd]e Seta": (ur"Domenico {De Seta}", ur"DeSeta"),
@@ -143,6 +146,7 @@ author_subs_re = {
     ur"Nicolas Veyrat-Charvillon": (ur"Nicolas {Veyrat-Charvillon}", ur"Veyrat-Charvillon"),
     ur"Luis [vV]on Ahn": (ur"Luis {von Ahn}", ur"vonAhn"),
     ur"Zooko Wilcox-O'Hearn": (ur"Zooko {Wilcox-O'Hearn}", ur"Wilcox-OHearn"),
+    ur"Santiago Zanella[- ]B[ée]guelin": (ur"Santiago {Zanella-B{\'e}guelin}", ur"Zanella-Beguelin"),
     ur"Rui Zhang II": (ur"Rui {Zhang II}", ur"ZhangII"),
 }
 
