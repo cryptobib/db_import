@@ -1,4 +1,4 @@
-Aner Ben-EfraimCarlos Aguilar Melchor#!/usr/bin/env python2
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 # TODO
@@ -81,6 +81,7 @@ author_subs_re = {
     ur"Erik [Dd]e Win": (ur"Erik {De Win}", ur"DeWin"),
     ur"Thomas Debris-Alazard": (ur"Thomas {Debris-Alazard}", ur"Debris-Alazard"),
     ur"Rafa[ëe]l del Pino": (ur"Rafa{\"e}l {del Pino}", ur"delPino"),
+    ur"Romar B. dela Cruz": (ur"Romar B. {dela Cruz}", ur"delaCruz"),
     ur"Antoine Delignat-Lavaud": (ur"Antoine {Delignat-Lavaud}", ur"Delignat-Lavaud"),
     ur"Sergi Delgado-Segura": (ur"Sergi {Delgado-Segura}", ur"Delgado-Segura"),
     ur"Bert [dD]en Boer": (ur"Bert {den Boer}", ur"denBoer"),
@@ -138,6 +139,7 @@ author_subs_re = {
     ur"Katja Schmidt-Samoa": (ur"Katja {Schmidt-Samoa}", ur"Schmidt-Samoa"),
     ur"[Aa]bhi [Ss]helat": (ur"{abhi} {shelat}", ur"shelat"),
     ur"Marcos A. Simpl[íi]cio Jr.": (ur"Marcos A. {Simpl{\'\i}cio Jr.}", ur"SimplicioJr"),
+    ur"Daniel Smith-Tone": (ur"Daniel {Smith-Tone}", ur"Smith-Tone"),
     ur"Eduardo Soria-Vazquez": (ur"Eduardo {Soria-Vazquez}", ur"Soria-Vazquez"),
     ur"Noah Stephens-Davidowitz": (ur"Noah {Stephens-Davidowitz}", ur"Stephens-Davidowitz"),
     ur"Herman [tT]e Riele": (ur"Herman {te Riele}", ur"teRiele"),
@@ -158,6 +160,7 @@ author_subs_re = {
     ur"Peter [vV]an Rossum": (ur"Peter {van Rossum}", ur"vanRossum"),
     ur"Johan [vV]an Tilburg": (ur"Johan {van Tilburg}", ur"vanTilburg"),
     ur"Nicolas Veyrat-Charvillon": (ur"Nicolas {Veyrat-Charvillon}", ur"Veyrat-Charvillon"),
+    ur"Francisco Jos[ée] Vial Prado": (ur"Francisco Jos{\'e} {Vial Prado}", ur"VialPrado"),
     ur"Luis [vV]on Ahn": (ur"Luis {von Ahn}", ur"vonAhn"),
     ur"Samuel S. Wagstaff Jr.": (ur"Samuel S. {Wagstaff Jr.}", ur"WagstaffJr"),
     ur"Ronny Wichers Schreur": (ur"Ronny {Wichers Schreur}", ur"WichersSchreur"),
