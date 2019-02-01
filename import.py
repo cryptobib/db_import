@@ -52,7 +52,7 @@ author_subs_re = {
     ur"Adi Ben-Zvi": (ur"Adi {Ben-Zvi}", ur"Ben-Zvi"),
     ur"Eli Ben-Sasson": (ur"Eli {Ben-Sasson}", ur"Ben-Sasson"),
     ur"Shalev Ben-David": (ur"Shalev {Ben-David}", ur"Ben-David"),
-    ur"Michael Ben-Or": (ur"Michael (Ben-Or)", ur"Ben-Or"),
+    ur"Michael Ben-Or": (ur"Michael {Ben-Or}", ur"Ben-Or"),
     ur"Daniel Cervantes-V[áa]zquez": (ur"Daniel {Cervantes-V{\'a}zquez}", ur"Cervantes-Vazquez"),
     ur"Vincent Cohen-Addad": (ur"Vincent {Cohen-Addad}", ur"Cohen-Addad"),
     ur"Katriel Cohn-Gordon": (ur"Katriel {Cohn-Gordon}", ur"Cohn-Gordon"),
