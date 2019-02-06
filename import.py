@@ -43,10 +43,21 @@ logging.basicConfig(level=logging.DEBUG)
 #      the author is then replaced by the first part of the pair
 #      and the second part of the pair is the last name used for the BibTeX key
 author_subs_re = {
+    ur"Shekh Faisal Abdul-Latip": (ur"Shekh Faisal {Abdul-Latip}", ur"Abdul-Latip"),
     ur"Ruba Abu-Salma": (ur"Ruba {Abu-Salma}", ur"Abu-Salma"),
     ur"Carlos Aguilar Melchor": (ur"Carlos {Aguilar Melchor}", ur"AguilarMelchor"),
+    ur"Mahdi Nasrullah Al-Ameen": (ur"Mahdi Nasrullah {Al-Ameen}", ur"Al-Ameen"),
+    ur"Sultan Al-Hinai": (ur"Sultan {Al-Hinai}", ur"Al-Hinai"),
+    ur"Mohamed Al-Ibrahim": (ur"Mohamed {Al-Ibrahim}", ur"Al-Ibrahim"),
+    ur"Naser Al-Ibrahim": (ur"Naser {Al-Ibrahim}", ur"Al-Ibrahim"),
+    ur"Noor R. Al-Kazaz": (ur"Noor R. {Al-Kazaz}", ur"Al-Kazaz"),
+    ur"Zakaria Al-Qudah": (ur"Zakaria {Al-Qudah}", ur"Al-Qudah"),
     ur"Sattam S. Al-Riyami": (ur"Sattam S. {Al-Riyami}", ur"Al-Riyami"),
+    ur"Ehab Al-Shaer": (ur"Ehab {Al-Shaer}", ur"Al-Shaer"),
+    ur"Said F. Al-Sarawi": (ur"Said F. {Al-Sarawi}", ur"Al-Sarawi"),
     ur"Jacob Alperin-Sheriff": (ur"Jacob {Alperin-Sheriff}", ur"Alperin-Sheriff"),
+    ur"Enrique Argones-R[úu]a": (ur"Enrique {Argones-R{\'u}a}", ur"Argones-Rua"),
+    ur"Babak Azimi-Sadjadi": (ur"Babak {Azimi-Sadjadi}", ur"Azimi-Sadjadi"),
     ur"Aner Ben-Efraim": (ur"Aner {Ben-Efraim}", ur"Ben-Efraim"),
     ur"Omri Ben-Eliezer": (ur"Omri {Ben-Eliezer}", ur"Ben-Eliezer"),
     ur"Adi Ben-Zvi": (ur"Adi {Ben-Zvi}", ur"Ben-Zvi"),
