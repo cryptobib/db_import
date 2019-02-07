@@ -11,53 +11,53 @@
 + Enrique Argones-R{\'u}a
 + Babak Azimi-Sadjadi
 
-Achiya Bar-On
-Ahmad Baraani-Dastjerdi
-Emmanuel Bello-Ogunu
-Ishai Ben-Aroya
-Assaf Ben-David
-Imane Bouij-Pasquier
-Nora Boulahia-Cuppens
-Cristian Bravo-Lillo
-Geeke Bruin-Muurling
++ Achiya Bar-On
++ Ahmad Baraani-Dastjerdi
++ Emmanuel Bello-Ogunu
++ Ishai Ben-Aroya
++ Assaf Ben-David
++ Imane Bouij-Pasquier
++ Nora Boulahia-Cuppens
++ Cristian Bravo-Lillo
++ Geeke Bruin-Muurling
 
-C. Caballero-Gil
-C{\'a}ndido Caballero-Gil
-Pino Caballero-Gil
-C{\'e}cile Canovas-Dumas
-Eric Chan-Tin
-Hubert Comon-Lundh
++ C. Caballero-Gil
++ C{\'a}ndido Caballero-Gil
++ Pino Caballero-Gil
++ C{\'e}cile Canovas-Dumas
++ Eric Chan-Tin
++ Hubert Comon-Lundh
 
-Martin Dehnel-Wild
-Jerome Di-Battista
-Jes{\'u}s E. D{\'\i}az-Verdejo
++ Martin Dehnel-Wild
++ Jerome Di-Battista
++ Jes{\'u}s E. D{\'\i}az-Verdejo
 
-Anas Abou El Kalam
-Philippe Elbaz-Vincent
-R. Marije Elkenbracht-Huizin
++ Anas Abou El Kalam
++ Philippe Elbaz-Vincent
++ R. Marije Elkenbracht-Huizin
 
-Eduardo Fern{\'a}ndez-Medina
-Jonathan Fetter-Degges
-Amparo F{\'u}ster-Sabater
++ Eduardo Fern{\'a}ndez-Medina
++ Jonathan Fetter-Degges
++ Amparo F{\'u}ster-Sabater
 
-Joan Garc{\'\i}a-Haro
-Hector Garcia-Molina
-Francisco Javier Garc{\'\i}a Salom{\'o}n
-Pedro Garcia-Teodoro
-Antonio F. G{\'o}mez-Skarmeta
-Ana Gonz{\'a}lez-Marcos
-Raouf N. Gorgui-Naguib
++ Joan Garc{\'\i}a-Haro
++ Hector Garcia-Molina
++ Francisco Javier Garc{\'\i}a Salom{\'o}n
++ Pedro Garcia-Teodoro
++ Antonio F. G{\'o}mez-Skarmeta
++ Ana Gonz{\'a}lez-Marcos
++ Raouf N. Gorgui-Naguib
 
-Julio Cesar Hernandez-Castro
-Candelaria Hern{\'a}ndez-Goya
-Thomas S. Heydt-Benjamin
-Severin Holzer-Graf
-Dimitrios Hristu-Varsakelis
++ Julio Cesar Hernandez-Castro
++ Candelaria Hern{\'a}ndez-Goya
++ Thomas S. Heydt-Benjamin
++ Severin Holzer-Graf
++ Dimitrios Hristu-Varsakelis
 
-Luis Irun-Briz
++ Luis Irun-Briz
 
-Eleftherios Kokoris-Kogias
-S{\'e}bastien Kunz-Jacques
++ Eleftherios Kokoris-Kogias
++ S{\'e}bastien Kunz-Jacques
 
 H. Andr{\'e}s Lagar-Cavilla
 Kerstin Lemke-Rust
