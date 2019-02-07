@@ -42,8 +42,10 @@
 
 + Joan Garc{\'\i}a-Haro
 + Hector Garcia-Molina
++ {\'O}scar Garc{\'\i}a-Morch{\'o}n
 + Francisco Javier Garc{\'\i}a Salom{\'o}n
 + Pedro Garcia-Teodoro
++ Domingo G{\'o}mez-P{\'e}rez
 + Antonio F. G{\'o}mez-Skarmeta
 + Ana Gonz{\'a}lez-Marcos
 + Raouf N. Gorgui-Naguib
@@ -71,6 +73,7 @@ Josemaria Malgosa-Sanahuja
 John Malone-Lee
 Pilar Manzanares-Lopez
 Jos{\'e} Mar{\'\i}a Sierra
+Consuelo Mart{\'\i}nez
 Alberto F. Mart{\'\i}nez-Herrera
 Luis Mart{\'\i}nez-Ramos
 Rita Mayer-Sommer
@@ -104,6 +107,7 @@ Alexandra Shulman-Peleg
 Stelios Sidiroglou-Douskos
 Tage Stabell-Kul{\o}
 Brett Stone-Gross
+Adriana Su{\'a}rez Corona
 Guillermo Suarez-Tangil
 
 Amnon Ta-Shma
@@ -121,3 +125,4 @@ Christian Wenzel-Benner
 John D. Wiltshire-Gordon
 
 Irina Zachia-Zlatea
+

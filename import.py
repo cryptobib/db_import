@@ -146,8 +146,10 @@ author_subs_re = {
     ur"Joan Garc[íi]a-Haro": (ur"Joan {Garc{\'\i}a-Haro}", ur"Garcia-Haro"),
     ur"H. Garc[íi]a-Molina": (ur"H{\'e}ctor {Garc{\'\i}a-Molina}", ur"Garcia-Molina"),
     ur"H[ée]ctor Garc[íi]a-Molina": (ur"H{\'e}ctor {Garc{\'\i}a-Molina}", ur"Garcia-Molina"),
+    ur"[ÓO]scar Garc[íi]a-Morch[óo]n": (ur"{\'O}scar {Garc{\'\i}a-Morch{\'o}n}", ur"Garcia-Morchon"),
     ur"Francisco Javier Garc[íi]a-Salom[óo]n": (ur"Francisco Javier {Garc{\'\i}a-Salom{\'o}n}", ur"Garcia-Salomon"),
     ur"Pedro Garc[íi]a-Teodoro": (ur"Pedro {Garc{\'\i}a-Teodoro}", ur"Garcia-Teodoro"),
+    ur"Domingo G[óo]mez-P[ée]rez": (ur"Domingo {G{\'o}mez-P{\'e}rez}", ur"Gomez-Perez"),
     ur"Antonio F. G[óo]mez-Skarmeta": (ur"Antonio F. {G{\'o}mez-Skarmeta}", ur"Gomez-Skarmeta"),
     ur"Mar[ií]a Isabel Gonz[aá]lez Vasco": (ur"Mar{\'\i}a Isabel {Gonz{\'a}lez Vasco}", ur"GonzalezVasco"),
     ur"Juan Gonz[áa]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
@@ -182,6 +184,7 @@ author_subs_re = {
     ur"Gilles Macario-Rat": (ur"Gilles {Macario-Rat}", ur"Macario-Rat"),
     ur"Jaume Mart[íi]-Farr[ée]": (ur"Jaume {Mart{\'\i}-Farr{\'e}}", ur"Marti-Farre"),
     ur"Breno de Medeiros": (ur"{Breno de} Medeiros", ur"Medeiros"),
+    ur"Santos Merino [Dd]el Pozo": (ur"Santos {Merino Del Pozo}", ur"MerinoDelPozo"),
     ur"Pedro Moreno-Sanchez": (ur"Pedro {Moreno-Sanchez}", ur"Moreno-Sanchez"),
     ur"William K. Moses Jr.": (ur"William K. {Moses Jr.}", ur"MosesJr"),
 
