@@ -149,7 +149,7 @@ author_subs_re = {
     ur"Francisco Javier Garc[íi]a-Salom[óo]n": (ur"Francisco Javier {Garc{\'\i}a-Salom{\'o}n}", ur"Garcia-Salomon"),
     ur"Pedro Garc[íi]a-Teodoro": (ur"Pedro {Garc{\'\i}a-Teodoro}", ur"Garcia-Teodoro"),
     ur"Antonio F. G[óo]mez-Skarmeta": (ur"Antonio F. {G{\'o}mez-Skarmeta}", ur"Gomez-Skarmeta"),
-    ur"Maria Isabel Gonzalez Vasco": (ur"Maria Isabel {Gonzalez Vasco}", ur"GonzalezVasco"),
+    ur"Mar[ií]a Isabel Gonz[aá]lez Vasco": (ur"Mar{\'\i}a Isabel {Gonz{\'a}lez Vasco}", ur"GonzalezVasco"),
     ur"Juan Gonz[áa]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
     ur"Juan Manuel Gonz[aá]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
     ur"Juanma Gonz[áa]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
@@ -196,6 +196,7 @@ author_subs_re = {
     ur"Beni Paskin-Cherniavsky": (ur"Beni {Paskin-Cherniavsky}", ur"Paskin-Cherniavsky"),
     ur"Magdalena Payeras-Capell[àa]": (ur"Magdalena {Payeras-Capell{\`a}}", ur"Payeras-Capella"),
     ur"Angel L. P[ée]rez [dD]el Pozo": (ur"Angel L. {P{\'e}rez del Pozo}", ur"PerezdelPozo"),
+    ur"David P[ée]rez Garc[íi]a": (ur"David {P{\'e}rez Garc{\'\i}a}", ur"PerezGarcia"),
     ur"Cristina P[ée]rez-Sol[àa]": (ur"Cristina {P{\'e}rez-Sol{\`a}}", ur"Perez-Sola"),
     ur"Nick L. Petroni Jr.": (ur"Nick L. {Petroni Jr.}", ur"PetroniJr"),
 
