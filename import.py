@@ -316,6 +316,7 @@ def unicode_to_latex(s):
     s = s.replace(u"\x94", u"''")
     s = s.replace(u"\u03a3", u"$\Sigma$")
     s = s.replace(u"z\u030c", u"{\v{z}}")
+    s = s.replace(u"\u2208", u"$\epsilon$")
     return s
 
 
