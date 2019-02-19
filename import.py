@@ -698,16 +698,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", dest="overwrite", action="store_true", help="overwrite existing files")
     parser.add_argument("confyears", metavar="confyear", type=str,
-                        help="list of conferences (ex.: C2012 ac11 stoc95 c2013-1)", nargs="*")
+                        help="list of conferences (ex.: C2012 AC11 STOC95 C2013-1)", nargs="*")
     args = parser.parse_args()
 
     for conf_year in args.confyears:
         res = re.search(r'^([a-zA-Z]+)([0-9]{2,4})([a-zA-Z0-9_-]*)$', conf_year)
         if res is None:
             logging.error(
-                "bad format for conference \"{0}\" (ex.: crypto2012 crypto11 stoc95 crypto13-1)".format(conf_year))
+                "bad format for conference \"{0}\" (ex.: C2012 AC11 STOC95 C2013-1)".format(conf_year))
             sys.exit(1)
-        confkey = res.group(1).upper()
+        confkey = res.group(1)
         year = int(res.group(2))
         dis = res.group(3)
         if year < 50:
