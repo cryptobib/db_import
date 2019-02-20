@@ -39,6 +39,7 @@ Lauren De Meyer
 
 + Eduardo Fern{\'a}ndez-Medina
 + Jonathan Fetter-Degges
+Simone Fischer-Hübner
 + Amparo F{\'u}ster-Sabater
 
 + Joan Garc{\'\i}a-Haro

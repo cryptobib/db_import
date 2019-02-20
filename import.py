@@ -138,6 +138,7 @@ author_subs_re = {
     ur"Eduardo Fern[áa]ndez-Medina": (ur"Eduardo {Fern{\'a}ndez-Medina}", ur"Fernandez-Medina"),
     ur"Josep Llu[íi]s Ferrer-Gomila": (ur"Josep Llu{\'\i}s {Ferrer-Gomila}", ur"Ferrer-Gomila"),
     ur"Jonathan Fetter-Degges": (ur"Jonathan {Fetter-Degges}", ur"Fetter-Degges"),
+    ur"Simone Fischer-H[üu]bner": (ur"Simone {Fischer-H{\"u}bner}", ur"Fischer-Hubner"),
     ur"Eli Fox-Epstein": (ur"Eli {Fox-Epstein}", ur"Fox-Epstein"),
     ur"Amparo F[úu]ster-Sabater": (ur"Amparo {F{\'u}ster-Sabater}", ur"Fuster-Sabater"),
 
@@ -183,6 +184,7 @@ author_subs_re = {
 
     ur"Gilles Macario-Rat": (ur"Gilles {Macario-Rat}", ur"Macario-Rat"),
     ur"Jaume Mart[íi]-Farr[ée]": (ur"Jaume {Mart{\'\i}-Farr{\'e}}", ur"Marti-Farre"),
+    ur"David M. Martin Jr.": (ur"David M. {Martin Jr.}", ur"MartinJr"),
     ur"Breno de Medeiros": (ur"{Breno de} Medeiros", ur"Medeiros"),
     ur"Santos Merino [Dd]el Pozo": (ur"Santos {Merino Del Pozo}", ur"MerinoDelPozo"),
     ur"Pedro Moreno-Sanchez": (ur"Pedro {Moreno-Sanchez}", ur"Moreno-Sanchez"),
