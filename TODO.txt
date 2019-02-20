@@ -1,13 +1,14 @@
-ACISP 2018
-ACNS 2018
-ESORICS 2018
-ISC 2018
-IWSEC 2018
-JC 2018 (No 3)
-NDSS 2018
-PODC 2018
-SCN 2018
-STOC 2018
-S&P 2018
-TrustBus 2018
-WISA 2017
+Conferences:
+USENIX
+RANDOM / APPROX
+
+Journals:
+Journal of the ACM
+Commnications of the ACM
+Designs, Codes and Cryptography
+SIAM Journal of Computing
+IET Information Security
+Theoretical Computer Science
+
+Archives:
+
