@@ -16,6 +16,7 @@
 + Emmanuel Bello-Ogunu
 + Ishai Ben-Aroya
 + Assaf Ben-David
+Abhilasha Bhargav-Spantzel
 + Imane Bouij-Pasquier
 + Nora Boulahia-Cuppens
 + Cristian Bravo-Lillo
@@ -66,9 +67,12 @@ Bastien Jacot-Guillarmod
 + S{\'e}bastien Kunz-Jacques
 
 H. Andr{\'e}s Lagar-Cavilla
+Jean-Yves Le Boudec
+Erik G. Learned-Miller
 Kerstin Lemke-Rust
 Chris Lesniewski-Laas
 Fran{\c c}oise Levy-dit-Vehel
+Lesa Lorenzen-Huber
 Emmanuel L{\'o}pez-Trejo
 
 Gilles Macario-Rat
@@ -101,6 +105,7 @@ Fernando P{\'e}rez-Gonz{\'a}lez
 Pedro Peris-Lopez
 Deike Priemuth-Schmid
 
+Arne Renkema-Padmos
 Arash Reyhani-Masoleh
 
 Juan Carlos Sanchez-Aarnoutse
