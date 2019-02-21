@@ -16,7 +16,7 @@
 + Emmanuel Bello-Ogunu
 + Ishai Ben-Aroya
 + Assaf Ben-David
-Abhilasha Bhargav-Spantzel
++ Abhilasha Bhargav-Spantzel
 + Imane Bouij-Pasquier
 + Nora Boulahia-Cuppens
 + Cristian Bravo-Lillo
@@ -29,9 +29,10 @@ Abhilasha Bhargav-Spantzel
 + Eric Chan-Tin
 + Hubert Comon-Lundh
 
-Lauren De Meyer
++ Jos{\'e} Mar{\'\i}a de Fuentes
++ Lauren De Meyer
 + Martin Dehnel-Wild
-Giorgio Di Natale
++ Giorgio Di Natale
 + Jerome Di-Battista
 + Jes{\'u}s E. D{\'\i}az-Verdejo
 
@@ -41,7 +42,7 @@ Giorgio Di Natale
 
 + Eduardo Fern{\'a}ndez-Medina
 + Jonathan Fetter-Degges
-Simone Fischer-Hübner
++ Simone Fischer-Hübner
 + Amparo F{\'u}ster-Sabater
 
 + Joan Garc{\'\i}a-Haro
@@ -54,7 +55,7 @@ Simone Fischer-Hübner
 + Ana Gonz{\'a}lez-Marcos
 + Raouf N. Gorgui-Naguib
 
-+ Julio Cesar Hernandez-Castro
++ Julio C{\'e}sar Hern{\'a}ndez Castro
 + Candelaria Hern{\'a}ndez-Goya
 + Thomas S. Heydt-Benjamin
 + Severin Holzer-Graf
@@ -62,64 +63,69 @@ Simone Fischer-Hübner
 
 + Luis Irun-Briz
 
-Bastien Jacot-Guillarmod
++ Bastien Jacot-Guillarmod
 
 + Eleftherios Kokoris-Kogias
 + S{\'e}bastien Kunz-Jacques
 
-H. Andr{\'e}s Lagar-Cavilla
-Jean-Yves Le Boudec
-Erik G. Learned-Miller
-Kerstin Lemke-Rust
-Chris Lesniewski-Laas
-Fran{\c c}oise Levy-dit-Vehel
-Lesa Lorenzen-Huber
-Emmanuel L{\'o}pez-Trejo
++ H. Andr{\'e}s Lagar-Cavilla
++ Jean-Yves Le Boudec
++ Erik G. Learned-Miller
++ Kerstin Lemke-Rust
++ Chris Lesniewski-Laas
++ Fran{\c c}oise Levy-dit-Vehel
++ Emmanuel L{\'o}pez-Trejo
++ Lesa Lorenzen-Huber
 
-Gilles Macario-Rat
-Mohammad Mahmoody-Ghidary
-Josemaria Malgosa-Sanahuja
-John Malone-Lee
-Pilar Manzanares-Lopez
-Jos{\'e} Mar{\'\i}a Sierra
-Consuelo Mart{\'\i}nez
-Alberto F. Mart{\'\i}nez-Herrera
-Luis Mart{\'\i}nez-Ramos
-Rita Mayer-Sommer
-J. Carlos Mex-Perera
-Jezabel Molina-Gil
-J{\"o}rn M{\"u}ller-Quade
-Christian M{\"u}ller-Schloer
-Juan Pedro Mu{\~n}oz-Gea
-Emerson R. Murphy-Hill
++ Gilles Macario-Rat
++ Mohammad Mahmoody-Ghidary
++ Josemaria Malgosa-Sanahuja
++ John Malone-Lee
++ Pilar Manzanares-Lopez
++ Jos{\'e} Mar{\'\i}a Sierra
++ Rafael Mar{\'\i}n L{\'o}pez
++ Consuelo Mart{\'\i}nez
++ Alberto F. Mart{\'\i}nez-Herrera
++ J. L. Martinez-Hurtado / Juan Leonardo Martinez-Hurtado
++ E. Martínez-Moro /Edgar Martínez-Moro
++ Luis Mart{\'\i}nez-Ramos
++ Rita Mayer-Sommer
++ J. Carlos Mex-Perera / Jorge Carlos Mex-Perera
++ Jezabel Molina-Gil
++ J. Mozo-Fernandez / J. Mozo-Fernández / Jorge {Mozo-Fern{\'a}ndez}
++ J{\"o}rn M{\"u}ller-Quade
++ Christian M{\"u}ller-Schloer
++ Juan Pedro Mu{\~n}oz-Gea
++ Emerson R. Murphy-Hill
 
-Juan Arturo Nolazco-Flores
++ Juan Arturo Nolazco-Flores
 
-Francesco Parisi-Presicce
++ Francesco Parisi-Presicce
 Jung-Min ``Jerry'' Park
-F. Pebay-Peyroula
-Fernando Pere{\~n}iguez-Garcia
-Diego Perez-Botero
-Fernando P{\'e}rez-Cruz
-Luis P{\'e}rez-Freire
-Fernando P{\'e}rez-Gonz{\'a}lez
-Pedro Peris-Lopez
-Deike Priemuth-Schmid
++ F. Pebay-Peyroula
++ Fernando Pere{\~n}iguez-Garcia
++ Diego Perez-Botero
++ Fernando P{\'e}rez-Cruz
++ Luis P{\'e}rez-Freire
++ Fernando P{\'e}rez-Gonz{\'a}lez
++ Pedro Peris-Lopez
++ Deike Priemuth-Schmid
 
-Arne Renkema-Padmos
-Arash Reyhani-Masoleh
++ Arne Renkema-Padmos
++ Arash Reyhani-Masoleh
 
-Juan Carlos Sanchez-Aarnoutse
-Carmen Sanchez-Avila
-Raul S{\'a}nchez-Reillo
-Anderson Santana de Oliveira
-Ingrid Schaum{\"u}ller-Bichl
-Alexandra Shulman-Peleg
-Stelios Sidiroglou-Douskos
-Tage Stabell-Kul{\o}
-Brett Stone-Gross
-Adriana Su{\'a}rez Corona
-Guillermo Suarez-Tangil
++ Juan Carlos Sanchez-Aarnoutse / Juan Carlos Sánchez-Aarnoutse
++ Carmen Sanchez-Avila / Carmen Sánchez Ávila
++ Raul S{\'a}nchez-Reillo
++ Anderson Santana de Oliveira
++ Ingrid Schaum{\"u}ller-Bichl
++ Alexandra Shulman-Peleg
++ Stelios Sidiroglou-Douskos
++ Tage Stabell-Kul{\o}
++ Brett Stone-Gross
++ Adriana Su{\'a}rez Corona
++ Guillermo Suarez-Tangil
+
 
 Amnon Ta-Shma
 Anne Tardy-Corfdir
