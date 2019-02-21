@@ -8,6 +8,7 @@
 + Zakaria Al-Qudah
 + Ehab Al-Shaer
 + Said F. Al-Sarawi
++ Aisha I. Ali-Gombe
 + Enrique Argones-R{\'u}a
 + Babak Azimi-Sadjadi
 
@@ -126,23 +127,53 @@ Jung-Min ``Jerry'' Park
 + Adriana Su{\'a}rez Corona
 + Guillermo Suarez-Tangil
 
++ Amnon Ta-Shma
++ Anne Tardy-Corfdir
++ Joan Tom{\`a}s-Buliart
++ Jorge Toro-Pozo
++ Jose Luis Torre-Arce
++ Santiago Torres-Arias
++ Juan Ram{\'o}n Troncoso-Pastoriza
++ Rolando Trujillo-Rasua
 
-Amnon Ta-Shma
-Anne Tardy-Corfdir
-Joan Tom{\`a}s-Buliart
-Jorge Toro-Pozo
-Jose Luis Torre-Arce
-Santiago Torres-Arias
-Juan Ram{\'o}n Troncoso-Pastoriza
-Rolando Trujillo-Rasua
++ Narseo Vallina-Rodriguez
++ Bart Van Rompay
++ C{\'e}dric Van Rompay
++ Philipp von Styp-Rekowsky
 
-Narseo Vallina-Rodriguez
-Bart Van Rompay
-C{\'e}dric Van Rompay
-Philipp von Styp-Rekowsky
++ Christian Wenzel-Benner
++ John D. Wiltshire-Gordon
 
-Christian Wenzel-Benner
-John D. Wiltshire-Gordon
++ Irina Zachia-Zlatea
 
-Irina Zachia-Zlatea
++ Giuseppe {Amato II}
++ Karel {Culik II}
++ Markus {Schneider II}
++ Amitabh {Sinha II}
++ William R. {Speirs II}
++ Rui {Zhang II}
+
++ Robert L. (Scot) {Drysdale III}
++ Donald E. {Eastlake III}
++ William C. {Garrison III}
++ James W. {Gray III}
++ Harry B. {Hunt III}
++ Golden G. {Richard III}
++ William N. {Scherer III}
+
++ Waldyr {Benits Jr.}
++ Edward G. {Coffman Jr.}
++ Domingos {Dellamonica Jr.} / D. {Dellamonica Jr.}
++ Thomas W. {Doeppner Jr.}
++ John E. {Gaffney Jr.}
++ Daniel E. {Geer Jr.}
++ Dennis M. {Healy Jr.}
++ Robert J. {Jenkins Jr.}
++ Witold {Lipski Jr.}
++ David M. {Martin Jr.}
++ Robert {McNerney Jr.}
++ William K. {Moses Jr.}
++ David B. {Newman Jr.}
++ Guy L. {Steele Jr.}
++ Samuel S. {Wagstaff Jr.}
 
