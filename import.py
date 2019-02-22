@@ -184,6 +184,7 @@ author_subs_re = {
     ur"S[áa]ndor Kisfaludi-Bak": (ur"S{\'a}ndor {Kisfaludi-Bak}", ur"Kisfaludi-Bak"),
     ur"Thomas F. Knight Jr.": (ur"Thomas F. {Knight Jr.}", ur"KnightJr"),
     ur"Eleftherios Kokoris-Kogias": (ur"Eleftherios {Kokoris-Kogias}", ur"Kokoris-Kogias"),
+    ur"Greg Kroah-Hartman": (ur"Greg {Kroah-Hartman}", ur"Kroah-Hartman"),
     ur"S[ée]bastien Kunz-Jacques": (ur"S{\'e}bastien {Kunz-Jacques}", ur"Kunz-Jacques"),
 
     ur"H. Andr[ée]s Lagar-Cavilla": (ur"H. Andr{\'e}s {Lagar-Cavilla}", ur"Lagar-Cavilla"),
@@ -194,6 +195,8 @@ author_subs_re = {
     ur"Chris Lesniewski-Laas": (ur"Chris {Lesniewski-Laas}", ur"Lesniewski-Laas"),
     ur"Fran[çc]oise Levy-dit-Vehel": (ur"Fran{\c c}oise {Levy-dit-Vehel}", ur"Levy-dit-Vehel"),
     ur"Adriana L[óo]pez-Alt": (ur"Adriana {L{\'o}pez-Alt}", ur"Lopez-Alt"),
+    ur"Julio L[óo]pez[- ]Hern[áa]ndez": (ur"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", ur"Lopez-Hernandez"),
+    ur"Julio Cesar L[óo]pez[- ]Hern[áa]ndez": (ur"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", ur"Lopez-Hernandez"),
     ur"Emmanuel L[óo]pez-Trejo": (ur"Emmanuel {L{\'o}pez-Trejo}", ur"Lopez-Trejo"),
     ur"Lesa Lorenzen-Huber": (ur"Lesa {Lorenzen-Huber}", ur"Lorenzen-Huber"),
 
@@ -220,6 +223,7 @@ author_subs_re = {
     ur"Jorge Carlos Mex-Perera": (ur"Jorge Carlos {Mex-Perera}", ur"Mex-Perera"),
     ur"Jezabel Molina-Gil": (ur"Jezabel {Molina-Gil}", ur"Molina-Gil"),
     ur"Pedro Moreno-Sanchez": (ur"Pedro {Moreno-Sanchez}", ur"Moreno-Sanchez"),
+    ur"Robert H. Morris Sr.": (ur"Robert H. {Morris Sr.}", ur"MorrisSr"),
     ur"William K. Moses Jr.": (ur"William K. {Moses Jr.}", ur"MosesJr"),
     ur"J. Mozo-Fern[áa]ndez": (ur"Jorge {Mozo-Fern{\'a}ndez}", ur"Mozo-Fernandez"),
     ur"Jorge Mozo-Fern[áa]ndez": (ur"Jorge {Mozo-Fern{\'a}ndez}", ur"Mozo-Fernandez"),
@@ -302,6 +306,7 @@ author_subs_re = {
     ur"Erik van der Sluis": (ur"Erik {van der Sluis}", ur"vanderSluis"),
     ur"Victor [vV]an [dD]er Veen": (ur"Victor {van der Veen}", ur"vanderVeen"),
     ur"Marten [vV]an Dijk": (ur"Marten {van Dijk}", ur"vanDijk"),
+    ur"Leendert [vV]an Doorn": (ur"Leendert {van Doorn}", ur"vanDoorn"),
     ur"Michel [vV]an Eeten": (ur"Michel {van Eeten}", ur"vanEeten"),
     ur"Matthew [Vv]an Gundy": (ur"Matthew {Van Gundy}", ur"VanGundy"),
     ur"Eug[èe]ne [vV]an Heijst": (ur"Eug{\`e}ne {van Heijst}", ur"vanHeijst"),
