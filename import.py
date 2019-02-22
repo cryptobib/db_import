@@ -90,6 +90,7 @@ author_subs_re = {
     ur"[ÉE]ric Colin de Verdi[èe]re": (ur"{\'E}ric {Colin de Verdi{\`e}re}", ur"ColindeVerdiere"),
     ur"Hubert Comon-Lundh": (ur"Hubert {Comon-Lundh}", ur"Comon-Lundh"),
     ur"Henry Corrigan-Gibbs": (ur"Henry {Corrigan-Gibbs}", ur"Corrigan-Gibbs"),
+    ur"Masashi Crete-Nishihata": (ur"Masashi {Crete-Nishihata}", ur"Crete-Nishihata"),
     ur"Nora Cuppens-Boulahia": (ur"Nora {Cuppens-Boulahia}", ur"Cuppens-Boulahia"),
 
     ur"Dana Dachman-Soled": (ur"Dana {Dachman-Soled}", ur"Dachman-Soled"),
@@ -188,6 +189,7 @@ author_subs_re = {
     ur"S[ée]bastien Kunz-Jacques": (ur"S{\'e}bastien {Kunz-Jacques}", ur"Kunz-Jacques"),
 
     ur"H. Andr[ée]s Lagar-Cavilla": (ur"H. Andr{\'e}s {Lagar-Cavilla}", ur"Lagar-Cavilla"),
+    ur"Stevens Le Blond": (ur"Stevens {Le Blond}", ur"LeBlond"),
     ur"Jean-Yves Le Boudec": (ur"Jean-Yves {Le Boudec}", ur"LeBoudec"),
     ur"Erik G. Learned-Miller": (ur"Erik G. {Learned-Miller}", ur"Learned-Miller"),
     ur"Kerstin Lemke-Rust": (ur"Kerstin {Lemke-Rust}", ur"Lemke-Rust"),
@@ -206,6 +208,7 @@ author_subs_re = {
     ur"John Malone-Lee": (ur"John {Malone-Lee}", ur"Malone-Lee"),
     ur"Pilar Manzanares-Lopez": (ur"Pilar {Manzanares-Lopez}", ur"Manzanares-Lopez"),
     ur"Jos{\'e} Mar[íi]a Sierra": (ur"Jos{\'e} {Mar{\'\i}a Sierra}", ur"MariaSierra"),
+    ur"Morgan Marquis-Boire": (ur"Morgan {Marquis-Boire}", ur"Marquis-Boire"),
     ur"Rafael Mar[íi]n L[óo]pez": (ur"Rafael {Mar{\'\i}n L{\'o}pez}", ur"MarinLopez"),
     ur"Jaume Mart[íi]-Farr[ée]": (ur"Jaume {Mart{\'\i}-Farr{\'e}}", ur"Marti-Farre"),
     ur"David M. Martin Jr.": (ur"David M. {Martin Jr.}", ur"MartinJr"),
@@ -271,6 +274,7 @@ author_subs_re = {
     ur"Anderson Santana de Oliveira": (ur"Anderson {Santana de Oliveira}", ur"SantanadeOliveira"),
     ur"Ingrid Schaum[üu]ller-Bichl": (ur"Ingrid {Schaum{\"u}ller-Bichl}", ur"Schaumuller-Bichl"),
     ur"Katja Schmidt-Samoa": (ur"Katja {Schmidt-Samoa}", ur"Schmidt-Samoa"),
+    ur"John Scott-Railton": (ur"John {Scott-Railton}", ur"Scott-Railton"),
     ur"[Aa]bhi [Ss]helat": (ur"{abhi} {shelat}", ur"shelat"),
     ur"Alexandra Shulman-Peleg": (ur"Alexandra {Shulman-Peleg}", ur"Shulman-Peleg"),
     ur"Stelios Sidiroglou-Douskos": (ur"Stelios {Sidiroglou-Douskos}", ur"Sidiroglou-Douskos"),
@@ -352,6 +356,7 @@ author_subs_re = {
 
     ur"Waldyr Benits Jr.": (ur"Waldyr {Benits Jr.}", ur"BenitsJr"),
     ur"Edward G. Coffman Jr.": (ur"Edward G. {Coffman Jr.}", ur"CoffmanJr"),
+    ur"Jonathan L. Dautrich Jr.": (ur"Jonathan L. {Dautrich Jr.}", ur"DautrichJr"),
     ur"D. Dellamonica Jr.": (ur"Domingos {Dellamonica Jr.}", ur"DellamonicaJr"),
     ur"Domingos Dellamonica Jr.": (ur"Domingos {Dellamonica Jr.}", ur"DellamonicaJr"),
     ur"Thomas W. Doeppner Jr.": (ur"Thomas W. {Doeppner Jr.}", ur"DoeppnerJr"),
