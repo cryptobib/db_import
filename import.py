@@ -367,6 +367,7 @@ author_subs_re = {
     ur"Witold Lipski Jr.": (ur"Witold {Lipski Jr.}", ur"LipskiJr"),
     ur"David M. Martin Jr.": (ur"David M. {Martin Jr.}", ur"MartinJr"),
     ur"Robert McNerney Jr.": (ur"Robert {McNerney Jr.}", ur"McNerneyJr"),
+    ur"Walter R. Mebane Jr.": (ur"Walter R. {Mebane Jr.}", ur"MebaneJr"),
     ur"William K. Moses Jr.": (ur"William K. {Moses Jr.}", ur"MosesJr"),
     ur"David B. Newman Jr.": (ur"David B. {Newman Jr.}", ur"NewmanJr"),
     ur"Guy L. Steele Jr.": (ur"Guy L. {Steele Jr.}", ur"SteeleJr"),
