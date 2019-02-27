@@ -105,6 +105,7 @@ author_subs_re = {
     ur"Jos[ée] Mar[íi]a [dD]e Fuentes": (ur"Jos{\'e} Mar{\'\i}a {de Fuentes}", ur"deFuentes"),
     ur"Peter [Dd]e Gersem": (ur"Peter {De Gersem}", ur"DeGersem"),
     ur"Wiebren [dD]e Jonge": (ur"Wiebren {de Jonge}", ur"deJonge"),
+    ur"Eduardo [dD]e [lL]a Torre": (ur"Eduardo {de la Torre}", ur"delaTorre"),
     ur"Lauren [Dd]e Meyer": (ur"Lauren {De Meyer}", ur"DeMeyer"),
     ur"Roberto [dD]e Prisco": (ur"Roberto {De Prisco}", ur"DePrisco"),
     ur"Joeri [dD]e Ruiter": (ur"Joeri {de Ruiter}", ur"deRuiter"),
@@ -189,6 +190,7 @@ author_subs_re = {
     ur"S[ée]bastien Kunz-Jacques": (ur"S{\'e}bastien {Kunz-Jacques}", ur"Kunz-Jacques"),
 
     ur"H. Andr[ée]s Lagar-Cavilla": (ur"H. Andr{\'e}s {Lagar-Cavilla}", ur"Lagar-Cavilla"),
+    ur"Sophie Lambert-Lacroix": (ur"Sophie {Lambert-Lacroix}", ur"Lambert-Lacroix"),
     ur"Stevens Le Blond": (ur"Stevens {Le Blond}", ur"LeBlond"),
     ur"Jean-Yves Le Boudec": (ur"Jean-Yves {Le Boudec}", ur"LeBoudec"),
     ur"Erik G. Learned-Miller": (ur"Erik G. {Learned-Miller}", ur"Learned-Miller"),
@@ -201,6 +203,7 @@ author_subs_re = {
     ur"Julio Cesar L[óo]pez[- ]Hern[áa]ndez": (ur"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", ur"Lopez-Hernandez"),
     ur"Emmanuel L[óo]pez-Trejo": (ur"Emmanuel {L{\'o}pez-Trejo}", ur"Lopez-Trejo"),
     ur"Lesa Lorenzen-Huber": (ur"Lesa {Lorenzen-Huber}", ur"Lorenzen-Huber"),
+    ur"Philippe Loubet-Moundi": (ur"Philippe {Loubet-Moundi}", ur"Loubet-Moundi"),
 
     ur"Gilles Macario-Rat": (ur"Gilles {Macario-Rat}", ur"Macario-Rat"),
     ur"Mohammad Mahmoody-Ghidary": (ur"Mohammad {Mahmoody-Ghidary}", ur"Mahmoody-Ghidary"),
@@ -258,6 +261,9 @@ author_subs_re = {
     ur"Cristina P[ée]rez-Sol[àa]": (ur"Cristina {P{\'e}rez-Sol{\`a}}", ur"Perez-Sola"),
     ur"Pedro Peris-Lopez": (ur"Pedro {Peris-Lopez}", ur"Peris-Lopez"),
     ur"Nick L. Petroni Jr.": (ur"Nick L. {Petroni Jr.}", ur"PetroniJr"),
+    ur"Fr[ée]d[ée]ric de Portzamparc": (ur"{Fr{\'e}d{\'e}ric de} Portzamparc", ur"Portzamparc"),
+    ur"Fr[ée]d[ée]ric de Portzamparc": (ur"{Fr{\'e}d{\'e}ric de} Portzamparc", ur"Portzamparc"),
+    ur"Fr[ée]d[ée]ric Urvoy de Portzamparc": (ur"{Fr{\'e}d{\'e}ric de} Portzamparc", ur"Portzamparc"),
     ur"Deike Priemuth-Schmid": (ur"Deike {Priemuth-Schmid}", ur"Priemuth-Schmid"),
 
     ur"Arne Renkema-Padmos": (ur"Arne {Renkema-Padmos}", ur"Renkema-Padmos"),

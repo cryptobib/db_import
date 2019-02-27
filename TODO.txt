@@ -1,5 +1,5 @@
 Conferences:
-USENIX
+COSADE
 RANDOM / APPROX
 
 Journals:
@@ -9,6 +9,7 @@ Designs, Codes and Cryptography
 SIAM Journal of Computing
 IET Information Security
 Theoretical Computer Science
+Journal for Cryptographic Engineering
 
 Archives:
 
