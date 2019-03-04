@@ -126,6 +126,8 @@ author_subs_re = {
     ur"Antoine Delignat-Lavaud": (ur"Antoine {Delignat-Lavaud}", ur"Delignat-Lavaud"),
     ur"Sergi Delgado-Segura": (ur"Sergi {Delgado-Segura}", ur"Delgado-Segura"),
     ur"Bert [dD]en Boer": (ur"Bert {den Boer}", ur"denBoer"),
+    ur"Cyprien de Saint Guilhem": (ur"Cyprien {de Saint Guilhem}", ur"deSaintGuilhem"),
+    ur"Cyprien Delpech de Saint Guilhem": (ur"Cyprien {de Saint Guilhem}", ur"deSaintGuilhem"),
     ur"Giovanni [Dd]i Crescenzo": (ur"Giovanni {Di Crescenzo}", ur"DiCrescenzo"),
     ur"Giorgio [Dd]i Natale": (ur"Giorgio {Di Natale}", ur"DiNatale"),
     ur"Roberto [Dd]i Pietro": (ur"Roberto {Di Pietro}", ur"DiPietro"),
