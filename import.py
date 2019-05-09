@@ -44,9 +44,11 @@ logging.basicConfig(level=logging.DEBUG)
 #      and the second part of the pair is the last name used for the BibTeX key
 author_subs_re = {
     ur"Shekh Faisal Abdul-Latip": (ur"Shekh Faisal {Abdul-Latip}", ur"Abdul-Latip"),
+    ur"Nael B. Abu-Ghazaleh": (ur"Nael B. {Abu-Ghazaleh}", ur"Abu-Ghazaleh"),
     ur"Ruba Abu-Salma": (ur"Ruba {Abu-Salma}", ur"Abu-Salma"),
     ur"Carlos Aguilar Melchor": (ur"Carlos {Aguilar Melchor}", ur"AguilarMelchor"),
     ur"Mahdi Nasrullah Al-Ameen": (ur"Mahdi Nasrullah {Al-Ameen}", ur"Al-Ameen"),
+    ur"Mustafa Al-Bassam": (ur"Mustafa {Al-Bassam}", ur"Al-Bassam"),
     ur"Sultan Al-Hinai": (ur"Sultan {Al-Hinai}", ur"Al-Hinai"),
     ur"Mohamed Al-Ibrahim": (ur"Mohamed {Al-Ibrahim}", ur"Al-Ibrahim"),
     ur"Naser Al-Ibrahim": (ur"Naser {Al-Ibrahim}", ur"Al-Ibrahim"),
@@ -196,6 +198,7 @@ author_subs_re = {
     ur"Thomas F. Knight Jr.": (ur"Thomas F. {Knight Jr.}", ur"KnightJr"),
     ur"[ÇC]etin Kaya Ko[çc]": (ur"{\c C}etin Kaya Ko{\c c}", ur"Koc"),
     ur"Eleftherios Kokoris-Kogias": (ur"Eleftherios {Kokoris-Kogias}", ur"Kokoris-Kogias"),
+    ur"Lauri Kort-Parn": (ur"Lauri {Kort-Parn}", ur"Kort-Parn"),
     ur"Greg Kroah-Hartman": (ur"Greg {Kroah-Hartman}", ur"Kroah-Hartman"),
     ur"S[ée]bastien Kunz-Jacques": (ur"S{\'e}bastien {Kunz-Jacques}", ur"Kunz-Jacques"),
 
