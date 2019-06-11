@@ -593,7 +593,7 @@ def html_to_bib_value(s, title=False):
         s = "".join(s)
     if len(s) > 0 and s[0] == '"':
         s = "``" + s[1:]
-    s = unicode_to_latex(s.replace(' "', "``").replace('"', "''"))
+    s = unicode_to_latex(s.replace(' "', " ``").replace('"', "''"))
     if s.isdigit():
         return s
     else:
