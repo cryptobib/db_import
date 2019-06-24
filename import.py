@@ -156,6 +156,7 @@ author_subs_re = {
     ur"Eduardo Fern[áa]ndez-Medina": (ur"Eduardo {Fern{\'a}ndez-Medina}", ur"Fernandez-Medina"),
     ur"Josep Llu[íi]s Ferrer-Gomila": (ur"Josep Llu{\'\i}s {Ferrer-Gomila}", ur"Ferrer-Gomila"),
     ur"Jonathan Fetter-Degges": (ur"Jonathan {Fetter-Degges}", ur"Fetter-Degges"),
+    ur"Aris Filos-Ratsikas": (ur"Aris {Filos-Ratsikas}", ur"Filos-Ratsikas"),
     ur"Simone Fischer-H[üu]bner": (ur"Simone {Fischer-Hübner}", ur"Fischer-Hubner"),
     ur"Eli Fox-Epstein": (ur"Eli {Fox-Epstein}", ur"Fox-Epstein"),
     ur"Amparo F[úu]ster-Sabater": (ur"Amparo {F{\'u}ster-Sabater}", ur"Fuster-Sabater"),
@@ -363,6 +364,7 @@ author_subs_re = {
     ur"Ronny Wichers Schreur": (ur"Ronny {Wichers Schreur}", ur"WichersSchreur"),
     ur"Zooko Wilcox-O'Hearn": (ur"Zooko {Wilcox-O'Hearn}", ur"Wilcox-OHearn"),
     ur"John D. Wiltshire-Gordon": (ur"John D. {Wiltshire-Gordon}", ur"Wiltshire-Gordon"),
+    ur"Christian Wulff-Nilsen": (ur"Christian {Wulff-Nilsen}", ur"Wulff-Nilsen"),
 
     ur"Irina Zachia-Zlatea": (ur"Irina {Zachia-Zlatea}", ur"Zachia-Zlatea"),
     ur"Santiago Zanella[- ]B[ée]guelin": (ur"Santiago {Zanella-B{\'e}guelin}", ur"Zanella-Beguelin"),
