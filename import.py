@@ -67,6 +67,7 @@ author_subs_re = {
     ur"Pirouz Bazargan-Sabet": (ur"Pirouz {Bazargan-Sabet}", ur"Bazargan-Sabet"),
     ur"Emmanuel Bello-Ogunu": (ur"Emmanuel {Bello-Ogunu}", ur"Bello-Ogunu"),
     ur"Ishai Ben-Aroya": (ur"Ishai {Ben-Aroya}", ur"Ben-Aroya"),
+    ur"Hussain Ben-Azza": (ur"Hussain {Ben-Azza}", ur"Ben-Azza"),
     ur"Assaf Ben-David": (ur"Assaf {Ben-David}", ur"Ben-David"),
     ur"Shalev Ben-David": (ur"Shalev {Ben-David}", ur"Ben-David"),
     ur"Aner Ben-Efraim": (ur"Aner {Ben-Efraim}", ur"Ben-Efraim"),
@@ -145,9 +146,10 @@ author_subs_re = {
     ur"Edouard Dufour Sans": (ur"Edouard {Dufour Sans}", ur"DufourSans"),
 
     ur"Karim El Defrawy": (ur"Karim {El Defrawy}", ur"ElDefrawy"),
+    ur"Said El Hajji": (ur"Said {El Hajji}", ur"ElHajji"),
     ur"Noreddine El Janati El Idrissi": (ur"Noreddine {El Janati El Idrissi}", ur"ElJanatiElIdrissi"),
     ur"Anas Abou El Kalam": (ur"Anas Abou {El Kalam}", ur"ElKalam"),
-    ur"Said El Hajji": (ur"Said {El Hajji}", ur"ElHajji"),
+    ur"Rachid El Kouch": (ur"Rachid {El Kouch}", ur"ElKouch"),
     ur"Philippe Elbaz-Vincent": (ur"Philippe {Elbaz-Vincent}", ur"Elbaz-Vincent"),
     ur"R. Marije Elkenbracht-Huizin": (ur"R. Marije {Elkenbracht-Huizin}", ur"Elkenbracht-Huizin"),
 
