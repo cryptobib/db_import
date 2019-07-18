@@ -85,6 +85,7 @@ author_subs_re = {
     ur"C[áa]ndido Caballero-Gil": (ur"C{\'a}ndido {Caballero-Gil}", ur"Caballero-Gil"),
     ur"Pino Caballero-Gil": (ur"Pino {Caballero-Gil}", ur"Caballero-Gil"),
     ur"C[ée]cile Canovas-Dumas": (ur"C{\'e}cile {Canovas-Dumas}", ur"Canovas-Dumas"),
+    ur"Keren Censor-Hillel": (ur"Keren {Censor-Hillel}", ur"Censor-Hillel"),
     ur"Daniel Cervantes-V[áa]zquez": (ur"Daniel {Cervantes-V{\'a}zquez}", ur"Cervantes-Vazquez"),
     ur"Eric Chan-Tin": (ur"Eric {Chan-Tin}", ur"Chan-Tin"),
     ur"Beno[îi]t Chevallier-Mames": (ur"Beno{\^\i}t {Chevallier-Mames}", ur"Chevallier-Mames"),
@@ -98,6 +99,7 @@ author_subs_re = {
     ur"Nora Cuppens-Boulahia": (ur"Nora {Cuppens-Boulahia}", ur"Cuppens-Boulahia"),
 
     ur"Dana Dachman-Soled": (ur"Dana {Dachman-Soled}", ur"Dachman-Soled"),
+    ur"Ugo Dal Lago": (ur"Ugo {Dal Lago}", ur"DalLago"),
     ur"Paolo D'Arco": (ur"Paolo {D'Arco}", ur"DArco"),
     ur"Christophe [dD]e Canni[èe]re": (ur"Christophe {De Canni{\`e}re}", ur"DeCanniere"),
     ur"Sabrina [dD]e Capitani [dD]i Vimercati": (ur"Sabrina {De Capitani di Vimercati}", ur"DeCapitanidiVimercati"),
@@ -247,6 +249,7 @@ author_subs_re = {
     ur"Luis Mart[íi]nez-Ramos": (ur"Luis {Mart{\'\i}nez-Ramos}", ur"Martinez-Ramos"),
     ur"Rita Mayer-Sommer": (ur"Rita {Mayer-Sommer}", ur"Mayer-Sommer"),
     ur"Breno de Medeiros": (ur"{Breno de} Medeiros", ur"Medeiros"),
+    ur"Rafael Mendes de Oliveira": (ur"Rafael {Mendes de Oliveira}", ur"MendesDeOliveira"),
     ur"Santos Merino [Dd]el Pozo": (ur"Santos {Merino Del Pozo}", ur"MerinoDelPozo"),
     ur"J. Carlos Mex-Perera": (ur"Jorge Carlos {Mex-Perera}", ur"Mex-Perera"),
     ur"Jorge Carlos Mex-Perera": (ur"Jorge Carlos {Mex-Perera}", ur"Mex-Perera"),
@@ -304,6 +307,7 @@ author_subs_re = {
     ur"Santiago S[áa]nchez-Solano": (ur"Santiago {S{\'a}nchez-Solano}", ur"Sanchez-Solano"),
     ur"Anderson Santana de Oliveira": (ur"Anderson {Santana de Oliveira}", ur"SantanadeOliveira"),
     ur"Ingrid Schaum[üu]ller-Bichl": (ur"Ingrid {Schaumüller-Bichl}", ur"Schaumuller-Bichl"),
+    ur"Ulrike Schmidt-Kraepelin": (ur"Ulrike {Schmidt-Kraepelin}", ur"Schmidt-Kraepelin"),
     ur"Katja Schmidt-Samoa": (ur"Katja {Schmidt-Samoa}", ur"Schmidt-Samoa"),
     ur"John Scott-Railton": (ur"John {Scott-Railton}", ur"Scott-Railton"),
     ur"[Aa]bhi [Ss]helat": (ur"{abhi} {shelat}", ur"shelat"),
@@ -333,6 +337,7 @@ author_subs_re = {
     ur"Rolando Trujillo-Ras[úu]a": (ur"Rolando {Trujillo-Ras{\'u}a}", ur"Trujillo-Rasua"),
 
     ur"Narseo Vallina-Rodriguez": (ur"Narseo {Vallina-Rodriguez}", ur"Vallina-Rodriguez"),
+    ur"Joran [vV]an Apeldoorn": (ur"Joran {van Apeldoorn}", ur"vanApeldoorn"),
     ur"Jo [Vv]an Bulck": (ur"Jo {Van Bulck}", ur"VanBulck"),
     ur"Jeroen [vV]an [dD]e Graaf": (ur"Jeroen {van de Graaf}", ur"vandeGraaf"),
     ur"Tim [vV]an [dD]e Kamp": (ur"Tim {van de Kamp}", ur"vandeKamp"),
@@ -366,6 +371,7 @@ author_subs_re = {
     ur"Ronny Wichers Schreur": (ur"Ronny {Wichers Schreur}", ur"WichersSchreur"),
     ur"Zooko Wilcox-O'Hearn": (ur"Zooko {Wilcox-O'Hearn}", ur"Wilcox-OHearn"),
     ur"John D. Wiltshire-Gordon": (ur"John D. {Wiltshire-Gordon}", ur"Wiltshire-Gordon"),
+    ur"Daniel Wolleb-Graf": (ur"Daniel {Wolleb-Graf}", ur"Wolleb-Graf"),
     ur"Christian Wulff-Nilsen": (ur"Christian {Wulff-Nilsen}", ur"Wulff-Nilsen"),
 
     ur"Irina Zachia-Zlatea": (ur"Irina {Zachia-Zlatea}", ur"Zachia-Zlatea"),
