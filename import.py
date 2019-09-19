@@ -116,6 +116,8 @@ author_subs_re = {
     ur"Wiebren [dD]e Jonge": (ur"Wiebren {de Jonge}", ur"deJonge"),
     ur"Eduardo [dD]e [lL]a Torre": (ur"Eduardo {de la Torre}", ur"delaTorre"),
     ur"Lauren [Dd]e Meyer": (ur"Lauren {De Meyer}", ur"DeMeyer"),
+    ur"Dieter [Dd]e Moitie": (ur"Dieter {De Moitie}", ur"DeMoitie"),
+    ur"Elke [Dd]e Mulder": (ur"Elke {De Mulder}", ur"DeMulder"),
     ur"Roberto [dD]e Prisco": (ur"Roberto {De Prisco}", ur"DePrisco"),
     ur"Joeri [dD]e Ruiter": (ur"Joeri {de Ruiter}", ur"deRuiter"),
     ur"Alfredo [dD]e Santis": (ur"Alfredo {De Santis}", ur"DeSantis"),
@@ -357,6 +359,7 @@ author_subs_re = {
     ur"Rolf [vV]an Wegberg": (ur"Rolf {van Wegberg}", ur"vanWegberg"),
     ur"Nicolas Veyrat-Charvillon": (ur"Nicolas {Veyrat-Charvillon}", ur"Veyrat-Charvillon"),
     ur"Francisco Jos[ée] Vial Prado": (ur"Francisco Jos{\'e} {Vial Prado}", ur"VialPrado"),
+    ur"Ricardo Villanueva-Polanco": (ur"Ricardo {Villanueva-Polanco}", ur"Villanueva-Polanco"),
     ur"Luis [vV]on Ahn": (ur"Luis {von Ahn}", ur"vonAhn"),
     ur"Philipp [vV]on Styp-Rekowsky": (ur"Philipp {von Styp-Rekowsky}", ur"vonStyp-Rekowsky"),
 
