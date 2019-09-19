@@ -56,6 +56,7 @@ author_subs_re = {
     ur"Mohammed Ghazi Al-Obeidallah": (ur"Mohammed Ghazi {Al-Obeidallah}", ur"Al-Obeidallah"),
     ur"Zakaria Al-Qudah": (ur"Zakaria {Al-Qudah}", ur"Al-Qudah"),
     ur"Sattam S. Al-Riyami": (ur"Sattam S. {Al-Riyami}", ur"Al-Riyami"),
+    ur"Mohammed Al-Shaboti": (ur"Mohammed {Al-Shaboti}", ur"Al-Shaboti"),
     ur"Ehab Al-Shaer": (ur"Ehab {Al-Shaer}", ur"Al-Shaer"),
     ur"Said F. Al-Sarawi": (ur"Said F. {Al-Sarawi}", ur"Al-Sarawi"),
     ur"Aisha I. Ali-Gombe": (ur"Aisha I. {Ali-Gombe}", ur"Ali-Gombe"),
@@ -95,6 +96,7 @@ author_subs_re = {
     ur"Katriel Cohn-Gordon": (ur"Katriel {Cohn-Gordon}", ur"Cohn-Gordon"),
     ur"[ÉE]ric Colin de Verdi[èe]re": (ur"{\'E}ric {Colin de Verdi{\`e}re}", ur"ColindeVerdiere"),
     ur"Hubert Comon-Lundh": (ur"Hubert {Comon-Lundh}", ur"Comon-Lundh"),
+    ur"Daniele Cono D'Elia": (ur"Daniele {Cono D'Elia}", ur"ConoDElia"),
     ur"Henry Corrigan-Gibbs": (ur"Henry {Corrigan-Gibbs}", ur"Corrigan-Gibbs"),
     ur"Masashi Crete-Nishihata": (ur"Masashi {Crete-Nishihata}", ur"Crete-Nishihata"),
     ur"Nora Cuppens-Boulahia": (ur"Nora {Cuppens-Boulahia}", ur"Cuppens-Boulahia"),
@@ -113,6 +115,7 @@ author_subs_re = {
     ur"Luca [dD]e Feo": (ur"Luca {De Feo}", ur"DeFeo"),
     ur"Jos[ée] Mar[íi]a [dD]e Fuentes": (ur"Jos{\'e} Mar{\'\i}a {de Fuentes}", ur"deFuentes"),
     ur"Peter [Dd]e Gersem": (ur"Peter {De Gersem}", ur"DeGersem"),
+    ur"Jaybie A. [dD]e Guzman": (ur"Jaybie A. {de Guzman}", ur"deGuzman"),
     ur"Wiebren [dD]e Jonge": (ur"Wiebren {de Jonge}", ur"deJonge"),
     ur"Eduardo [dD]e [lL]a Torre": (ur"Eduardo {de la Torre}", ur"delaTorre"),
     ur"Lauren [Dd]e Meyer": (ur"Lauren {De Meyer}", ur"DeMeyer"),
@@ -201,6 +204,7 @@ author_subs_re = {
 
     ur"Bastien Jacot-Guillarmod": (ur"Bastien {Jacot-Guillarmod}", ur"Jacot-Guillarmod"),
 
+    ur"Shabnam Kasra Kermanshahi": (ur"Shabnam {Kasra Kermanshahi}", ur"KasraKermanshahi"),
     ur"S[áa]ndor Kisfaludi-Bak": (ur"S{\'a}ndor {Kisfaludi-Bak}", ur"Kisfaludi-Bak"),
     ur"[ÇC]etin Kaya Ko[çc]": (ur"{\c C}etin Kaya Ko{\c c}", ur"Koc"),
     ur"Eleftherios Kokoris-Kogias": (ur"Eleftherios {Kokoris-Kogias}", ur"Kokoris-Kogias"),
@@ -214,6 +218,7 @@ author_subs_re = {
     ur"Jean-Yves Le Boudec": (ur"Jean-Yves {Le Boudec}", ur"LeBoudec"),
     ur"S[ée]bastien Le Henaff": (ur"S{\'e}bastien {Le Henaff}", ur"LeHenaff"),
     ur"Fran[çc]ois Le Gall": (ur"Fran{\c c}ois {Le Gall}", ur"LeGall"),
+    ur"Dat Le Tien": (ur"Dat {Le Tien}", ur"LeTien"),
     ur"Erik G. Learned-Miller": (ur"Erik G. {Learned-Miller}", ur"Learned-Miller"),
     ur"Kerstin Lemke-Rust": (ur"Kerstin {Lemke-Rust}", ur"Lemke-Rust"),
     ur"Chris Lesniewski-Laas": (ur"Chris {Lesniewski-Laas}", ur"Lesniewski-Laas"),
@@ -364,6 +369,8 @@ author_subs_re = {
     ur"Philipp [vV]on Styp-Rekowsky": (ur"Philipp {von Styp-Rekowsky}", ur"vonStyp-Rekowsky"),
 
     ur"Amaury de Wargny": (ur"{Amaury de} Wargny", ur"Wargny"),
+    ur"Benjamin M. M. [dD]e Weger": (ur"{Benne de} Weger", ur"Weger"),
+    ur"Benne [dD]e Weger": (ur"{Benne de} Weger", ur"Weger"),
     ur"Christian Wenzel-Benner": (ur"Christian {Wenzel-Benner}", ur"Wenzel-Benner"),
     ur"Ronny Wichers Schreur": (ur"Ronny {Wichers Schreur}", ur"WichersSchreur"),
     ur"Zooko Wilcox-O'Hearn": (ur"Zooko {Wilcox-O'Hearn}", ur"Wilcox-OHearn"),
