@@ -74,6 +74,7 @@ author_subs_re = {
     ur"Shalev Ben-David": (ur"Shalev {Ben-David}", ur"Ben-David"),
     ur"Aner Ben-Efraim": (ur"Aner {Ben-Efraim}", ur"Ben-Efraim"),
     ur"Omri Ben-Eliezer": (ur"Omri {Ben-Eliezer}", ur"Ben-Eliezer"),
+    ur"In[èe]s Ben El Ouahma": (ur"In{\`e}s {Ben El Ouahma}", ur"BenElOuahma"),
     ur"Michael Ben-Or": (ur"Michael {Ben-Or}", ur"Ben-Or"),
     ur"Eli Ben-Sasson": (ur"Eli {Ben-Sasson}", ur"Ben-Sasson"),
     ur"Adi Ben-Zvi": (ur"Adi {Ben-Zvi}", ur"Ben-Zvi"),
