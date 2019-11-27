@@ -302,6 +302,7 @@ author_subs_re = {
     ur"Francisco Rodr[íi]guez-Henr[íi]quez": (ur"Francisco {Rodr{\'\i}guez-Henr{\'\i}quez}", ur"Rodriguez-Henriquez"),
     ur"Noga Ron-Zewi": (ur"Noga {Ron-Zewi}", ur"Ron-Zewi"),
     ur"Lloren[çc] Huguet i Rotger": (ur"{Lloren\c{c} Huguet i} Rotger", ur"Rotger"),
+    ur"Adeline Roux-Langlois": (ur"Adeline {Roux-Langlois}", ur"Roux-Langlois"),
 
     ur"Reihaneh Safavi-Naini": (ur"Reihaneh {Safavi-Naini}", ur"Safavi-Naini"),
     ur"Juan Carlos S[áa]nchez[- ]Aarnoutse": (ur"Juan Carlos {S{\'a}nchez-Aarnoutse}", ur"Sanchez-Aarnoutse"),
