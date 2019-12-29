@@ -803,7 +803,9 @@ def run(confkey, year, dis, overwrite=False):
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
             entry["note"] = '"\url{{https://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
             entry["author"] = html_to_bib_value((u" and \n" + " " * 18).join(authors))
-            key = authors_to_key(authors, confkey, short_year)
+
+            filtered_authors = filter(lambda item: len(item)>0, [get_author_name_and_for_key(auth)[1] for auth in authors])
+            key = authors_to_key(filtered_authors, confkey, short_year)
 
             if key in entries:
                 multiple_entries[key] = 1
