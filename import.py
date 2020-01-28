@@ -537,8 +537,8 @@ pattern_multiple_spaces = re.compile(r' +')
 
 def split_authors(s):
     """ return a list of others from an author string from EPRINT - from eprint-update.py """
-    names = pattern_split_authors.split(s)
-    names = [n.strip() for n in names]
+    names = map(lambda x: x.strip(), pattern_split_authors.split(s))
+    names = [n for n in names if n != u'']
     return names
 
 
