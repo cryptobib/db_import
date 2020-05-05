@@ -107,6 +107,7 @@ author_subs_re = {
     ur"Dana Dachman-Soled": (ur"Dana {Dachman-Soled}", ur"Dachman-Soled"),
     ur"Ugo Dal Lago": (ur"Ugo {Dal Lago}", ur"DalLago"),
     ur"Paolo D'Arco": (ur"Paolo {D'Arco}", ur"DArco"),
+    ur"Koen [dD]e Boer": (ur"Koen {de Boer}", ur"deBoer"),
     ur"Christophe [dD]e Canni[èe]re": (ur"Christophe {De Canni{\`e}re}", ur"DeCanniere"),
     ur"Sabrina [dD]e Capitani [dD]i Vimercati": (ur"Sabrina {De Capitani di Vimercati}", ur"DeCapitanidiVimercati"),
     ur"Angelo [dD]e Caro": (ur"Angelo {De Caro}", ur"DeCaro"),
