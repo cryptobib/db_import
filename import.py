@@ -6,7 +6,7 @@
 
 # Parts of this file come from eprint-update.py from Paul Baecher
 
-from __future__ import print_function
+
 
 import os
 import sys
@@ -18,7 +18,7 @@ sys.path.append(os.path.join(scriptdir, "..", "db"))
 import xml.etree.ElementTree
 from xml.etree import ElementTree
 from xml.etree.ElementTree import XML
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import re
 import time
 import sys
@@ -27,7 +27,7 @@ import logging_colorer
 from unidecode import unidecode
 import os.path
 import argparse
-import HTMLParser
+import html.parser
 
 from config import *
 
@@ -43,415 +43,415 @@ logging.basicConfig(level=logging.DEBUG)
 #      the author is then replaced by the first part of the pair
 #      and the second part of the pair is the last name used for the BibTeX key
 author_subs_re = {
-    ur"Shekh Faisal Abdul-Latip": (ur"Shekh Faisal {Abdul-Latip}", ur"Abdul-Latip"),
-    ur"Nael B. Abu-Ghazaleh": (ur"Nael B. {Abu-Ghazaleh}", ur"Abu-Ghazaleh"),
-    ur"Ruba Abu-Salma": (ur"Ruba {Abu-Salma}", ur"Abu-Salma"),
-    ur"Carlos Aguilar Melchor": (ur"Carlos {Aguilar Melchor}", ur"AguilarMelchor"),
-    ur"Mahdi Nasrullah Al-Ameen": (ur"Mahdi Nasrullah {Al-Ameen}", ur"Al-Ameen"),
-    ur"Mustafa Al-Bassam": (ur"Mustafa {Al-Bassam}", ur"Al-Bassam"),
-    ur"Sultan Al-Hinai": (ur"Sultan {Al-Hinai}", ur"Al-Hinai"),
-    ur"Mohamed Al-Ibrahim": (ur"Mohamed {Al-Ibrahim}", ur"Al-Ibrahim"),
-    ur"Naser Al-Ibrahim": (ur"Naser {Al-Ibrahim}", ur"Al-Ibrahim"),
-    ur"Noor R. Al-Kazaz": (ur"Noor R. {Al-Kazaz}", ur"Al-Kazaz"),
-    ur"Mohammed Ghazi Al-Obeidallah": (ur"Mohammed Ghazi {Al-Obeidallah}", ur"Al-Obeidallah"),
-    ur"Zakaria Al-Qudah": (ur"Zakaria {Al-Qudah}", ur"Al-Qudah"),
-    ur"Sattam S. Al-Riyami": (ur"Sattam S. {Al-Riyami}", ur"Al-Riyami"),
-    ur"Mohammed Al-Shaboti": (ur"Mohammed {Al-Shaboti}", ur"Al-Shaboti"),
-    ur"Ehab Al-Shaer": (ur"Ehab {Al-Shaer}", ur"Al-Shaer"),
-    ur"Said F. Al-Sarawi": (ur"Said F. {Al-Sarawi}", ur"Al-Sarawi"),
-    ur"Aisha I. Ali-Gombe": (ur"Aisha I. {Ali-Gombe}", ur"Ali-Gombe"),
-    ur"Jacob Alperin-Sheriff": (ur"Jacob {Alperin-Sheriff}", ur"Alperin-Sheriff"),
-    ur"Enrique Argones-R[úu]a": (ur"Enrique {Argones-R{\'u}a}", ur"Argones-Rua"),
-    ur"Babak Azimi-Sadjadi": (ur"Babak {Azimi-Sadjadi}", ur"Azimi-Sadjadi"),
+    r"Shekh Faisal Abdul-Latip": (r"Shekh Faisal {Abdul-Latip}", r"Abdul-Latip"),
+    r"Nael B. Abu-Ghazaleh": (r"Nael B. {Abu-Ghazaleh}", r"Abu-Ghazaleh"),
+    r"Ruba Abu-Salma": (r"Ruba {Abu-Salma}", r"Abu-Salma"),
+    r"Carlos Aguilar Melchor": (r"Carlos {Aguilar Melchor}", r"AguilarMelchor"),
+    r"Mahdi Nasrullah Al-Ameen": (r"Mahdi Nasrullah {Al-Ameen}", r"Al-Ameen"),
+    r"Mustafa Al-Bassam": (r"Mustafa {Al-Bassam}", r"Al-Bassam"),
+    r"Sultan Al-Hinai": (r"Sultan {Al-Hinai}", r"Al-Hinai"),
+    r"Mohamed Al-Ibrahim": (r"Mohamed {Al-Ibrahim}", r"Al-Ibrahim"),
+    r"Naser Al-Ibrahim": (r"Naser {Al-Ibrahim}", r"Al-Ibrahim"),
+    r"Noor R. Al-Kazaz": (r"Noor R. {Al-Kazaz}", r"Al-Kazaz"),
+    r"Mohammed Ghazi Al-Obeidallah": (r"Mohammed Ghazi {Al-Obeidallah}", r"Al-Obeidallah"),
+    r"Zakaria Al-Qudah": (r"Zakaria {Al-Qudah}", r"Al-Qudah"),
+    r"Sattam S. Al-Riyami": (r"Sattam S. {Al-Riyami}", r"Al-Riyami"),
+    r"Mohammed Al-Shaboti": (r"Mohammed {Al-Shaboti}", r"Al-Shaboti"),
+    r"Ehab Al-Shaer": (r"Ehab {Al-Shaer}", r"Al-Shaer"),
+    r"Said F. Al-Sarawi": (r"Said F. {Al-Sarawi}", r"Al-Sarawi"),
+    r"Aisha I. Ali-Gombe": (r"Aisha I. {Ali-Gombe}", r"Ali-Gombe"),
+    r"Jacob Alperin-Sheriff": (r"Jacob {Alperin-Sheriff}", r"Alperin-Sheriff"),
+    r"Enrique Argones-R[úu]a": (r"Enrique {Argones-R{\'u}a}", r"Argones-Rua"),
+    r"Babak Azimi-Sadjadi": (r"Babak {Azimi-Sadjadi}", r"Azimi-Sadjadi"),
 
-    ur"Achiya Bar-On": (ur"Achiya {Bar-On}", ur"Bar-On"),
-    ur"Ahmad Baraani-Dastjerdi": (ur"Ahmad {Baraani-Dastjerdi}", ur"Baraani-Dastjerdi"),
-    ur"Pirouz Bazargan-Sabet": (ur"Pirouz {Bazargan-Sabet}", ur"Bazargan-Sabet"),
-    ur"Emmanuel Bello-Ogunu": (ur"Emmanuel {Bello-Ogunu}", ur"Bello-Ogunu"),
-    ur"Ishai Ben-Aroya": (ur"Ishai {Ben-Aroya}", ur"Ben-Aroya"),
-    ur"Hussain Ben-Azza": (ur"Hussain {Ben-Azza}", ur"Ben-Azza"),
-    ur"Assaf Ben-David": (ur"Assaf {Ben-David}", ur"Ben-David"),
-    ur"Shalev Ben-David": (ur"Shalev {Ben-David}", ur"Ben-David"),
-    ur"Aner Ben-Efraim": (ur"Aner {Ben-Efraim}", ur"Ben-Efraim"),
-    ur"Omri Ben-Eliezer": (ur"Omri {Ben-Eliezer}", ur"Ben-Eliezer"),
-    ur"In[èe]s Ben El Ouahma": (ur"In{\`e}s {Ben El Ouahma}", ur"BenElOuahma"),
-    ur"Raz Ben-Netanel": (ur"Raz {Ben-Netanel}", ur"Ben-Netanel"),
-    ur"Michael Ben-Or": (ur"Michael {Ben-Or}", ur"Ben-Or"),
-    ur"Eli Ben-Sasson": (ur"Eli {Ben-Sasson}", ur"Ben-Sasson"),
-    ur"Adi Ben-Zvi": (ur"Adi {Ben-Zvi}", ur"Ben-Zvi"),
-    ur"Noemie Beringuier-Boher": (ur"Noemie {Beringuier-Boher}", ur"Beringuier-Boher"),
-    ur"Abhilasha Bhargav-Spantzel": (ur"Abhilasha {Bhargav-Spantzel}", ur"Bhargav-Spantzel"),
-    ur"Imane Bouij-Pasquier": (ur"Imane {Bouij-Pasquier}", ur"Bouij-Pasquier"),
-    ur"Nora Boulahia-Cuppens": (ur"Nora {Boulahia-Cuppens}", ur"Boulahia-Cuppens"),
-    ur"Cristian Bravo-Lillo": (ur"Cristian {Bravo-Lillo}", ur"Bravo-Lillo"),
-    ur"Geeke Bruin-Muurling": (ur"Geeke {Bruin-Muurling}", ur"Bruin-Muurling"),
+    r"Achiya Bar-On": (r"Achiya {Bar-On}", r"Bar-On"),
+    r"Ahmad Baraani-Dastjerdi": (r"Ahmad {Baraani-Dastjerdi}", r"Baraani-Dastjerdi"),
+    r"Pirouz Bazargan-Sabet": (r"Pirouz {Bazargan-Sabet}", r"Bazargan-Sabet"),
+    r"Emmanuel Bello-Ogunu": (r"Emmanuel {Bello-Ogunu}", r"Bello-Ogunu"),
+    r"Ishai Ben-Aroya": (r"Ishai {Ben-Aroya}", r"Ben-Aroya"),
+    r"Hussain Ben-Azza": (r"Hussain {Ben-Azza}", r"Ben-Azza"),
+    r"Assaf Ben-David": (r"Assaf {Ben-David}", r"Ben-David"),
+    r"Shalev Ben-David": (r"Shalev {Ben-David}", r"Ben-David"),
+    r"Aner Ben-Efraim": (r"Aner {Ben-Efraim}", r"Ben-Efraim"),
+    r"Omri Ben-Eliezer": (r"Omri {Ben-Eliezer}", r"Ben-Eliezer"),
+    r"In[èe]s Ben El Ouahma": (r"In{\`e}s {Ben El Ouahma}", r"BenElOuahma"),
+    r"Raz Ben-Netanel": (r"Raz {Ben-Netanel}", r"Ben-Netanel"),
+    r"Michael Ben-Or": (r"Michael {Ben-Or}", r"Ben-Or"),
+    r"Eli Ben-Sasson": (r"Eli {Ben-Sasson}", r"Ben-Sasson"),
+    r"Adi Ben-Zvi": (r"Adi {Ben-Zvi}", r"Ben-Zvi"),
+    r"Noemie Beringuier-Boher": (r"Noemie {Beringuier-Boher}", r"Beringuier-Boher"),
+    r"Abhilasha Bhargav-Spantzel": (r"Abhilasha {Bhargav-Spantzel}", r"Bhargav-Spantzel"),
+    r"Imane Bouij-Pasquier": (r"Imane {Bouij-Pasquier}", r"Bouij-Pasquier"),
+    r"Nora Boulahia-Cuppens": (r"Nora {Boulahia-Cuppens}", r"Boulahia-Cuppens"),
+    r"Cristian Bravo-Lillo": (r"Cristian {Bravo-Lillo}", r"Bravo-Lillo"),
+    r"Geeke Bruin-Muurling": (r"Geeke {Bruin-Muurling}", r"Bruin-Muurling"),
 
-    ur"C. Caballero-Gil": (ur"C{\'a}ndido {Caballero-Gil}", ur"Caballero-Gil"),
-    ur"C[áa]ndido Caballero-Gil": (ur"C{\'a}ndido {Caballero-Gil}", ur"Caballero-Gil"),
-    ur"Pino Caballero-Gil": (ur"Pino {Caballero-Gil}", ur"Caballero-Gil"),
-    ur"C[ée]cile Canovas-Dumas": (ur"C{\'e}cile {Canovas-Dumas}", ur"Canovas-Dumas"),
-    ur"Keren Censor-Hillel": (ur"Keren {Censor-Hillel}", ur"Censor-Hillel"),
-    ur"Daniel Cervantes-V[áa]zquez": (ur"Daniel {Cervantes-V{\'a}zquez}", ur"Cervantes-Vazquez"),
-    ur"Eric Chan-Tin": (ur"Eric {Chan-Tin}", ur"Chan-Tin"),
-    ur"Beno[îi]t Chevallier-Mames": (ur"Beno{\^\i}t {Chevallier-Mames}", ur"Chevallier-Mames"),
-    ur"Jes[úu]s-Javier Chi-Dom[íi]nguez": (ur"Jes{\'u}s-Javier {Chi-Dom{\'\i}nguez}", ur"Chi-Dominguez"),
-    ur"Vincent Cohen-Addad": (ur"Vincent {Cohen-Addad}", ur"Cohen-Addad"),
-    ur"Katriel Cohn-Gordon": (ur"Katriel {Cohn-Gordon}", ur"Cohn-Gordon"),
-    ur"[ÉE]ric Colin de Verdi[èe]re": (ur"{\'E}ric {Colin de Verdi{\`e}re}", ur"ColindeVerdiere"),
-    ur"Hubert Comon-Lundh": (ur"Hubert {Comon-Lundh}", ur"Comon-Lundh"),
-    ur"Daniele Cono D'Elia": (ur"Daniele {Cono D'Elia}", ur"ConoDElia"),
-    ur"Henry Corrigan-Gibbs": (ur"Henry {Corrigan-Gibbs}", ur"Corrigan-Gibbs"),
-    ur"Masashi Crete-Nishihata": (ur"Masashi {Crete-Nishihata}", ur"Crete-Nishihata"),
-    ur"Nora Cuppens-Boulahia": (ur"Nora {Cuppens-Boulahia}", ur"Cuppens-Boulahia"),
+    r"C. Caballero-Gil": (r"C{\'a}ndido {Caballero-Gil}", r"Caballero-Gil"),
+    r"C[áa]ndido Caballero-Gil": (r"C{\'a}ndido {Caballero-Gil}", r"Caballero-Gil"),
+    r"Pino Caballero-Gil": (r"Pino {Caballero-Gil}", r"Caballero-Gil"),
+    r"C[ée]cile Canovas-Dumas": (r"C{\'e}cile {Canovas-Dumas}", r"Canovas-Dumas"),
+    r"Keren Censor-Hillel": (r"Keren {Censor-Hillel}", r"Censor-Hillel"),
+    r"Daniel Cervantes-V[áa]zquez": (r"Daniel {Cervantes-V{\'a}zquez}", r"Cervantes-Vazquez"),
+    r"Eric Chan-Tin": (r"Eric {Chan-Tin}", r"Chan-Tin"),
+    r"Beno[îi]t Chevallier-Mames": (r"Beno{\^\i}t {Chevallier-Mames}", r"Chevallier-Mames"),
+    r"Jes[úu]s-Javier Chi-Dom[íi]nguez": (r"Jes{\'u}s-Javier {Chi-Dom{\'\i}nguez}", r"Chi-Dominguez"),
+    r"Vincent Cohen-Addad": (r"Vincent {Cohen-Addad}", r"Cohen-Addad"),
+    r"Katriel Cohn-Gordon": (r"Katriel {Cohn-Gordon}", r"Cohn-Gordon"),
+    r"[ÉE]ric Colin de Verdi[èe]re": (r"{\'E}ric {Colin de Verdi{\`e}re}", r"ColindeVerdiere"),
+    r"Hubert Comon-Lundh": (r"Hubert {Comon-Lundh}", r"Comon-Lundh"),
+    r"Daniele Cono D'Elia": (r"Daniele {Cono D'Elia}", r"ConoDElia"),
+    r"Henry Corrigan-Gibbs": (r"Henry {Corrigan-Gibbs}", r"Corrigan-Gibbs"),
+    r"Masashi Crete-Nishihata": (r"Masashi {Crete-Nishihata}", r"Crete-Nishihata"),
+    r"Nora Cuppens-Boulahia": (r"Nora {Cuppens-Boulahia}", r"Cuppens-Boulahia"),
 
-    ur"Dana Dachman-Soled": (ur"Dana {Dachman-Soled}", ur"Dachman-Soled"),
-    ur"Ugo Dal Lago": (ur"Ugo {Dal Lago}", ur"DalLago"),
-    ur"Paolo D'Arco": (ur"Paolo {D'Arco}", ur"DArco"),
-    ur"Koen [dD]e Boer": (ur"Koen {de Boer}", ur"deBoer"),
-    ur"Christophe [dD]e Canni[èe]re": (ur"Christophe {De Canni{\`e}re}", ur"DeCanniere"),
-    ur"Sabrina [dD]e Capitani [dD]i Vimercati": (ur"Sabrina {De Capitani di Vimercati}", ur"DeCapitanidiVimercati"),
-    ur"Angelo [dD]e Caro": (ur"Angelo {De Caro}", ur"DeCaro"),
-    ur" Jean-Lou [Dd]e Carufel": (ur" Jean-Lou {De Carufel}", ur"DeCarufel"),
-    ur"Eloi [dD]e Ch[ée]risey": (ur"Eloi {de Ch{\'e}risey}", ur"deCherisey"),
-    ur"Ruan [dD]e Clercq": (ur"Ruan {de Clercq}", ur"deClercq"),
-    ur"Emiliano [Dd]e Cristofaro": (ur"Emiliano {De Cristofaro}", ur"DeCristofaro"),
-    ur"Guerric Meurice [dD]e Dormale": (ur"Guerric Meurice {de Dormale}", ur"deDormale"),
-    ur"Luca [dD]e Feo": (ur"Luca {De Feo}", ur"DeFeo"),
-    ur"Jos[ée] Mar[íi]a [dD]e Fuentes": (ur"Jos{\'e} Mar{\'\i}a {de Fuentes}", ur"deFuentes"),
-    ur"Peter [Dd]e Gersem": (ur"Peter {De Gersem}", ur"DeGersem"),
-    ur"Jaybie A. [dD]e Guzman": (ur"Jaybie A. {de Guzman}", ur"deGuzman"),
-    ur"Wiebren [dD]e Jonge": (ur"Wiebren {de Jonge}", ur"deJonge"),
-    ur"Eduardo [dD]e [lL]a Torre": (ur"Eduardo {de la Torre}", ur"delaTorre"),
-    ur"Lauren [Dd]e Meyer": (ur"Lauren {De Meyer}", ur"DeMeyer"),
-    ur"Dieter [Dd]e Moitie": (ur"Dieter {De Moitie}", ur"DeMoitie"),
-    ur"Elke [Dd]e Mulder": (ur"Elke {De Mulder}", ur"DeMulder"),
-    ur"Roberto [dD]e Prisco": (ur"Roberto {De Prisco}", ur"DePrisco"),
-    ur"Joeri [dD]e Ruiter": (ur"Joeri {de Ruiter}", ur"deRuiter"),
-    ur"Alfredo [dD]e Santis": (ur"Alfredo {De Santis}", ur"DeSantis"),
-    ur"Fabrizio [Dd]e Santis": (ur"Fabrizio {De Santis}", ur"DeSantis"),
-    ur"Domenico [Dd]e Seta": (ur"Domenico {De Seta}", ur"DeSeta"),
-    ur"Marijke [Dd]e Soete": (ur"Marijke {De Soete}", ur"DeSoete"),
-    ur"Lorenzo [Dd]e Stefani": (ur"Lorenzo {De Stefani}", ur"DeStefani"),
-    ur"Dominique [dD]e Waleffe": (ur"Dominique {de Waleffe}", ur"deWaleffe"),
-    ur"Erik [Dd]e Win": (ur"Erik {De Win}", ur"DeWin"),
-    ur"Thomas Debris-Alazard": (ur"Thomas {Debris-Alazard}", ur"Debris-Alazard"),
-    ur"Martin Dehnel-Wild": (ur"Martin {Dehnel-Wild}", ur"Dehnel-Wild"),
-    ur"Rafa[ëe]l del Pino": (ur"Rafaël {del Pino}", ur"delPino"),
-    ur"Romar B. dela Cruz": (ur"Romar B. {dela Cruz}", ur"delaCruz"),
-    ur"Antoine Delignat-Lavaud": (ur"Antoine {Delignat-Lavaud}", ur"Delignat-Lavaud"),
-    ur"Sergi Delgado-Segura": (ur"Sergi {Delgado-Segura}", ur"Delgado-Segura"),
-    ur"Bert [dD]en Boer": (ur"Bert {den Boer}", ur"denBoer"),
-    ur"Cyprien de Saint Guilhem": (ur"Cyprien {de Saint Guilhem}", ur"deSaintGuilhem"),
-    ur"Cyprien Delpech de Saint Guilhem": (ur"Cyprien {de Saint Guilhem}", ur"deSaintGuilhem"),
-    ur"Monika [Ddi] Angelo": (ur"Monika {Di Angelo}", ur"DiAngelo"),
-    ur"Giovanni [Dd]i Crescenzo": (ur"Giovanni {Di Crescenzo}", ur"DiCrescenzo"),
-    ur"Giorgio [Dd]i Natale": (ur"Giorgio {Di Natale}", ur"DiNatale"),
-    ur"Roberto [Dd]i Pietro": (ur"Roberto {Di Pietro}", ur"DiPietro"),
-    ur"Matteo [Dd]i Pirro": (ur"Matteo {Di Pirro}", ur"DiPirro"),
-    ur"Mario [Dd]i Raimondo": (ur"Mario {Di Raimondo}", ur"DiRaimondo"),
-    ur"Jerome [Dd]i-Battista": (ur"Jerome {Di-Battista}", ur"Di-Battista"),
-    ur"Guilherme [Dd]ias da Fonseca": (ur"Guilherme {Dias da Fonseca}", ur"DiasdaFonseca"),
-    ur"Jes[úu]s E. D[íi]az-Verdejo": (ur"Jes{\'u}s E. {D{\'\i}az-Verdejo}", ur"Diaz-Verdejo"),
-    ur"Brendan Dolan-Gavitt": (ur"Brendan {Dolan-Gavitt}", ur"Dolan-Gavitt"),
-    ur"Daniel Ricardo [dD]os Santos": (ur"Daniel Ricardo {Dos Santos}", ur"DosSantos"),
-    ur"Josep Domingo-Ferrer": (ur"Josep {Domingo-Ferrer}", ur"Domingo-Ferrer"),
-    ur"Agustin Dominguez-Oviedo": (ur"Agustin {Dominguez-Oviedo}", ur"Dominguez-Oviedo"),
-    ur"Dana Drachsler-Cohen": (ur"Dana {Drachsler-Cohen}", ur"Drachsler-Cohen"),
-    ur"Edouard Dufour Sans": (ur"Edouard {Dufour Sans}", ur"DufourSans"),
+    r"Dana Dachman-Soled": (r"Dana {Dachman-Soled}", r"Dachman-Soled"),
+    r"Ugo Dal Lago": (r"Ugo {Dal Lago}", r"DalLago"),
+    r"Paolo D'Arco": (r"Paolo {D'Arco}", r"DArco"),
+    r"Koen [dD]e Boer": (r"Koen {de Boer}", r"deBoer"),
+    r"Christophe [dD]e Canni[èe]re": (r"Christophe {De Canni{\`e}re}", r"DeCanniere"),
+    r"Sabrina [dD]e Capitani [dD]i Vimercati": (r"Sabrina {De Capitani di Vimercati}", r"DeCapitanidiVimercati"),
+    r"Angelo [dD]e Caro": (r"Angelo {De Caro}", r"DeCaro"),
+    r" Jean-Lou [Dd]e Carufel": (r" Jean-Lou {De Carufel}", r"DeCarufel"),
+    r"Eloi [dD]e Ch[ée]risey": (r"Eloi {de Ch{\'e}risey}", r"deCherisey"),
+    r"Ruan [dD]e Clercq": (r"Ruan {de Clercq}", r"deClercq"),
+    r"Emiliano [Dd]e Cristofaro": (r"Emiliano {De Cristofaro}", r"DeCristofaro"),
+    r"Guerric Meurice [dD]e Dormale": (r"Guerric Meurice {de Dormale}", r"deDormale"),
+    r"Luca [dD]e Feo": (r"Luca {De Feo}", r"DeFeo"),
+    r"Jos[ée] Mar[íi]a [dD]e Fuentes": (r"Jos{\'e} Mar{\'\i}a {de Fuentes}", r"deFuentes"),
+    r"Peter [Dd]e Gersem": (r"Peter {De Gersem}", r"DeGersem"),
+    r"Jaybie A. [dD]e Guzman": (r"Jaybie A. {de Guzman}", r"deGuzman"),
+    r"Wiebren [dD]e Jonge": (r"Wiebren {de Jonge}", r"deJonge"),
+    r"Eduardo [dD]e [lL]a Torre": (r"Eduardo {de la Torre}", r"delaTorre"),
+    r"Lauren [Dd]e Meyer": (r"Lauren {De Meyer}", r"DeMeyer"),
+    r"Dieter [Dd]e Moitie": (r"Dieter {De Moitie}", r"DeMoitie"),
+    r"Elke [Dd]e Mulder": (r"Elke {De Mulder}", r"DeMulder"),
+    r"Roberto [dD]e Prisco": (r"Roberto {De Prisco}", r"DePrisco"),
+    r"Joeri [dD]e Ruiter": (r"Joeri {de Ruiter}", r"deRuiter"),
+    r"Alfredo [dD]e Santis": (r"Alfredo {De Santis}", r"DeSantis"),
+    r"Fabrizio [Dd]e Santis": (r"Fabrizio {De Santis}", r"DeSantis"),
+    r"Domenico [Dd]e Seta": (r"Domenico {De Seta}", r"DeSeta"),
+    r"Marijke [Dd]e Soete": (r"Marijke {De Soete}", r"DeSoete"),
+    r"Lorenzo [Dd]e Stefani": (r"Lorenzo {De Stefani}", r"DeStefani"),
+    r"Dominique [dD]e Waleffe": (r"Dominique {de Waleffe}", r"deWaleffe"),
+    r"Erik [Dd]e Win": (r"Erik {De Win}", r"DeWin"),
+    r"Thomas Debris-Alazard": (r"Thomas {Debris-Alazard}", r"Debris-Alazard"),
+    r"Martin Dehnel-Wild": (r"Martin {Dehnel-Wild}", r"Dehnel-Wild"),
+    r"Rafa[ëe]l del Pino": (r"Rafaël {del Pino}", r"delPino"),
+    r"Romar B. dela Cruz": (r"Romar B. {dela Cruz}", r"delaCruz"),
+    r"Antoine Delignat-Lavaud": (r"Antoine {Delignat-Lavaud}", r"Delignat-Lavaud"),
+    r"Sergi Delgado-Segura": (r"Sergi {Delgado-Segura}", r"Delgado-Segura"),
+    r"Bert [dD]en Boer": (r"Bert {den Boer}", r"denBoer"),
+    r"Cyprien de Saint Guilhem": (r"Cyprien {de Saint Guilhem}", r"deSaintGuilhem"),
+    r"Cyprien Delpech de Saint Guilhem": (r"Cyprien {de Saint Guilhem}", r"deSaintGuilhem"),
+    r"Monika [Ddi] Angelo": (r"Monika {Di Angelo}", r"DiAngelo"),
+    r"Giovanni [Dd]i Crescenzo": (r"Giovanni {Di Crescenzo}", r"DiCrescenzo"),
+    r"Giorgio [Dd]i Natale": (r"Giorgio {Di Natale}", r"DiNatale"),
+    r"Roberto [Dd]i Pietro": (r"Roberto {Di Pietro}", r"DiPietro"),
+    r"Matteo [Dd]i Pirro": (r"Matteo {Di Pirro}", r"DiPirro"),
+    r"Mario [Dd]i Raimondo": (r"Mario {Di Raimondo}", r"DiRaimondo"),
+    r"Jerome [Dd]i-Battista": (r"Jerome {Di-Battista}", r"Di-Battista"),
+    r"Guilherme [Dd]ias da Fonseca": (r"Guilherme {Dias da Fonseca}", r"DiasdaFonseca"),
+    r"Jes[úu]s E. D[íi]az-Verdejo": (r"Jes{\'u}s E. {D{\'\i}az-Verdejo}", r"Diaz-Verdejo"),
+    r"Brendan Dolan-Gavitt": (r"Brendan {Dolan-Gavitt}", r"Dolan-Gavitt"),
+    r"Daniel Ricardo [dD]os Santos": (r"Daniel Ricardo {Dos Santos}", r"DosSantos"),
+    r"Josep Domingo-Ferrer": (r"Josep {Domingo-Ferrer}", r"Domingo-Ferrer"),
+    r"Agustin Dominguez-Oviedo": (r"Agustin {Dominguez-Oviedo}", r"Dominguez-Oviedo"),
+    r"Dana Drachsler-Cohen": (r"Dana {Drachsler-Cohen}", r"Drachsler-Cohen"),
+    r"Edouard Dufour Sans": (r"Edouard {Dufour Sans}", r"DufourSans"),
 
-    ur"Karim El Defrawy": (ur"Karim {El Defrawy}", ur"ElDefrawy"),
-    ur"Said El Hajji": (ur"Said {El Hajji}", ur"ElHajji"),
-    ur"Noreddine El Janati El Idrissi": (ur"Noreddine {El Janati El Idrissi}", ur"ElJanatiElIdrissi"),
-    ur"Ali El Kaafarani": (ur"Ali {El Kaafarani}", ur"ElKaafarani"),
-    ur"Anas Abou El Kalam": (ur"Anas Abou {El Kalam}", ur"ElKalam"),
-    ur"Rachid El Kouch": (ur"Rachid {El Kouch}", ur"ElKouch"),
-    ur"Philippe Elbaz-Vincent": (ur"Philippe {Elbaz-Vincent}", ur"Elbaz-Vincent"),
-    ur"R. Marije Elkenbracht-Huizin": (ur"R. Marije {Elkenbracht-Huizin}", ur"Elkenbracht-Huizin"),
+    r"Karim El Defrawy": (r"Karim {El Defrawy}", r"ElDefrawy"),
+    r"Said El Hajji": (r"Said {El Hajji}", r"ElHajji"),
+    r"Noreddine El Janati El Idrissi": (r"Noreddine {El Janati El Idrissi}", r"ElJanatiElIdrissi"),
+    r"Ali El Kaafarani": (r"Ali {El Kaafarani}", r"ElKaafarani"),
+    r"Anas Abou El Kalam": (r"Anas Abou {El Kalam}", r"ElKalam"),
+    r"Rachid El Kouch": (r"Rachid {El Kouch}", r"ElKouch"),
+    r"Philippe Elbaz-Vincent": (r"Philippe {Elbaz-Vincent}", r"Elbaz-Vincent"),
+    r"R. Marije Elkenbracht-Huizin": (r"R. Marije {Elkenbracht-Huizin}", r"Elkenbracht-Huizin"),
 
-    ur"Martin Farach-Colton": (ur"Martin {Farach-Colton}", ur"Farach-Colton"),
-    ur"Armando Faz-Hern[áa]ndez": (ur"Armando {Faz-Hern{\'a}ndez}", ur"Faz-Hernandez"),
-    ur"Eduardo Fern[áa]ndez-Medina": (ur"Eduardo {Fern{\'a}ndez-Medina}", ur"Fernandez-Medina"),
-    ur"Josep Llu[íi]s Ferrer-Gomila": (ur"Josep Llu{\'\i}s {Ferrer-Gomila}", ur"Ferrer-Gomila"),
-    ur"Christof Ferreira Torres": (ur"Christof {Ferreira Torres}", ur"FerreiraTorres"),
-    ur"Jonathan Fetter-Degges": (ur"Jonathan {Fetter-Degges}", ur"Fetter-Degges"),
-    ur"Aris Filos-Ratsikas": (ur"Aris {Filos-Ratsikas}", ur"Filos-Ratsikas"),
-    ur"Simone Fischer-H[üu]bner": (ur"Simone {Fischer-Hübner}", ur"Fischer-Hubner"),
-    ur"Beltran Borja Fiz Pontiveros": (ur"Beltran Borja {Fiz Pontiveros}", ur"FizPontiveros"),
-    ur"Eli Fox-Epstein": (ur"Eli {Fox-Epstein}", ur"Fox-Epstein"),
-    ur"Amparo F[úu]ster-Sabater": (ur"Amparo {F{\'u}ster-Sabater}", ur"Fuster-Sabater"),
+    r"Martin Farach-Colton": (r"Martin {Farach-Colton}", r"Farach-Colton"),
+    r"Armando Faz-Hern[áa]ndez": (r"Armando {Faz-Hern{\'a}ndez}", r"Faz-Hernandez"),
+    r"Eduardo Fern[áa]ndez-Medina": (r"Eduardo {Fern{\'a}ndez-Medina}", r"Fernandez-Medina"),
+    r"Josep Llu[íi]s Ferrer-Gomila": (r"Josep Llu{\'\i}s {Ferrer-Gomila}", r"Ferrer-Gomila"),
+    r"Christof Ferreira Torres": (r"Christof {Ferreira Torres}", r"FerreiraTorres"),
+    r"Jonathan Fetter-Degges": (r"Jonathan {Fetter-Degges}", r"Fetter-Degges"),
+    r"Aris Filos-Ratsikas": (r"Aris {Filos-Ratsikas}", r"Filos-Ratsikas"),
+    r"Simone Fischer-H[üu]bner": (r"Simone {Fischer-Hübner}", r"Fischer-Hubner"),
+    r"Beltran Borja Fiz Pontiveros": (r"Beltran Borja {Fiz Pontiveros}", r"FizPontiveros"),
+    r"Eli Fox-Epstein": (r"Eli {Fox-Epstein}", r"Fox-Epstein"),
+    r"Amparo F[úu]ster-Sabater": (r"Amparo {F{\'u}ster-Sabater}", r"Fuster-Sabater"),
 
-    ur"Emilio Jes[úu]s Gallego Arias": (ur"Emilio Jes{\'u}s {Gallego Arias}", ur"GallegoArias"),
-    ur"Joaqu[íi]n Garc[íi]a-Alfaro": (ur"Joaqu{\'\i}n {Garc{\'\i}a-Alfaro}", ur"Garcia-Alfaro"),
-    ur"Joan Garc[íi]a-Haro": (ur"Joan {Garc{\'\i}a-Haro}", ur"Garcia-Haro"),
-    ur"H. Garc[íi]a-Molina": (ur"H{\'e}ctor {Garc{\'\i}a-Molina}", ur"Garcia-Molina"),
-    ur"H[ée]ctor Garc[íi]a-Molina": (ur"H{\'e}ctor {Garc{\'\i}a-Molina}", ur"Garcia-Molina"),
-    ur"[ÓO]scar Garc[íi]a-Morch[óo]n": (ur"{\'O}scar {Garc{\'\i}a-Morch{\'o}n}", ur"Garcia-Morchon"),
-    ur"Francisco Javier Garc[íi]a-Salom[óo]n": (ur"Francisco Javier {Garc{\'\i}a-Salom{\'o}n}", ur"Garcia-Salomon"),
-    ur"Pedro Garc[íi]a-Teodoro": (ur"Pedro {Garc{\'\i}a-Teodoro}", ur"Garcia-Teodoro"),
-    ur"Val[ée]rie Gauthier-Uma[ñn]a": (ur"Val{\'e}rie {Gauthier-Uma{\~n}a}", ur"Gauthier-Umana"),
-    ur"Domingo G[óo]mez-P[ée]rez": (ur"Domingo {G{\'o}mez-P{\'e}rez}", ur"Gomez-Perez"),
-    ur"Antonio F. G[óo]mez-Skarmeta": (ur"Antonio F. {G{\'o}mez-Skarmeta}", ur"Gomez-Skarmeta"),
-    ur"Mar[ií]a Isabel Gonz[aá]lez Vasco": (ur"Mar{\'\i}a Isabel {Gonz{\'a}lez Vasco}", ur"GonzalezVasco"),
-    ur"Juan Gonz[áa]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
-    ur"Juan Manuel Gonz[aá]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
-    ur"Juanma Gonz[áa]lez Nieto": (ur"Juan Manuel {Gonz{\\'a}lez Nieto}", ur"GonzalezNieto"),
-    ur"Ana Gonz[áa]lez-Marcos": (ur"Ana {Gonz{\'a}lez-Marcos}", ur"Gonzalez-Marcos"),
-    ur"Raouf N. Gorgui-Naguib": (ur"Raouf N. {Gorgui-Naguib}", ur"Gorgui-Naguib"),
-    ur"Ludovic Guillaume-Sage": (ur"Ludovic {Guillaume-Sage}", ur"Guillaume-Sage"),
+    r"Emilio Jes[úu]s Gallego Arias": (r"Emilio Jes{\'u}s {Gallego Arias}", r"GallegoArias"),
+    r"Joaqu[íi]n Garc[íi]a-Alfaro": (r"Joaqu{\'\i}n {Garc{\'\i}a-Alfaro}", r"Garcia-Alfaro"),
+    r"Joan Garc[íi]a-Haro": (r"Joan {Garc{\'\i}a-Haro}", r"Garcia-Haro"),
+    r"H. Garc[íi]a-Molina": (r"H{\'e}ctor {Garc{\'\i}a-Molina}", r"Garcia-Molina"),
+    r"H[ée]ctor Garc[íi]a-Molina": (r"H{\'e}ctor {Garc{\'\i}a-Molina}", r"Garcia-Molina"),
+    r"[ÓO]scar Garc[íi]a-Morch[óo]n": (r"{\'O}scar {Garc{\'\i}a-Morch{\'o}n}", r"Garcia-Morchon"),
+    r"Francisco Javier Garc[íi]a-Salom[óo]n": (r"Francisco Javier {Garc{\'\i}a-Salom{\'o}n}", r"Garcia-Salomon"),
+    r"Pedro Garc[íi]a-Teodoro": (r"Pedro {Garc{\'\i}a-Teodoro}", r"Garcia-Teodoro"),
+    r"Val[ée]rie Gauthier-Uma[ñn]a": (r"Val{\'e}rie {Gauthier-Uma{\~n}a}", r"Gauthier-Umana"),
+    r"Domingo G[óo]mez-P[ée]rez": (r"Domingo {G{\'o}mez-P{\'e}rez}", r"Gomez-Perez"),
+    r"Antonio F. G[óo]mez-Skarmeta": (r"Antonio F. {G{\'o}mez-Skarmeta}", r"Gomez-Skarmeta"),
+    r"Mar[ií]a Isabel Gonz[aá]lez Vasco": (r"Mar{\'\i}a Isabel {Gonz{\'a}lez Vasco}", r"GonzalezVasco"),
+    r"Juan Gonz[áa]lez Nieto": (r"Juan Manuel {Gonz{\\'a}lez Nieto}", r"GonzalezNieto"),
+    r"Juan Manuel Gonz[aá]lez Nieto": (r"Juan Manuel {Gonz{\\'a}lez Nieto}", r"GonzalezNieto"),
+    r"Juanma Gonz[áa]lez Nieto": (r"Juan Manuel {Gonz{\\'a}lez Nieto}", r"GonzalezNieto"),
+    r"Ana Gonz[áa]lez-Marcos": (r"Ana {Gonz{\'a}lez-Marcos}", r"Gonzalez-Marcos"),
+    r"Raouf N. Gorgui-Naguib": (r"Raouf N. {Gorgui-Naguib}", r"Gorgui-Naguib"),
+    r"Ludovic Guillaume-Sage": (r"Ludovic {Guillaume-Sage}", r"Guillaume-Sage"),
 
-    ur"Sariel Har-Peled": (ur"Sariel {Har-Peled}", ur"Har-Peled"),
-    ur"Julio C[ée]sar Hern[áa]ndez-Castro": (ur"Julio C{\'e}sar {Hern{\'a}ndez-Castro}", ur"Hernandez-Castro"),
-    ur"Candelaria Hern[áa]ndez-Goya": (ur"Candelaria {Hern{\'a}ndez-Goya}", ur"Hernandez-Goya"),
-    ur"Jordi Herrera-Joancomart[íi]": (ur"Jordi {Herrera-Joancomart{\'\i}}", ur"Herrera-Joancomarti"),
-    ur"Thomas S. Heydt-Benjamin": (ur"Thomas S. {Heydt-Benjamin}", ur"Heydt-Benjamin"),
-    ur"Severin Holzer-Graf": (ur"Severin {Holzer-Graf}", ur"Holzer-Graf"),
-    ur"Nick Howgrave-Graham": (ur"Nick {Howgrave-Graham}", ur"Howgrave-Graham"),
-    ur"Dimitrios Hristu-Varsakelis": (ur"Dimitrios {Hristu-Varsakelis}", ur"Hristu-Varsakelis"),
-    ur"Lo[ïi]s Huguenin-Dumittan": (ur"Loïs {Huguenin-Dumittan}", ur"Huguenin-Dumittan"),
+    r"Sariel Har-Peled": (r"Sariel {Har-Peled}", r"Har-Peled"),
+    r"Julio C[ée]sar Hern[áa]ndez-Castro": (r"Julio C{\'e}sar {Hern{\'a}ndez-Castro}", r"Hernandez-Castro"),
+    r"Candelaria Hern[áa]ndez-Goya": (r"Candelaria {Hern{\'a}ndez-Goya}", r"Hernandez-Goya"),
+    r"Jordi Herrera-Joancomart[íi]": (r"Jordi {Herrera-Joancomart{\'\i}}", r"Herrera-Joancomarti"),
+    r"Thomas S. Heydt-Benjamin": (r"Thomas S. {Heydt-Benjamin}", r"Heydt-Benjamin"),
+    r"Severin Holzer-Graf": (r"Severin {Holzer-Graf}", r"Holzer-Graf"),
+    r"Nick Howgrave-Graham": (r"Nick {Howgrave-Graham}", r"Howgrave-Graham"),
+    r"Dimitrios Hristu-Varsakelis": (r"Dimitrios {Hristu-Varsakelis}", r"Hristu-Varsakelis"),
+    r"Lo[ïi]s Huguenin-Dumittan": (r"Loïs {Huguenin-Dumittan}", r"Huguenin-Dumittan"),
 
-    ur"Luis Irun-Briz": (ur"Luis {Irun-Briz}", ur"Irun-Briz"),
+    r"Luis Irun-Briz": (r"Luis {Irun-Briz}", r"Irun-Briz"),
 
-    ur"Bastien Jacot-Guillarmod": (ur"Bastien {Jacot-Guillarmod}", ur"Jacot-Guillarmod"),
+    r"Bastien Jacot-Guillarmod": (r"Bastien {Jacot-Guillarmod}", r"Jacot-Guillarmod"),
 
-    ur"Shabnam Kasra Kermanshahi": (ur"Shabnam {Kasra Kermanshahi}", ur"KasraKermanshahi"),
-    ur"S[áa]ndor Kisfaludi-Bak": (ur"S{\'a}ndor {Kisfaludi-Bak}", ur"Kisfaludi-Bak"),
-    ur"[ÇC]etin Kaya Ko[çc]": (ur"{\c C}etin Kaya Ko{\c c}", ur"Koc"),
-    ur"Eleftherios Kokoris-Kogias": (ur"Eleftherios {Kokoris-Kogias}", ur"Kokoris-Kogias"),
-    ur"Lauri Kort-Parn": (ur"Lauri {Kort-Parn}", ur"Kort-Parn"),
-    ur"Greg Kroah-Hartman": (ur"Greg {Kroah-Hartman}", ur"Kroah-Hartman"),
-    ur"S[ée]bastien Kunz-Jacques": (ur"S{\'e}bastien {Kunz-Jacques}", ur"Kunz-Jacques"),
+    r"Shabnam Kasra Kermanshahi": (r"Shabnam {Kasra Kermanshahi}", r"KasraKermanshahi"),
+    r"S[áa]ndor Kisfaludi-Bak": (r"S{\'a}ndor {Kisfaludi-Bak}", r"Kisfaludi-Bak"),
+    r"[ÇC]etin Kaya Ko[çc]": (r"{\c C}etin Kaya Ko{\c c}", r"Koc"),
+    r"Eleftherios Kokoris-Kogias": (r"Eleftherios {Kokoris-Kogias}", r"Kokoris-Kogias"),
+    r"Lauri Kort-Parn": (r"Lauri {Kort-Parn}", r"Kort-Parn"),
+    r"Greg Kroah-Hartman": (r"Greg {Kroah-Hartman}", r"Kroah-Hartman"),
+    r"S[ée]bastien Kunz-Jacques": (r"S{\'e}bastien {Kunz-Jacques}", r"Kunz-Jacques"),
 
-    ur"H. Andr[ée]s Lagar-Cavilla": (ur"H. Andr{\'e}s {Lagar-Cavilla}", ur"Lagar-Cavilla"),
-    ur"Sophie Lambert-Lacroix": (ur"Sophie {Lambert-Lacroix}", ur"Lambert-Lacroix"),
-    ur"Stevens Le Blond": (ur"Stevens {Le Blond}", ur"LeBlond"),
-    ur"Jean-Yves Le Boudec": (ur"Jean-Yves {Le Boudec}", ur"LeBoudec"),
-    ur"S[ée]bastien Le Henaff": (ur"S{\'e}bastien {Le Henaff}", ur"LeHenaff"),
-    ur"Fran[çc]ois Le Gall": (ur"Fran{\c c}ois {Le Gall}", ur"LeGall"),
-    ur"Victor Le Pochat": (ur"Victor {Le Pochat}", ur"LePochat"),
-    ur"Dat Le Tien": (ur"Dat {Le Tien}", ur"LeTien"),
-    ur"Erik G. Learned-Miller": (ur"Erik G. {Learned-Miller}", ur"Learned-Miller"),
-    ur"Kerstin Lemke-Rust": (ur"Kerstin {Lemke-Rust}", ur"Lemke-Rust"),
-    ur"Chris Lesniewski-Laas": (ur"Chris {Lesniewski-Laas}", ur"Lesniewski-Laas"),
-    ur"Fran[çc]oise Levy-dit-Vehel": (ur"Fran{\c c}oise {Levy-dit-Vehel}", ur"Levy-dit-Vehel"),
-    ur"Adriana L[óo]pez-Alt": (ur"Adriana {L{\'o}pez-Alt}", ur"Lopez-Alt"),
-    ur"Conrado Porto Lopes Gouv[êe]a": (ur"Conrado Porto {Lopes Gouv{\^e}a}", ur"LopesGouvea"),
-    ur"Julio L[óo]pez[- ]Hern[áa]ndez": (ur"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", ur"Lopez-Hernandez"),
-    ur"Julio L[óo]pez": (ur"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", ur"Lopez-Hernandez"),
-    ur"Julio Cesar L[óo]pez[- ]Hern[áa]ndez": (ur"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", ur"Lopez-Hernandez"),
-    ur"Emmanuel L[óo]pez-Trejo": (ur"Emmanuel {L{\'o}pez-Trejo}", ur"Lopez-Trejo"),
-    ur"Lesa Lorenzen-Huber": (ur"Lesa {Lorenzen-Huber}", ur"Lorenzen-Huber"),
-    ur"Philippe Loubet-Moundi": (ur"Philippe {Loubet-Moundi}", ur"Loubet-Moundi"),
+    r"H. Andr[ée]s Lagar-Cavilla": (r"H. Andr{\'e}s {Lagar-Cavilla}", r"Lagar-Cavilla"),
+    r"Sophie Lambert-Lacroix": (r"Sophie {Lambert-Lacroix}", r"Lambert-Lacroix"),
+    r"Stevens Le Blond": (r"Stevens {Le Blond}", r"LeBlond"),
+    r"Jean-Yves Le Boudec": (r"Jean-Yves {Le Boudec}", r"LeBoudec"),
+    r"S[ée]bastien Le Henaff": (r"S{\'e}bastien {Le Henaff}", r"LeHenaff"),
+    r"Fran[çc]ois Le Gall": (r"Fran{\c c}ois {Le Gall}", r"LeGall"),
+    r"Victor Le Pochat": (r"Victor {Le Pochat}", r"LePochat"),
+    r"Dat Le Tien": (r"Dat {Le Tien}", r"LeTien"),
+    r"Erik G. Learned-Miller": (r"Erik G. {Learned-Miller}", r"Learned-Miller"),
+    r"Kerstin Lemke-Rust": (r"Kerstin {Lemke-Rust}", r"Lemke-Rust"),
+    r"Chris Lesniewski-Laas": (r"Chris {Lesniewski-Laas}", r"Lesniewski-Laas"),
+    r"Fran[çc]oise Levy-dit-Vehel": (r"Fran{\c c}oise {Levy-dit-Vehel}", r"Levy-dit-Vehel"),
+    r"Adriana L[óo]pez-Alt": (r"Adriana {L{\'o}pez-Alt}", r"Lopez-Alt"),
+    r"Conrado Porto Lopes Gouv[êe]a": (r"Conrado Porto {Lopes Gouv{\^e}a}", r"LopesGouvea"),
+    r"Julio L[óo]pez[- ]Hern[áa]ndez": (r"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", r"Lopez-Hernandez"),
+    r"Julio L[óo]pez": (r"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", r"Lopez-Hernandez"),
+    r"Julio Cesar L[óo]pez[- ]Hern[áa]ndez": (r"Julio Cesar {L{\'o}pez-Hern{\'a}ndez}", r"Lopez-Hernandez"),
+    r"Emmanuel L[óo]pez-Trejo": (r"Emmanuel {L{\'o}pez-Trejo}", r"Lopez-Trejo"),
+    r"Lesa Lorenzen-Huber": (r"Lesa {Lorenzen-Huber}", r"Lorenzen-Huber"),
+    r"Philippe Loubet-Moundi": (r"Philippe {Loubet-Moundi}", r"Loubet-Moundi"),
 
-    ur"Gilles Macario-Rat": (ur"Gilles {Macario-Rat}", ur"Macario-Rat"),
-    ur"Malik Magdon-Ismail": (ur"Malik {Magdon-Ismail}", ur"Magdon-Ismail"),
-    ur"Mohammad Mahmoody-Ghidary": (ur"Mohammad {Mahmoody-Ghidary}", ur"Mahmoody-Ghidary"),
-    ur"Josemaria Malgosa-Sanahuja": (ur"Josemaria {Malgosa-Sanahuja}", ur"Malgosa-Sanahuja"),
-    ur"John Malone-Lee": (ur"John {Malone-Lee}", ur"Malone-Lee"),
-    ur"Cuauhtemoc Mancillas-L[óo]pez": (ur"Cuauhtemoc {Mancillas-L{\'o}pez}", ur"Mancillas-Lopez"),
-    ur"Pilar Manzanares-Lopez": (ur"Pilar {Manzanares-Lopez}", ur"Manzanares-Lopez"),
-    ur"Jos{\'e} Mar[íi]a Sierra": (ur"Jos{\'e} {Mar{\'\i}a Sierra}", ur"MariaSierra"),
-    ur"Morgan Marquis-Boire": (ur"Morgan {Marquis-Boire}", ur"Marquis-Boire"),
-    ur"Rafael Mar[íi]n L[óo]pez": (ur"Rafael {Mar{\'\i}n L{\'o}pez}", ur"MarinLopez"),
-    ur"Jaume Mart[íi]-Farr[ée]": (ur"Jaume {Mart{\'\i}-Farr{\'e}}", ur"Marti-Farre"),
-    ur"Consuelo Mart[íi]nez": (ur"Consuelo Mart{\'\i}nez", ur"Martinez"),
-    ur"Alberto F. Mart[íi]nez-Herrera": (ur"Alberto F. {Mart{\'\i}nez-Herrera}", ur"Martinez-Herrera"),
-    ur"J. L. Martinez-Hurtado": (ur"Juan Leonardo {Martinez-Hurtado}", ur"Martinez-Hurtado"),
-    ur"Juan Leonardo Martinez-Hurtado": (ur"Juan Leonardo {Martinez-Hurtado}", ur"Martinez-Hurtado"),
-    ur"E. Mart[íi]nez-Moro": (ur"Edgar {Mart{\'\i}nez-Moro}", ur"Martinez-Moro"),
-    ur"Edgar Mart[íi]nez-Moro": (ur"Edgar {Mart{\'\i}nez-Moro}", ur"Martinez-Moro"),
-    ur"Luis Mart[íi]nez-Ramos": (ur"Luis {Mart{\'\i}nez-Ramos}", ur"Martinez-Ramos"),
-    ur"Rita Mayer-Sommer": (ur"Rita {Mayer-Sommer}", ur"Mayer-Sommer"),
-    ur"Breno de Medeiros": (ur"{Breno de} Medeiros", ur"Medeiros"),
-    ur"Rafael Mendes de Oliveira": (ur"Rafael {Mendes de Oliveira}", ur"MendesDeOliveira"),
-    ur"Foteinos Mergoupis-Anagnou": (ur"Foteinos {Mergoupis-Anagnou}", ur"Mergoupis-Anagnou"),
-    ur"Santos Merino [Dd]el Pozo": (ur"Santos {Merino Del Pozo}", ur"MerinoDelPozo"),
-    ur"J. Carlos Mex-Perera": (ur"Jorge Carlos {Mex-Perera}", ur"Mex-Perera"),
-    ur"Jorge Carlos Mex-Perera": (ur"Jorge Carlos {Mex-Perera}", ur"Mex-Perera"),
-    ur"Jezabel Molina-Gil": (ur"Jezabel {Molina-Gil}", ur"Molina-Gil"),
-    ur"Pedro Moreno-Sanchez": (ur"Pedro {Moreno-Sanchez}", ur"Moreno-Sanchez"),
-    ur"Robert H. Morris Sr.": (ur"Robert H. {Morris Sr.}", ur"MorrisSr"),
-    ur"J. Mozo-Fern[áa]ndez": (ur"Jorge {Mozo-Fern{\'a}ndez}", ur"Mozo-Fernandez"),
-    ur"Jorge Mozo-Fern[áa]ndez": (ur"Jorge {Mozo-Fern{\'a}ndez}", ur"Mozo-Fernandez"),
-    ur"J[öo]rn M[üu]ller-Quade": (ur"Jörn {Müller-Quade}", ur"Muller-Quade"),
-    ur"Christian M[üu]ller-Schloer": (ur"Christian {Müller-Schloer}", ur"Muller-Schloer"),
-    ur"Juan Pedro Mu[ñn]oz-Gea": (ur"Juan Pedro {Mu{\~n}oz-Gea}", ur"Munoz-Gea"),
-    ur"Emerson R. Murphy-Hill": (ur"Emerson R. {Murphy-Hill}", ur"Murphy-Hill"),
+    r"Gilles Macario-Rat": (r"Gilles {Macario-Rat}", r"Macario-Rat"),
+    r"Malik Magdon-Ismail": (r"Malik {Magdon-Ismail}", r"Magdon-Ismail"),
+    r"Mohammad Mahmoody-Ghidary": (r"Mohammad {Mahmoody-Ghidary}", r"Mahmoody-Ghidary"),
+    r"Josemaria Malgosa-Sanahuja": (r"Josemaria {Malgosa-Sanahuja}", r"Malgosa-Sanahuja"),
+    r"John Malone-Lee": (r"John {Malone-Lee}", r"Malone-Lee"),
+    r"Cuauhtemoc Mancillas-L[óo]pez": (r"Cuauhtemoc {Mancillas-L{\'o}pez}", r"Mancillas-Lopez"),
+    r"Pilar Manzanares-Lopez": (r"Pilar {Manzanares-Lopez}", r"Manzanares-Lopez"),
+    r"Jos{\'e} Mar[íi]a Sierra": (r"Jos{\'e} {Mar{\'\i}a Sierra}", r"MariaSierra"),
+    r"Morgan Marquis-Boire": (r"Morgan {Marquis-Boire}", r"Marquis-Boire"),
+    r"Rafael Mar[íi]n L[óo]pez": (r"Rafael {Mar{\'\i}n L{\'o}pez}", r"MarinLopez"),
+    r"Jaume Mart[íi]-Farr[ée]": (r"Jaume {Mart{\'\i}-Farr{\'e}}", r"Marti-Farre"),
+    r"Consuelo Mart[íi]nez": (r"Consuelo Mart{\'\i}nez", r"Martinez"),
+    r"Alberto F. Mart[íi]nez-Herrera": (r"Alberto F. {Mart{\'\i}nez-Herrera}", r"Martinez-Herrera"),
+    r"J. L. Martinez-Hurtado": (r"Juan Leonardo {Martinez-Hurtado}", r"Martinez-Hurtado"),
+    r"Juan Leonardo Martinez-Hurtado": (r"Juan Leonardo {Martinez-Hurtado}", r"Martinez-Hurtado"),
+    r"E. Mart[íi]nez-Moro": (r"Edgar {Mart{\'\i}nez-Moro}", r"Martinez-Moro"),
+    r"Edgar Mart[íi]nez-Moro": (r"Edgar {Mart{\'\i}nez-Moro}", r"Martinez-Moro"),
+    r"Luis Mart[íi]nez-Ramos": (r"Luis {Mart{\'\i}nez-Ramos}", r"Martinez-Ramos"),
+    r"Rita Mayer-Sommer": (r"Rita {Mayer-Sommer}", r"Mayer-Sommer"),
+    r"Breno de Medeiros": (r"{Breno de} Medeiros", r"Medeiros"),
+    r"Rafael Mendes de Oliveira": (r"Rafael {Mendes de Oliveira}", r"MendesDeOliveira"),
+    r"Foteinos Mergoupis-Anagnou": (r"Foteinos {Mergoupis-Anagnou}", r"Mergoupis-Anagnou"),
+    r"Santos Merino [Dd]el Pozo": (r"Santos {Merino Del Pozo}", r"MerinoDelPozo"),
+    r"J. Carlos Mex-Perera": (r"Jorge Carlos {Mex-Perera}", r"Mex-Perera"),
+    r"Jorge Carlos Mex-Perera": (r"Jorge Carlos {Mex-Perera}", r"Mex-Perera"),
+    r"Jezabel Molina-Gil": (r"Jezabel {Molina-Gil}", r"Molina-Gil"),
+    r"Pedro Moreno-Sanchez": (r"Pedro {Moreno-Sanchez}", r"Moreno-Sanchez"),
+    r"Robert H. Morris Sr.": (r"Robert H. {Morris Sr.}", r"MorrisSr"),
+    r"J. Mozo-Fern[áa]ndez": (r"Jorge {Mozo-Fern{\'a}ndez}", r"Mozo-Fernandez"),
+    r"Jorge Mozo-Fern[áa]ndez": (r"Jorge {Mozo-Fern{\'a}ndez}", r"Mozo-Fernandez"),
+    r"J[öo]rn M[üu]ller-Quade": (r"Jörn {Müller-Quade}", r"Muller-Quade"),
+    r"Christian M[üu]ller-Schloer": (r"Christian {Müller-Schloer}", r"Muller-Schloer"),
+    r"Juan Pedro Mu[ñn]oz-Gea": (r"Juan Pedro {Mu{\~n}oz-Gea}", r"Munoz-Gea"),
+    r"Emerson R. Murphy-Hill": (r"Emerson R. {Murphy-Hill}", r"Murphy-Hill"),
 
-    ur"Guillermo Navarro-Arribas": (ur"Guillermo {Navarro-Arribas}", ur"Navarro-Arribas"),
-    ur"Mar[ií]a Naya-Plasencia": (ur"Mar{\'\i}a {Naya-Plasencia}", ur"Naya-Plasencia"),
-    ur"Cristina Nita-Rotaru": (ur"Cristina {Nita-Rotaru}", ur"Nita-Rotaru"),
-    ur"Juan Arturo Nolazco-Flores": (ur"Juan Arturo {Nolazco-Flores}", ur"Nolazco-Flores"),
+    r"Guillermo Navarro-Arribas": (r"Guillermo {Navarro-Arribas}", r"Navarro-Arribas"),
+    r"Mar[ií]a Naya-Plasencia": (r"Mar{\'\i}a {Naya-Plasencia}", r"Naya-Plasencia"),
+    r"Cristina Nita-Rotaru": (r"Cristina {Nita-Rotaru}", r"Nita-Rotaru"),
+    r"Juan Arturo Nolazco-Flores": (r"Juan Arturo {Nolazco-Flores}", r"Nolazco-Flores"),
 
-    ur"Eduardo Ochoa-Jim[ée]nez": (ur"Eduardo {Ochoa-Jim{\'e}nez}", ur"Ochoa-Jimenez"),
+    r"Eduardo Ochoa-Jim[ée]nez": (r"Eduardo {Ochoa-Jim{\'e}nez}", r"Ochoa-Jimenez"),
 
-    ur"Francesco Parisi-Presicce": (ur"Francesco {Parisi-Presicce}", ur"Parisi-Presicce"),
-    ur"Anat Paskin-Cherniavsky": (ur"Anat {Paskin-Cherniavsky}", ur"Paskin-Cherniavsky"),
-    ur"Beni Paskin-Cherniavsky": (ur"Beni {Paskin-Cherniavsky}", ur"Paskin-Cherniavsky"),
-    ur"Magdalena Payeras-Capell[àa]": (ur"Magdalena {Payeras-Capell{\`a}}", ur"Payeras-Capella"),
-    ur"F. Pebay-Peyroula": (ur"F. {Pebay-Peyroula}", ur"Pebay-Peyroula"),
-    ur"Micha[ëe]l Peeters": (ur"Micha{\"e}l Peeters", ur"Peeters"),
-    ur"Alice Pellet-Mary": (ur"Alice {Pellet-Mary}", ur"Pellet-Mary"),
-    ur"Fernando Pere[ñn]iguez-Garcia": (ur"Fernando {Pere{\~n}iguez-Garcia}", ur"Pereniguez-Garcia"),
-    ur"Angel L. P[ée]rez [dD]el Pozo": (ur"Angel L. {P{\'e}rez del Pozo}", ur"PerezdelPozo"),
-    ur"David P[ée]rez Garc[íi]a": (ur"David {P{\'e}rez Garc{\'\i}a}", ur"PerezGarcia"),
-    ur"Diego Perez-Botero": (ur"Diego {Perez-Botero}", ur"Perez-Botero"),
-    ur"Fernando P[ée]rez-Cruz": (ur"Fernando {P{\'e}rez-Cruz}", ur"Perez-Cruz"),
-    ur"Luis P[ée]rez-Freire": (ur"Luis {P{\'e}rez-Freire}", ur"Perez-Freire"),
-    ur"Fernando P[ée]rez-Gonz[áa]lez": (ur"Fernando {P{\'e}rez-Gonz{\'a}lez}", ur"Perez-Gonzalez"),
-    ur"Cristina P[ée]rez-Sol[àa]": (ur"Cristina {P{\'e}rez-Sol{\`a}}", ur"Perez-Sola"),
-    ur"Pedro Peris-Lopez": (ur"Pedro {Peris-Lopez}", ur"Peris-Lopez"),
-    ur"Fr[ée]d[ée]ric de Portzamparc": (ur"{Fr{\'e}d{\'e}ric de} Portzamparc", ur"Portzamparc"),
-    ur"Fr[ée]d[ée]ric de Portzamparc": (ur"{Fr{\'e}d{\'e}ric de} Portzamparc", ur"Portzamparc"),
-    ur"Fr[ée]d[ée]ric Urvoy de Portzamparc": (ur"{Fr{\'e}d{\'e}ric de} Portzamparc", ur"Portzamparc"),
-    ur"Deike Priemuth-Schmid": (ur"Deike {Priemuth-Schmid}", ur"Priemuth-Schmid"),
+    r"Francesco Parisi-Presicce": (r"Francesco {Parisi-Presicce}", r"Parisi-Presicce"),
+    r"Anat Paskin-Cherniavsky": (r"Anat {Paskin-Cherniavsky}", r"Paskin-Cherniavsky"),
+    r"Beni Paskin-Cherniavsky": (r"Beni {Paskin-Cherniavsky}", r"Paskin-Cherniavsky"),
+    r"Magdalena Payeras-Capell[àa]": (r"Magdalena {Payeras-Capell{\`a}}", r"Payeras-Capella"),
+    r"F. Pebay-Peyroula": (r"F. {Pebay-Peyroula}", r"Pebay-Peyroula"),
+    r"Micha[ëe]l Peeters": (r"Micha{\"e}l Peeters", r"Peeters"),
+    r"Alice Pellet-Mary": (r"Alice {Pellet-Mary}", r"Pellet-Mary"),
+    r"Fernando Pere[ñn]iguez-Garcia": (r"Fernando {Pere{\~n}iguez-Garcia}", r"Pereniguez-Garcia"),
+    r"Angel L. P[ée]rez [dD]el Pozo": (r"Angel L. {P{\'e}rez del Pozo}", r"PerezdelPozo"),
+    r"David P[ée]rez Garc[íi]a": (r"David {P{\'e}rez Garc{\'\i}a}", r"PerezGarcia"),
+    r"Diego Perez-Botero": (r"Diego {Perez-Botero}", r"Perez-Botero"),
+    r"Fernando P[ée]rez-Cruz": (r"Fernando {P{\'e}rez-Cruz}", r"Perez-Cruz"),
+    r"Luis P[ée]rez-Freire": (r"Luis {P{\'e}rez-Freire}", r"Perez-Freire"),
+    r"Fernando P[ée]rez-Gonz[áa]lez": (r"Fernando {P{\'e}rez-Gonz{\'a}lez}", r"Perez-Gonzalez"),
+    r"Cristina P[ée]rez-Sol[àa]": (r"Cristina {P{\'e}rez-Sol{\`a}}", r"Perez-Sola"),
+    r"Pedro Peris-Lopez": (r"Pedro {Peris-Lopez}", r"Peris-Lopez"),
+    r"Fr[ée]d[ée]ric de Portzamparc": (r"{Fr{\'e}d{\'e}ric de} Portzamparc", r"Portzamparc"),
+    r"Fr[ée]d[ée]ric de Portzamparc": (r"{Fr{\'e}d{\'e}ric de} Portzamparc", r"Portzamparc"),
+    r"Fr[ée]d[ée]ric Urvoy de Portzamparc": (r"{Fr{\'e}d{\'e}ric de} Portzamparc", r"Portzamparc"),
+    r"Deike Priemuth-Schmid": (r"Deike {Priemuth-Schmid}", r"Priemuth-Schmid"),
 
-    ur"Arne Renkema-Padmos": (ur"Arne {Renkema-Padmos}", ur"Renkema-Padmos"),
-    ur"Arash Reyhani-Masoleh": (ur"Arash {Reyhani-Masoleh}", ur"Reyhani-Masoleh"),
-    ur"Francisco Rodr[íi]guez-Henr[íi]quez": (ur"Francisco {Rodr{\'\i}guez-Henr{\'\i}quez}", ur"Rodriguez-Henriquez"),
-    ur"Noga Ron-Zewi": (ur"Noga {Ron-Zewi}", ur"Ron-Zewi"),
-    ur"Lloren[çc] Huguet i Rotger": (ur"{Lloren\c{c} Huguet i} Rotger", ur"Rotger"),
-    ur"Adeline Roux-Langlois": (ur"Adeline {Roux-Langlois}", ur"Roux-Langlois"),
+    r"Arne Renkema-Padmos": (r"Arne {Renkema-Padmos}", r"Renkema-Padmos"),
+    r"Arash Reyhani-Masoleh": (r"Arash {Reyhani-Masoleh}", r"Reyhani-Masoleh"),
+    r"Francisco Rodr[íi]guez-Henr[íi]quez": (r"Francisco {Rodr{\'\i}guez-Henr{\'\i}quez}", r"Rodriguez-Henriquez"),
+    r"Noga Ron-Zewi": (r"Noga {Ron-Zewi}", r"Ron-Zewi"),
+    r"Lloren[çc] Huguet i Rotger": (r"{Lloren\c{c} Huguet i} Rotger", r"Rotger"),
+    r"Adeline Roux-Langlois": (r"Adeline {Roux-Langlois}", r"Roux-Langlois"),
 
-    ur"Reihaneh Safavi-Naini": (ur"Reihaneh {Safavi-Naini}", ur"Safavi-Naini"),
-    ur"Juan Carlos S[áa]nchez[- ]Aarnoutse": (ur"Juan Carlos {S{\'a}nchez-Aarnoutse}", ur"Sanchez-Aarnoutse"),
-    ur"Carmen S[áa]nchez-[ÁA]vila": (ur"Carmen {S{\'a}nchez-{\'A}vila}", ur"Sanchez-Avila"),
-    ur"Raul S[áa]nchez-Reillo": (ur"Raul {S{\'a}nchez-Reillo}", ur"Sanchez-Reillo"),
-    ur"Iskander S[áa]nchez-Rola": (ur"Iskander {S{\'a}nchez-Rola}", ur"Sanchez-Rola"),
-    ur"Santiago S[áa]nchez-Solano": (ur"Santiago {S{\'a}nchez-Solano}", ur"Sanchez-Solano"),
-    ur"Anderson Santana de Oliveira": (ur"Anderson {Santana de Oliveira}", ur"SantanadeOliveira"),
-    ur"Ingrid Schaum[üu]ller-Bichl": (ur"Ingrid {Schaumüller-Bichl}", ur"Schaumuller-Bichl"),
-    ur"Ulrike Schmidt-Kraepelin": (ur"Ulrike {Schmidt-Kraepelin}", ur"Schmidt-Kraepelin"),
-    ur"Katja Schmidt-Samoa": (ur"Katja {Schmidt-Samoa}", ur"Schmidt-Samoa"),
-    ur"John Scott-Railton": (ur"John {Scott-Railton}", ur"Scott-Railton"),
-    ur"[Aa]bhi [Ss]helat": (ur"{abhi} {shelat}", ur"shelat"),
-    ur"Alexandra Shulman-Peleg": (ur"Alexandra {Shulman-Peleg}", ur"Shulman-Peleg"),
-    ur"Daniel Simmons-Marengo": (ur"Daniel {Simmons-Marengo}", ur"Simmons-Marengo"),
-    ur"Stelios Sidiroglou-Douskos": (ur"Stelios {Sidiroglou-Douskos}", ur"Sidiroglou-Douskos"),
-    ur"William E. Skeith III": (ur"William E. {Skeith III}", ur"SkeithIII"),
-    ur"Daniel Smith-Tone": (ur"Daniel {Smith-Tone}", ur"Smith-Tone"),
-    ur"Eduardo Soria-Vazquez": (ur"Eduardo {Soria-Vazquez}", ur"Soria-Vazquez"),
-    ur"Tage Stabell-Kul[øo]": (ur"Tage {Stabell-Kul{\o}}", ur"Stabell-Kulo"),
-    ur"Noah Stephens-Davidowitz": (ur"Noah {Stephens-Davidowitz}", ur"Stephens-Davidowitz"),
-    ur"Brett Stone-Gross": (ur"Brett {Stone-Gross}", ur"Stone-Gross"),
-    ur"Adriana Su[áa]rez Corona": (ur"Adriana {Su{\'a}rez Corona}", ur"SuarezCorona"),
-    ur"Guillermo Su[áa]rez[- ]Tangil": (ur"Guillermo {Su{\'a}rez-Tangil}", ur"SuarezTangil"),
-    ur"Guillermo Su[áa]rez [dD]e Tangil": (ur"Guillermo {Su{\'a}rez-Tangil}", ur"SuarezTangil"),
+    r"Reihaneh Safavi-Naini": (r"Reihaneh {Safavi-Naini}", r"Safavi-Naini"),
+    r"Juan Carlos S[áa]nchez[- ]Aarnoutse": (r"Juan Carlos {S{\'a}nchez-Aarnoutse}", r"Sanchez-Aarnoutse"),
+    r"Carmen S[áa]nchez-[ÁA]vila": (r"Carmen {S{\'a}nchez-{\'A}vila}", r"Sanchez-Avila"),
+    r"Raul S[áa]nchez-Reillo": (r"Raul {S{\'a}nchez-Reillo}", r"Sanchez-Reillo"),
+    r"Iskander S[áa]nchez-Rola": (r"Iskander {S{\'a}nchez-Rola}", r"Sanchez-Rola"),
+    r"Santiago S[áa]nchez-Solano": (r"Santiago {S{\'a}nchez-Solano}", r"Sanchez-Solano"),
+    r"Anderson Santana de Oliveira": (r"Anderson {Santana de Oliveira}", r"SantanadeOliveira"),
+    r"Ingrid Schaum[üu]ller-Bichl": (r"Ingrid {Schaumüller-Bichl}", r"Schaumuller-Bichl"),
+    r"Ulrike Schmidt-Kraepelin": (r"Ulrike {Schmidt-Kraepelin}", r"Schmidt-Kraepelin"),
+    r"Katja Schmidt-Samoa": (r"Katja {Schmidt-Samoa}", r"Schmidt-Samoa"),
+    r"John Scott-Railton": (r"John {Scott-Railton}", r"Scott-Railton"),
+    r"[Aa]bhi [Ss]helat": (r"{abhi} {shelat}", r"shelat"),
+    r"Alexandra Shulman-Peleg": (r"Alexandra {Shulman-Peleg}", r"Shulman-Peleg"),
+    r"Daniel Simmons-Marengo": (r"Daniel {Simmons-Marengo}", r"Simmons-Marengo"),
+    r"Stelios Sidiroglou-Douskos": (r"Stelios {Sidiroglou-Douskos}", r"Sidiroglou-Douskos"),
+    r"William E. Skeith III": (r"William E. {Skeith III}", r"SkeithIII"),
+    r"Daniel Smith-Tone": (r"Daniel {Smith-Tone}", r"Smith-Tone"),
+    r"Eduardo Soria-Vazquez": (r"Eduardo {Soria-Vazquez}", r"Soria-Vazquez"),
+    r"Tage Stabell-Kul[øo]": (r"Tage {Stabell-Kul{\o}}", r"Stabell-Kulo"),
+    r"Noah Stephens-Davidowitz": (r"Noah {Stephens-Davidowitz}", r"Stephens-Davidowitz"),
+    r"Brett Stone-Gross": (r"Brett {Stone-Gross}", r"Stone-Gross"),
+    r"Adriana Su[áa]rez Corona": (r"Adriana {Su{\'a}rez Corona}", r"SuarezCorona"),
+    r"Guillermo Su[áa]rez[- ]Tangil": (r"Guillermo {Su{\'a}rez-Tangil}", r"SuarezTangil"),
+    r"Guillermo Su[áa]rez [dD]e Tangil": (r"Guillermo {Su{\'a}rez-Tangil}", r"SuarezTangil"),
 
-    ur"Amnon Ta-Shma": (ur"Amnon {Ta-Shma}", ur"Ta-Shma"),
-    ur"Anne Tardy-Corfdir": (ur"Anne {Tardy-Corfdir}", ur"Tardy-Corfdir"),
-    ur"Herman [tT]e Riele": (ur"Herman {te Riele}", ur"teRiele"),
-    ur"Joan Tom[àa]s-Buliart": (ur"Joan {Tom{\`a}s-Buliart}", ur"Tomas-Buliart"),
-    ur"Nicole Tomczak-Jaegermann": (ur"Nicole {Tomczak-Jaegermann}", ur"Tomczak-Jaegermann"),
-    ur"Jorge Toro[- ]Pozo": (ur"Jorge {Toro-Pozo}", ur"Toro-Pozo"),
-    ur"Jose Luis Torre-Arce": (ur"Jose Luis {Torre-Arce}", ur"Torre-Arce"),
-    ur"Santiago Torres-Arias": (ur"Santiago {Torres-Arias}", ur"Torres-Arias"),
-    ur"Juan Ram[óo]n Troncoso-Pastoriza": (ur"Juan Ram{\'o}n {Troncoso-Pastoriza}", ur"Troncoso-Pastoriza"),
-    ur"Vladimir Trujillo-Olaya": (ur"Vladimir {Trujillo-Olaya}", ur"Trujillo-Olaya"),
-    ur"Rolando Trujillo-Ras[úu]a": (ur"Rolando {Trujillo-Ras{\'u}a}", ur"Trujillo-Rasua"),
+    r"Amnon Ta-Shma": (r"Amnon {Ta-Shma}", r"Ta-Shma"),
+    r"Anne Tardy-Corfdir": (r"Anne {Tardy-Corfdir}", r"Tardy-Corfdir"),
+    r"Herman [tT]e Riele": (r"Herman {te Riele}", r"teRiele"),
+    r"Joan Tom[àa]s-Buliart": (r"Joan {Tom{\`a}s-Buliart}", r"Tomas-Buliart"),
+    r"Nicole Tomczak-Jaegermann": (r"Nicole {Tomczak-Jaegermann}", r"Tomczak-Jaegermann"),
+    r"Jorge Toro[- ]Pozo": (r"Jorge {Toro-Pozo}", r"Toro-Pozo"),
+    r"Jose Luis Torre-Arce": (r"Jose Luis {Torre-Arce}", r"Torre-Arce"),
+    r"Santiago Torres-Arias": (r"Santiago {Torres-Arias}", r"Torres-Arias"),
+    r"Juan Ram[óo]n Troncoso-Pastoriza": (r"Juan Ram{\'o}n {Troncoso-Pastoriza}", r"Troncoso-Pastoriza"),
+    r"Vladimir Trujillo-Olaya": (r"Vladimir {Trujillo-Olaya}", r"Trujillo-Olaya"),
+    r"Rolando Trujillo-Ras[úu]a": (r"Rolando {Trujillo-Ras{\'u}a}", r"Trujillo-Rasua"),
 
-    ur"Nelufar Ulfat-Bunyadi": (ur"Nelufar {Ulfat-Bunyadi}", ur"Ulfat-Bunyadi"),
+    r"Nelufar Ulfat-Bunyadi": (r"Nelufar {Ulfat-Bunyadi}", r"Ulfat-Bunyadi"),
 
-    ur"Narseo Vallina-Rodriguez": (ur"Narseo {Vallina-Rodriguez}", ur"Vallina-Rodriguez"),
-    ur"Joran [vV]an Apeldoorn": (ur"Joran {van Apeldoorn}", ur"vanApeldoorn"),
-    ur"Jo [Vv]an Bulck": (ur"Jo {Van Bulck}", ur"VanBulck"),
-    ur"Jeroen [vV]an [dD]e Graaf": (ur"Jeroen {van de Graaf}", ur"vandeGraaf"),
-    ur"Tim [vV]an [dD]e Kamp": (ur"Tim {van de Kamp}", ur"vandeKamp"),
-    ur"Robbert van den Berg": (ur"Robbert {van den Berg}", ur"vandenBerg"),
-    ur"Vincent [vV]an [dD]er Leest": (ur"Vincent {van der Leest}", ur"vanderLeest"),
-    ur"Jan C. A. [vV]an [dD]er Lubbe": (ur"Jan C. A. {van der Lubbe}", ur"vanderLubbe"),
-    ur"Erik van der Sluis": (ur"Erik {van der Sluis}", ur"vanderSluis"),
-    ur"Victor [vV]an [dD]er Veen": (ur"Victor {van der Veen}", ur"vanderVeen"),
-    ur"Marten [vV]an Dijk": (ur"Marten {van Dijk}", ur"vanDijk"),
-    ur"Leendert [vV]an Doorn": (ur"Leendert {van Doorn}", ur"vanDoorn"),
-    ur"Michel [vV]an Eeten": (ur"Michel {van Eeten}", ur"vanEeten"),
-    ur"Bernard [vV]an Gastel": (ur"Bernard {van Gastel}", ur"vanGastel"),
-    ur"Tom [vV]an Goethem": (ur"Tom {van Goethem}", ur"vanGoethem"),
-    ur"Matthew [Vv]an Gundy": (ur"Matthew {Van Gundy}", ur"VanGundy"),
-    ur"Tim [Vv]an hamme": (ur"Tim {Van hamme}", ur"Vanhamme"),
-    ur"Eug[èe]ne [vV]an Heijst": (ur"Eug{\`e}ne {van Heijst}", ur"vanHeijst"),
-    ur"Anthony [Vv]an Herrewege": (ur"Anthony {Van Herrewege}", ur"VanHerrewege"),
-    ur"Erik Jan [vV]an Leeuwen": (ur"Erik Jan {van Leeuwen}", ur"vanLeeuwen"),
-    ur"Paul C. [Vv]an Oorschot": (ur"Paul C. {van Oorschot}", ur"vanOorschot"),
-    ur"Robbert [vV]an Renesse": (ur"Robbert {van Renesse}", ur"vanRenesse"),
-    ur"Bart [Vv]an Rompay": (ur"Bart {Van Rompay}", ur"VanRompay"),
-    ur"C{\'e}dric [Vv]an Rompay": (ur"C{\'e}dric {Van Rompay}", ur"VanRompay"),
-    ur"Peter [vV]an Rossum": (ur"Peter {van Rossum}", ur"vanRossum"),
-    ur"Stephan [vV]an Schaik": (ur"Stephan {van Schaik}", ur"vanSchaik"),
-    ur"Johan [vV]an Tilburg": (ur"Johan {van Tilburg}", ur"vanTilburg"),
-    ur"Rolf [vV]an Wegberg": (ur"Rolf {van Wegberg}", ur"vanWegberg"),
-    ur"Nicolas Veyrat-Charvillon": (ur"Nicolas {Veyrat-Charvillon}", ur"Veyrat-Charvillon"),
-    ur"Francisco Jos[ée] Vial Prado": (ur"Francisco Jos{\'e} {Vial Prado}", ur"VialPrado"),
-    ur"Ricardo Villanueva-Polanco": (ur"Ricardo {Villanueva-Polanco}", ur"Villanueva-Polanco"),
-    ur"Luis [vV]on Ahn": (ur"Luis {von Ahn}", ur"vonAhn"),
-    ur"Philipp [vV]on Styp-Rekowsky": (ur"Philipp {von Styp-Rekowsky}", ur"vonStyp-Rekowsky"),
-    ur"Emanuel [vV]on Zezschwitz": (ur"Emanuel {von Zezschwitz}", ur"vonZezschwitz"),
+    r"Narseo Vallina-Rodriguez": (r"Narseo {Vallina-Rodriguez}", r"Vallina-Rodriguez"),
+    r"Joran [vV]an Apeldoorn": (r"Joran {van Apeldoorn}", r"vanApeldoorn"),
+    r"Jo [Vv]an Bulck": (r"Jo {Van Bulck}", r"VanBulck"),
+    r"Jeroen [vV]an [dD]e Graaf": (r"Jeroen {van de Graaf}", r"vandeGraaf"),
+    r"Tim [vV]an [dD]e Kamp": (r"Tim {van de Kamp}", r"vandeKamp"),
+    r"Robbert van den Berg": (r"Robbert {van den Berg}", r"vandenBerg"),
+    r"Vincent [vV]an [dD]er Leest": (r"Vincent {van der Leest}", r"vanderLeest"),
+    r"Jan C. A. [vV]an [dD]er Lubbe": (r"Jan C. A. {van der Lubbe}", r"vanderLubbe"),
+    r"Erik van der Sluis": (r"Erik {van der Sluis}", r"vanderSluis"),
+    r"Victor [vV]an [dD]er Veen": (r"Victor {van der Veen}", r"vanderVeen"),
+    r"Marten [vV]an Dijk": (r"Marten {van Dijk}", r"vanDijk"),
+    r"Leendert [vV]an Doorn": (r"Leendert {van Doorn}", r"vanDoorn"),
+    r"Michel [vV]an Eeten": (r"Michel {van Eeten}", r"vanEeten"),
+    r"Bernard [vV]an Gastel": (r"Bernard {van Gastel}", r"vanGastel"),
+    r"Tom [vV]an Goethem": (r"Tom {van Goethem}", r"vanGoethem"),
+    r"Matthew [Vv]an Gundy": (r"Matthew {Van Gundy}", r"VanGundy"),
+    r"Tim [Vv]an hamme": (r"Tim {Van hamme}", r"Vanhamme"),
+    r"Eug[èe]ne [vV]an Heijst": (r"Eug{\`e}ne {van Heijst}", r"vanHeijst"),
+    r"Anthony [Vv]an Herrewege": (r"Anthony {Van Herrewege}", r"VanHerrewege"),
+    r"Erik Jan [vV]an Leeuwen": (r"Erik Jan {van Leeuwen}", r"vanLeeuwen"),
+    r"Paul C. [Vv]an Oorschot": (r"Paul C. {van Oorschot}", r"vanOorschot"),
+    r"Robbert [vV]an Renesse": (r"Robbert {van Renesse}", r"vanRenesse"),
+    r"Bart [Vv]an Rompay": (r"Bart {Van Rompay}", r"VanRompay"),
+    r"C{\'e}dric [Vv]an Rompay": (r"C{\'e}dric {Van Rompay}", r"VanRompay"),
+    r"Peter [vV]an Rossum": (r"Peter {van Rossum}", r"vanRossum"),
+    r"Stephan [vV]an Schaik": (r"Stephan {van Schaik}", r"vanSchaik"),
+    r"Johan [vV]an Tilburg": (r"Johan {van Tilburg}", r"vanTilburg"),
+    r"Rolf [vV]an Wegberg": (r"Rolf {van Wegberg}", r"vanWegberg"),
+    r"Nicolas Veyrat-Charvillon": (r"Nicolas {Veyrat-Charvillon}", r"Veyrat-Charvillon"),
+    r"Francisco Jos[ée] Vial Prado": (r"Francisco Jos{\'e} {Vial Prado}", r"VialPrado"),
+    r"Ricardo Villanueva-Polanco": (r"Ricardo {Villanueva-Polanco}", r"Villanueva-Polanco"),
+    r"Luis [vV]on Ahn": (r"Luis {von Ahn}", r"vonAhn"),
+    r"Philipp [vV]on Styp-Rekowsky": (r"Philipp {von Styp-Rekowsky}", r"vonStyp-Rekowsky"),
+    r"Emanuel [vV]on Zezschwitz": (r"Emanuel {von Zezschwitz}", r"vonZezschwitz"),
 
-    ur"Amaury de Wargny": (ur"{Amaury de} Wargny", ur"Wargny"),
-    ur"Benjamin M. M. [dD]e Weger": (ur"{Benne de} Weger", ur"Weger"),
-    ur"Benne [dD]e Weger": (ur"{Benne de} Weger", ur"Weger"),
-    ur"Christian Wenzel-Benner": (ur"Christian {Wenzel-Benner}", ur"Wenzel-Benner"),
-    ur"Ronny Wichers Schreur": (ur"Ronny {Wichers Schreur}", ur"WichersSchreur"),
-    ur"Zooko Wilcox-O'Hearn": (ur"Zooko {Wilcox-O'Hearn}", ur"Wilcox-OHearn"),
-    ur"John D. Wiltshire-Gordon": (ur"John D. {Wiltshire-Gordon}", ur"Wiltshire-Gordon"),
-    ur"Daniel Wolleb-Graf": (ur"Daniel {Wolleb-Graf}", ur"Wolleb-Graf"),
-    ur"Christian Wulff-Nilsen": (ur"Christian {Wulff-Nilsen}", ur"Wulff-Nilsen"),
+    r"Amaury de Wargny": (r"{Amaury de} Wargny", r"Wargny"),
+    r"Benjamin M. M. [dD]e Weger": (r"{Benne de} Weger", r"Weger"),
+    r"Benne [dD]e Weger": (r"{Benne de} Weger", r"Weger"),
+    r"Christian Wenzel-Benner": (r"Christian {Wenzel-Benner}", r"Wenzel-Benner"),
+    r"Ronny Wichers Schreur": (r"Ronny {Wichers Schreur}", r"WichersSchreur"),
+    r"Zooko Wilcox-O'Hearn": (r"Zooko {Wilcox-O'Hearn}", r"Wilcox-OHearn"),
+    r"John D. Wiltshire-Gordon": (r"John D. {Wiltshire-Gordon}", r"Wiltshire-Gordon"),
+    r"Daniel Wolleb-Graf": (r"Daniel {Wolleb-Graf}", r"Wolleb-Graf"),
+    r"Christian Wulff-Nilsen": (r"Christian {Wulff-Nilsen}", r"Wulff-Nilsen"),
 
-    ur"Irina Zachia-Zlatea": (ur"Irina {Zachia-Zlatea}", ur"Zachia-Zlatea"),
-    ur"Santiago Zanella[- ]B[ée]guelin": (ur"Santiago {Zanella-B{\'e}guelin}", ur"Zanella-Beguelin"),
-    ur"Rui Zhang II": (ur"Rui {Zhang II}", ur"ZhangII"),
-    ur"Leah Zhang-Kennedy": (ur"Leah {Zhang-Kennedy}", ur"Zhang-Kennedy"),
+    r"Irina Zachia-Zlatea": (r"Irina {Zachia-Zlatea}", r"Zachia-Zlatea"),
+    r"Santiago Zanella[- ]B[ée]guelin": (r"Santiago {Zanella-B{\'e}guelin}", r"Zanella-Beguelin"),
+    r"Rui Zhang II": (r"Rui {Zhang II}", r"ZhangII"),
+    r"Leah Zhang-Kennedy": (r"Leah {Zhang-Kennedy}", r"Zhang-Kennedy"),
 
-    ur"Giuseppe Amato II": (ur"Giuseppe {Amato II}", ur"AmatoII"),
-    ur"Karel Culik II": (ur"Karel {Culik II}", ur"CulikII"),
-    ur"Markus Schneider II": (ur"Markus {Schneider II}", ur"SchneiderII"),
-    ur"Amitabh Sinha II": (ur"Amitabh {Sinha II}", ur"SinhaII"),
-    ur"William R. Speirs II": (ur"William R. {Speirs II}", ur"SpeirsII"),
+    r"Giuseppe Amato II": (r"Giuseppe {Amato II}", r"AmatoII"),
+    r"Karel Culik II": (r"Karel {Culik II}", r"CulikII"),
+    r"Markus Schneider II": (r"Markus {Schneider II}", r"SchneiderII"),
+    r"Amitabh Sinha II": (r"Amitabh {Sinha II}", r"SinhaII"),
+    r"William R. Speirs II": (r"William R. {Speirs II}", r"SpeirsII"),
 
-    ur"Hal Daum[ée] III": (ur"Hal {Daum{\'e} III}", ur"DaumeIII"),
-    ur"Robert L. (Scot) Drysdale III": (ur"Robert L. (Scot) {Drysdale III}", ur"DrysdaleIII"),
-    ur"Donald E. Eastlake III": (ur"Donald E. {Eastlake III}", ur"EastlakeIII"),
-    ur"William C. Garrison III": (ur"William C. {Garrison III}", ur"GarrisonIII"),
-    ur"James W. Gray III": (ur"James W. {Gray III}", ur"GrayIII"),
-    ur"Harry B. Hunt III": (ur"Harry B. {Hunt III}", ur"HuntIII"),
-    ur"Golden G. Richard III": (ur"Golden G. {Richard III}", ur"RichardIII"),
-    ur"William N. Scherer III": (ur"William N. {Scherer III}", ur"SchererIII"),
+    r"Hal Daum[ée] III": (r"Hal {Daum{\'e} III}", r"DaumeIII"),
+    r"Robert L. (Scot) Drysdale III": (r"Robert L. (Scot) {Drysdale III}", r"DrysdaleIII"),
+    r"Donald E. Eastlake III": (r"Donald E. {Eastlake III}", r"EastlakeIII"),
+    r"William C. Garrison III": (r"William C. {Garrison III}", r"GarrisonIII"),
+    r"James W. Gray III": (r"James W. {Gray III}", r"GrayIII"),
+    r"Harry B. Hunt III": (r"Harry B. {Hunt III}", r"HuntIII"),
+    r"Golden G. Richard III": (r"Golden G. {Richard III}", r"RichardIII"),
+    r"William N. Scherer III": (r"William N. {Scherer III}", r"SchererIII"),
 
-    ur"Waldyr Benits Jr.": (ur"Waldyr {Benits Jr.}", ur"BenitsJr"),
-    ur"Edward G. Coffman Jr.": (ur"Edward G. {Coffman Jr.}", ur"CoffmanJr"),
-    ur"Jonathan L. Dautrich Jr.": (ur"Jonathan L. {Dautrich Jr.}", ur"DautrichJr"),
-    ur"D. Dellamonica Jr.": (ur"Domingos {Dellamonica Jr.}", ur"DellamonicaJr"),
-    ur"Domingos Dellamonica Jr.": (ur"Domingos {Dellamonica Jr.}", ur"DellamonicaJr"),
-    ur"Thomas W. Doeppner Jr.": (ur"Thomas W. {Doeppner Jr.}", ur"DoeppnerJr"),
-    ur"John E. Gaffney Jr.": (ur"John E. {Gaffney Jr.}", ur"GaffneyJr"),
-    ur"Gaspar Garcia Jr.": (ur"Gaspar {Garcia Jr.}", ur"GarciaJr"),
-    ur"Daniel E. Geer Jr.": (ur"Daniel E. {Geer Jr.}", ur"GeerJr"),
-    ur"Dennis M. Healy Jr.": (ur"Dennis M. {Healy Jr.}", ur"HealyJr"),
-    ur"M. J. Jacobson Jr.": (ur"Michael J. {Jacobson Jr.}", ur"JacobsonJr"),
-    ur"Michael J. Jacobson Jr.": (ur"Michael J. {Jacobson Jr.}", ur"JacobsonJr"),
-    ur"Robert J. Jenkins Jr.": (ur"Robert J. {Jenkins Jr.}", ur"JenkinsJr"),
-    ur"Burton S. Kaliski Jr.": (ur"Burton S. {Kaliski Jr.}", ur"KaliskiJr"),
-    ur"Thomas F. Knight Jr.": (ur"Thomas F. {Knight Jr.}", ur"KnightJr"),
-    ur"Hendrik W. Lenstra Jr.": (ur"Hendrik W. {Lenstra Jr.}", ur"LenstraJr"),
-    ur"Witold Lipski Jr.": (ur"Witold {Lipski Jr.}", ur"LipskiJr"),
-    ur"Juan Lopez Jr.": (ur"Juan {Lopez Jr.}", ur"Juan LopezJr"),
-    ur"David M. Martin Jr.": (ur"David M. {Martin Jr.}", ur"MartinJr"),
-    ur"William K. Moses Jr.": (ur"William K. {Moses Jr.}", ur"MosesJr"),
-    ur"Robert McNerney Jr.": (ur"Robert {McNerney Jr.}", ur"McNerneyJr"),
-    ur"Walter R. Mebane Jr.": (ur"Walter R. {Mebane Jr.}", ur"MebaneJr"),
-    ur"William K. Moses Jr.": (ur"William K. {Moses Jr.}", ur"MosesJr"),
-    ur"Jorge Nakahara Jr.": (ur"Jorge {Nakahara Jr.}", ur"NakaharaJr"),
-    ur"David B. Newman Jr.": (ur"David B. {Newman Jr.}", ur"NewmanJr"),
-    ur"Nick L. Petroni Jr.": (ur"Nick L. {Petroni Jr.}", ur"PetroniJr"),
-    ur"Marcos A. Simpl[íi]cio Jr.": (ur"Marcos A. {Simpl{\'\i}cio Jr.}", ur"SimplicioJr"),
-    ur"Guy L. Steele Jr.": (ur"Guy L. {Steele Jr.}", ur"SteeleJr"),
-    ur"Samuel S. Wagstaff Jr.": (ur"Samuel S. {Wagstaff Jr.}", ur"WagstaffJr"),
+    r"Waldyr Benits Jr.": (r"Waldyr {Benits Jr.}", r"BenitsJr"),
+    r"Edward G. Coffman Jr.": (r"Edward G. {Coffman Jr.}", r"CoffmanJr"),
+    r"Jonathan L. Dautrich Jr.": (r"Jonathan L. {Dautrich Jr.}", r"DautrichJr"),
+    r"D. Dellamonica Jr.": (r"Domingos {Dellamonica Jr.}", r"DellamonicaJr"),
+    r"Domingos Dellamonica Jr.": (r"Domingos {Dellamonica Jr.}", r"DellamonicaJr"),
+    r"Thomas W. Doeppner Jr.": (r"Thomas W. {Doeppner Jr.}", r"DoeppnerJr"),
+    r"John E. Gaffney Jr.": (r"John E. {Gaffney Jr.}", r"GaffneyJr"),
+    r"Gaspar Garcia Jr.": (r"Gaspar {Garcia Jr.}", r"GarciaJr"),
+    r"Daniel E. Geer Jr.": (r"Daniel E. {Geer Jr.}", r"GeerJr"),
+    r"Dennis M. Healy Jr.": (r"Dennis M. {Healy Jr.}", r"HealyJr"),
+    r"M. J. Jacobson Jr.": (r"Michael J. {Jacobson Jr.}", r"JacobsonJr"),
+    r"Michael J. Jacobson Jr.": (r"Michael J. {Jacobson Jr.}", r"JacobsonJr"),
+    r"Robert J. Jenkins Jr.": (r"Robert J. {Jenkins Jr.}", r"JenkinsJr"),
+    r"Burton S. Kaliski Jr.": (r"Burton S. {Kaliski Jr.}", r"KaliskiJr"),
+    r"Thomas F. Knight Jr.": (r"Thomas F. {Knight Jr.}", r"KnightJr"),
+    r"Hendrik W. Lenstra Jr.": (r"Hendrik W. {Lenstra Jr.}", r"LenstraJr"),
+    r"Witold Lipski Jr.": (r"Witold {Lipski Jr.}", r"LipskiJr"),
+    r"Juan Lopez Jr.": (r"Juan {Lopez Jr.}", r"Juan LopezJr"),
+    r"David M. Martin Jr.": (r"David M. {Martin Jr.}", r"MartinJr"),
+    r"William K. Moses Jr.": (r"William K. {Moses Jr.}", r"MosesJr"),
+    r"Robert McNerney Jr.": (r"Robert {McNerney Jr.}", r"McNerneyJr"),
+    r"Walter R. Mebane Jr.": (r"Walter R. {Mebane Jr.}", r"MebaneJr"),
+    r"William K. Moses Jr.": (r"William K. {Moses Jr.}", r"MosesJr"),
+    r"Jorge Nakahara Jr.": (r"Jorge {Nakahara Jr.}", r"NakaharaJr"),
+    r"David B. Newman Jr.": (r"David B. {Newman Jr.}", r"NewmanJr"),
+    r"Nick L. Petroni Jr.": (r"Nick L. {Petroni Jr.}", r"PetroniJr"),
+    r"Marcos A. Simpl[íi]cio Jr.": (r"Marcos A. {Simpl{\'\i}cio Jr.}", r"SimplicioJr"),
+    r"Guy L. Steele Jr.": (r"Guy L. {Steele Jr.}", r"SteeleJr"),
+    r"Samuel S. Wagstaff Jr.": (r"Samuel S. {Wagstaff Jr.}", r"WagstaffJr"),
 }
 
 author_subs_re_compiled = {
     re.compile(r): s
-    for r, s in author_subs_re.iteritems()
+    for r, s in author_subs_re.items()
 }
-author_subs_re_all = re.compile("^" + "|".join(author_subs_re.keys()) + "$")
+author_subs_re_all = re.compile("^" + "|".join(list(author_subs_re.keys())) + "$")
 
 
 def get_author_name_for_key(author):
@@ -475,13 +475,13 @@ def get_author_name_and_for_key(author):
     # For efficiency, we first use author_subs_re_all to find the places to
     # replace, but then manually sub
     def get_match(text):
-        for r, s in author_subs_re_compiled.iteritems():
+        for r, s in author_subs_re_compiled.items():
             if r.match(text):
                 return s
 
     if author_subs_re_all.match(author):
         s = get_match(author)
-        if isinstance(s, basestring):
+        if isinstance(s, str):
             return (s, get_author_name_for_key(s))
         else:
             return s
@@ -504,19 +504,19 @@ for line in open('utf8ienc.dtx'):
     if m:
         codepoint, latex = m.groups()
         latex = latex.replace('@tabacckludge', '')  # remove useless (??) '@tabacckludge'
-        translation_table[int(codepoint, 16)] = "{" + unicode(latex) + "}"
+        translation_table[int(codepoint, 16)] = "{" + str(latex) + "}"
 
 
 def unicode_to_latex(s):
     """ transform a unicode string to a ascii string with latex symbols """
-    s = unicode(s).translate(translation_table)
-    s = s.replace(u"\x96", u"---")
-    s = s.replace(u"\u200e", u"")
-    s = s.replace(u"\x92", u"'")
-    s = s.replace(u"\x93", u"``")
-    s = s.replace(u"\x94", u"''")
-    s = s.replace(u"\u03a3", u"$\Sigma$")
-    s = s.replace(u"z\u030c", u"{\v{z}}")
+    s = str(s).translate(translation_table)
+    s = s.replace("\x96", "---")
+    s = s.replace("\u200e", "")
+    s = s.replace("\x92", "'")
+    s = s.replace("\x93", "``")
+    s = s.replace("\x94", "''")
+    s = s.replace("\u03a3", "$\Sigma$")
+    s = s.replace("z\u030c", "{\v{z}}")
     return s
 
 
@@ -525,10 +525,10 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
     waitsec = 60
     while True:
         try:
-            f = urllib2.urlopen(url)
+            f = urllib.request.urlopen(url)
             content = f.read().decode(encoding)
             return content
-        except urllib2.HTTPError as e:
+        except urllib.error.HTTPError as e:
             if e.code == 429:
                 logging.warning("Error 429 on URL: \"{}\"\n\tReason: {}\n\tWait {}s".format(url, e.reason, waitsec))
                 time.sleep(waitsec)
@@ -548,7 +548,7 @@ pattern_multiple_spaces = re.compile(r' +')
 def split_authors(s):
     """ return a list of others from an author string from EPRINT - from eprint-update.py """
     names = [n.strip() for n in pattern_split_authors.split(s)]
-    names = [n for n in names if n != u'']
+    names = [n for n in names if n != '']
     return names
 
 
@@ -581,7 +581,7 @@ def fix_eprint_spaces(s):
 def clean_author(author):
     """ clean author name given by DBLP (remove last numbers if multiple authors) """
     if author.split(" ")[-1].isdigit():
-        return u" ".join(author.split(" ")[:-1])
+        return " ".join(author.split(" ")[:-1])
     else:
         return author
 
@@ -610,7 +610,7 @@ pattern_normal_case_first = re.compile(r'^(\W*|[0-9_]+|[A-Za-z0-9_]|[A-Za-z0-9_]
 punctuation_followed_by_upper_case = re.compile(r'^\s*[?!]\s*')
 # we do not include "." because it is mostly used with "vs." and "et al."
 
-html_parser = HTMLParser.HTMLParser()
+html_parser = html.parser.HTMLParser()
 
 
 def html_to_bib_value(s, title=False):
@@ -645,7 +645,7 @@ def html_to_bib_value(s, title=False):
 
 def xml_get_value(e):
     """ get the value of the tag "e" (including subtags) """
-    return (e.text or '') + ''.join(xml.etree.ElementTree.tostring(ee) for ee in e)
+    return (e.text or '') + ''.join(xml.etree.ElementTree.tostring(ee, encoding="unicode") for ee in e)
 
 
 re_pages = re.compile(r'^([0-9:]*)(--?([0-9:]*))?$')  # LIPIcs uses pages of the form "5:1-5:10"
@@ -668,7 +668,7 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
     pages_error = None
     for e in elt:
         if e.tag == "author":
-            authors.append(get_author_name_and_for_key(clean_author(unicode(e.text))))
+            authors.append(get_author_name_and_for_key(clean_author(str(e.text))))
         elif e.tag in fields:
             val = xml_get_value(e)  # e.text
             if e.tag == "pages":
@@ -697,7 +697,7 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                     entry["doi"] = html_to_bib_value(p.group(1))
 
     authors_bibtex = [a[0] for a in authors]
-    entry["author"] = html_to_bib_value((u" and \n" + " " * 18).join(authors_bibtex))
+    entry["author"] = html_to_bib_value((" and \n" + " " * 18).join(authors_bibtex))
 
     authors_last_names = [a[1] for a in authors]
     key = authors_to_key(authors_last_names, confkey, short_year)
@@ -719,21 +719,21 @@ def write_entry(f, key, entry, entry_type):
 
     try:
         f.write("@{0}{{{1},\n".format(entry_type, key))
-        for k in sorted(entry.iterkeys(), key=key_sort):
+        for k in sorted(iter(entry.keys()), key=key_sort):
             v = entry[k]
             try:
-                venc = v.encode("ascii")
-            except UnicodeEncodeError, ex:
+                v_ascii = v.encode("ascii").decode()
+            except UnicodeEncodeError as ex:
                 logging.warning(
                     "Problem of encoding in entry \"{0}\", key \"{1}\", value \"{2}\" -> replace bad caracter(s) with '?'".format(
                         key, k, repr(v)))
-                venc = v.encode("ascii", "replace")
-            if ("<" in venc) or (">" in venc) or ("&" in venc):
+                v_ascii = v.encode("ascii", "replace").decode()
+            if ("<" in v_ascii) or (">" in v_ascii) or ("&" in v_ascii):
                 logging.warning(
-                    "Caracter <, >, or & in entry \"{0}\", key \"{1}\", value \"{2}\"".format(key, k, repr(v)))
-            f.write("  {0:<15}{1},\n".format((k + " ="), venc))
+                    "Character <, >, or & in entry \"{0}\", key \"{1}\", value \"{2}\"".format(key, k, repr(v)))
+            f.write("  {0:<15}{1},\n".format((k + " ="), v_ascii))
         f.write("}\n\n")
-    except UnicodeEncodeError, ex:
+    except UnicodeEncodeError as ex:
         logging.exception("Problem of encoding of:\n" + repr((key, entry)))
 
 
@@ -743,7 +743,7 @@ def can_write(filename, overwrite=False):
         print("File \"{0}\" already exists. Do you want to delete it (Y/N) ?".format(filename))
         rep = ""
         while rep.lower() not in ["y", "n", "yes", "no"]:
-            rep = raw_input()
+            rep = input()
         if rep.lower()[0] != "y":
             return False
     return True
@@ -776,7 +776,7 @@ def run(confkey, year, dis, overwrite=False):
 
     entry_type = conf_dict["entry_type"]
     fields_dblp = conf_dict["fields_dblp"]
-    fields_add = dict(((key, subs(value)) for key, value in conf_dict["fields_add"].iteritems()))
+    fields_add = dict(((key, subs(value)) for key, value in conf_dict["fields_add"].items()))
 
     if conf_dict["type"] == "misc":
         encoding = "iso-8859-1"
@@ -812,8 +812,8 @@ def run(confkey, year, dis, overwrite=False):
             authors = [get_author_name_and_for_key(a) for a in authors] # list of pairs (full author name, last name for BibTeX key)
 
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
-            entry["note"] = '"\url{{https://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
-            entry["author"] = html_to_bib_value((u" and \n" + " " * 18).join(a[0] for a in authors))
+            entry["note"] = '"\\url{{https://eprint.iacr.org/{}/{}}}"'.format(entry["year"], eprint_id)
+            entry["author"] = html_to_bib_value((" and \n" + " " * 18).join(a[0] for a in authors))
 
             key = authors_to_key([a[1] for a in authors], confkey, short_year)
 
@@ -857,11 +857,12 @@ def run(confkey, year, dis, overwrite=False):
     logging.info("Write \"{0}\"".format(filename))
     if not can_write(filename, overwrite):
         return
-    f = file(filename, "w")
+    f = open(filename, "w")
 
     pattern_eprint = re.compile(r"^\"Cryptology ePrint Archive, Report (\d*)/(\d*)\"")
 
-    def sort_pages((k, e)):
+    def sort_pages(xxx_todo_changeme):
+        (k, e) = xxx_todo_changeme
         if "howpublished" in e:
             howpublished = e["howpublished"]
 
@@ -870,7 +871,7 @@ def run(confkey, year, dis, overwrite=False):
                 # special case for eprint:
                 # we cannot use directly howpublished for eprint because of eprint number > 1000
                 # as the format is "Cryptology ePrint Archive, Report yyyy/xxx"
-                howpublished = u"{:0>4d}/{:0>5d}".format(
+                howpublished = "{:0>4d}/{:0>5d}".format(
                     int(match_eprint.group(1)),
                     int(match_eprint.group(2))
                 )
@@ -889,7 +890,7 @@ def run(confkey, year, dis, overwrite=False):
             pages = "0"
         return "{:0>5d}-{:>10}-{}".format(num, pages, howpublished)
 
-    for (key, e) in sorted(entries.iteritems(), key=sort_pages):
+    for (key, e) in sorted(iter(entries.items()), key=sort_pages):
         fields_add_cur = fields_add.copy()
         if "month" in fields_add_cur and fields_add_cur["month"] == "%months":
             fields_add_cur["month"] = conf_dict["months"][int(e["number"]) - 1]
