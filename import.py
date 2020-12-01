@@ -515,7 +515,12 @@ for line in open('utf8ienc.dtx'):
         codepoint, latex = m.groups()
         latex = latex.replace('@tabacckludge', '')  # remove useless (??) '@tabacckludge'
         translation_table[int(codepoint, 16)] = "{" + str(latex) + "}"
-
+# remove \i which is no more used and create issues https://tex.stackexchange.com/a/385250/34384
+# https://github.com/cryptobib/db/issues/96
+translation_table[0x00ec] = r"{\`i}"
+translation_table[0x00ed] = r"{\'i}"
+translation_table[0x00ee] = r"{\^i}"
+translation_table[0x00ef] = r"{\"i}"
 
 def unicode_to_latex(s):
     """ transform a unicode string to a ascii string with latex symbols """
@@ -525,8 +530,8 @@ def unicode_to_latex(s):
     s = s.replace("\x92", "'")
     s = s.replace("\x93", "``")
     s = s.replace("\x94", "''")
-    s = s.replace("\u03a3", "$\Sigma$")
-    s = s.replace("z\u030c", "{\v{z}}")
+    s = s.replace("\u03a3", r"$\Sigma$")
+    s = s.replace("z\u030c", r"{\v{z}}")
     return s
 
 
