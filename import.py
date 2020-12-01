@@ -820,10 +820,10 @@ def run(confkey, year, dis, overwrite=False):
             entry = {"year": pub.group(1)}
             eprint_id = pub.group(2)
             entry["title"] = html_to_bib_value(
-                make_brackets_balanced(fix_eprint_spaces(html_parser.unescape(pub.group(3)))),
+                make_brackets_balanced(fix_eprint_spaces(html.unescape(pub.group(3)))),
                 True
             )
-            authors = split_authors(fix_eprint_spaces(html_parser.unescape(pub.group(4))))
+            authors = split_authors(fix_eprint_spaces(html.unescape(pub.group(4))))
             authors = [get_author_name_and_for_key(a) for a in authors] # list of pairs (full author name, last name for BibTeX key)
 
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(entry["year"], eprint_id)
