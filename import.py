@@ -62,6 +62,7 @@ author_subs_re = {
     r"Aisha I. Ali-Gombe": (r"Aisha I. {Ali-Gombe}", r"Ali-Gombe"),
     r"Nabil Alkeilani Alkadri": (r"Nabil {Alkeilani Alkadri}", r"AlkeilaniAlkadri"),
     r"Jacob Alperin-Sheriff": (r"Jacob {Alperin-Sheriff}", r"Alperin-Sheriff"),
+    r"Estuardo Alpirez Bock": (r"Estuardo {Alpirez Bock}", r"AlpirezBock"),
     r"Enrique Argones-R[úu]a": (r"Enrique {Argones-R{\'u}a}", r"Argones-Rua"),
     r"Babak Azimi-Sadjadi": (r"Babak {Azimi-Sadjadi}", r"Azimi-Sadjadi"),
 
