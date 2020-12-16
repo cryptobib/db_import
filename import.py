@@ -63,6 +63,7 @@ author_subs_re = {
     r"Nabil Alkeilani Alkadri": (r"Nabil {Alkeilani Alkadri}", r"AlkeilaniAlkadri"),
     r"Jacob Alperin-Sheriff": (r"Jacob {Alperin-Sheriff}", r"Alperin-Sheriff"),
     r"Estuardo Alpirez Bock": (r"Estuardo {Alpirez Bock}", r"AlpirezBock"),
+    r"Dami[áa]n Aparicio-S[áa]nchez": (r"Dami{\'a}n {Aparicio-S{\'a}nchez}", r"Aparicio-Sanchez"),
     r"Enrique Argones-R[úu]a": (r"Enrique {Argones-R{\'u}a}", r"Argones-Rua"),
     r"Babak Azimi-Sadjadi": (r"Babak {Azimi-Sadjadi}", r"Azimi-Sadjadi"),
 
@@ -83,6 +84,7 @@ author_subs_re = {
     r"Adi Ben-Zvi": (r"Adi {Ben-Zvi}", r"Ben-Zvi"),
     r"Noemie Beringuier-Boher": (r"Noemie {Beringuier-Boher}", r"Beringuier-Boher"),
     r"Abhilasha Bhargav-Spantzel": (r"Abhilasha {Bhargav-Spantzel}", r"Bhargav-Spantzel"),
+    r"Alberto Blanco-Justicia": (r"Alberto {Blanco-Justicia}", r"Blanco-Justicia"),
     r"Imane Bouij-Pasquier": (r"Imane {Bouij-Pasquier}", r"Bouij-Pasquier"),
     r"Nora Boulahia-Cuppens": (r"Nora {Boulahia-Cuppens}", r"Boulahia-Cuppens"),
     r"Cristian Bravo-Lillo": (r"Cristian {Bravo-Lillo}", r"Bravo-Lillo"),
@@ -211,6 +213,7 @@ author_subs_re = {
     r"Ludovic Guillaume-Sage": (r"Ludovic {Guillaume-Sage}", r"Guillaume-Sage"),
 
     r"Sariel Har-Peled": (r"Sariel {Har-Peled}", r"Har-Peled"),
+    r"Julio Hernandez-Castro": (r"Julio {Hernandez-Castro}", r"Hernandez-Castro"),
     r"Julio C[ée]sar Hern[áa]ndez-Castro": (r"Julio C{\'e}sar {Hern{\'a}ndez-Castro}", r"Hernandez-Castro"),
     r"Candelaria Hern[áa]ndez-Goya": (r"Candelaria {Hern{\'a}ndez-Goya}", r"Hernandez-Goya"),
     r"Jordi Herrera-Joancomart[íi]": (r"Jordi {Herrera-Joancomart{\'\i}}", r"Herrera-Joancomarti"),
@@ -317,6 +320,7 @@ author_subs_re = {
     r"Fr[ée]d[ée]ric Urvoy de Portzamparc": (r"{Fr{\'e}d{\'e}ric de} Portzamparc", r"Portzamparc"),
     r"Deike Priemuth-Schmid": (r"Deike {Priemuth-Schmid}", r"Priemuth-Schmid"),
 
+    r"Andrew Read-McFarland": (r"Andrew {Read-McFarland}", r"Read-McFarland"),
     r"Arne Renkema-Padmos": (r"Arne {Renkema-Padmos}", r"Renkema-Padmos"),
     r"Arash Reyhani-Masoleh": (r"Arash {Reyhani-Masoleh}", r"Reyhani-Masoleh"),
     r"Francisco Rodr[íi]guez-Henr[íi]quez": (r"Francisco {Rodr{\'\i}guez-Henr{\'\i}quez}", r"Rodriguez-Henriquez"),
