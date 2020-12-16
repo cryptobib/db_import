@@ -234,6 +234,7 @@ author_subs_re = {
 
     r"H. Andr[ée]s Lagar-Cavilla": (r"H. Andr{\'e}s {Lagar-Cavilla}", r"Lagar-Cavilla"),
     r"Sophie Lambert-Lacroix": (r"Sophie {Lambert-Lacroix}", r"Lambert-Lacroix"),
+    r"Rolando L. La Placa": (r"Rolando L. {La Placa}", r"LaPlaca"),
     r"Stevens Le Blond": (r"Stevens {Le Blond}", r"LeBlond"),
     r"Jean-Yves Le Boudec": (r"Jean-Yves {Le Boudec}", r"LeBoudec"),
     r"S[ée]bastien Le Henaff": (r"S{\'e}bastien {Le Henaff}", r"LeHenaff"),
