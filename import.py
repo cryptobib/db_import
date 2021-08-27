@@ -93,6 +93,7 @@ author_subs_re = {
     r"C. Caballero-Gil": (r"C{\'a}ndido {Caballero-Gil}", r"Caballero-Gil"),
     r"C[áa]ndido Caballero-Gil": (r"C{\'a}ndido {Caballero-Gil}", r"Caballero-Gil"),
     r"Pino Caballero-Gil": (r"Pino {Caballero-Gil}", r"Caballero-Gil"),
+    r"Jos[ée] Cabrero-Holgueras": (r"Jos{\'e} {Cabrero-Holgueras}", r"Cabrero-Holgueras"),
     r"C[ée]cile Canovas-Dumas": (r"C{\'e}cile {Canovas-Dumas}", r"Canovas-Dumas"),
     r"Keren Censor-Hillel": (r"Keren {Censor-Hillel}", r"Censor-Hillel"),
     r"Daniel Cervantes-V[áa]zquez": (r"Daniel {Cervantes-V{\'a}zquez}", r"Cervantes-Vazquez"),
@@ -154,6 +155,7 @@ author_subs_re = {
     r"Roberto [Dd]i Pietro": (r"Roberto {Di Pietro}", r"DiPietro"),
     r"Matteo [Dd]i Pirro": (r"Matteo {Di Pirro}", r"DiPirro"),
     r"Mario [Dd]i Raimondo": (r"Mario {Di Raimondo}", r"DiRaimondo"),
+    r"Giorgio [Dd]i Tizio": (r"Giorgio {Di Tizio}", r"DiTizio"),
     r"Jerome [Dd]i-Battista": (r"Jerome {Di-Battista}", r"Di-Battista"),
     r"Guilherme [Dd]ias da Fonseca": (r"Guilherme {Dias da Fonseca}", r"DiasdaFonseca"),
     r"Jes[úu]s E. D[íi]az-Verdejo": (r"Jes{\'u}s E. {D{\'\i}az-Verdejo}", r"Diaz-Verdejo"),
@@ -235,6 +237,7 @@ author_subs_re = {
     r"Eleftherios Kokoris-Kogias": (r"Eleftherios {Kokoris-Kogias}", r"Kokoris-Kogias"),
     r"Lauri Kort-Parn": (r"Lauri {Kort-Parn}", r"Kort-Parn"),
     r"Greg Kroah-Hartman": (r"Greg {Kroah-Hartman}", r"Kroah-Hartman"),
+    r"Sophie Kuebler-Wachendorff": (r"Sophie {Kuebler-Wachendorff}", r"Kuebler-Wachendorff"),
     r"Young Kun-Ko": (r"Young {Kun-Ko}", r"Kun-Ko"),
     r"S[ée]bastien Kunz-Jacques": (r"S{\'e}bastien {Kunz-Jacques}", r"Kunz-Jacques"),
 
@@ -322,6 +325,8 @@ author_subs_re = {
     r"Fr[ée]d[ée]ric de Portzamparc": (r"{Fr{\'e}d{\'e}ric de} Portzamparc", r"Portzamparc"),
     r"Fr[ée]d[ée]ric Urvoy de Portzamparc": (r"{Fr{\'e}d{\'e}ric de} Portzamparc", r"Portzamparc"),
     r"Deike Priemuth-Schmid": (r"Deike {Priemuth-Schmid}", r"Priemuth-Schmid"),
+
+    r"I[ñn]igo Querejeta-Azurmendi": (r"I{\~n}igo {Querejeta-Azurmendi}", r"Querejeta-Azurmendi"),
 
     r"Andrew Read-McFarland": (r"Andrew {Read-McFarland}", r"Read-McFarland"),
     r"Arne Renkema-Padmos": (r"Arne {Renkema-Padmos}", r"Renkema-Padmos"),
