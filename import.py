@@ -817,7 +817,7 @@ def run(confkey, year, dis, overwrite=False):
     fields_dblp = conf_dict["fields_dblp"]
     fields_add = dict(((key, subs(value)) for key, value in conf_dict["fields_add"].items()))
 
-    if conf_dict["type"] == "misc":
+    if conf_dict["type"] == "misc" and confkey != "EPRINT":
         encoding = "iso-8859-1"
     else:
         encoding = "utf-8"
