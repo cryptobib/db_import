@@ -838,10 +838,15 @@ def run(confkey, year, dis, overwrite=False):
     if conf_dict["type"] == "misc":
         # EPRINT
         for pub in reversed(list(
-                re.finditer('^<a href="[^"]*">([0-9]{4})/([0-9]{3,})</a>.*\n<dd><b>(.*?)</b>\n<dd><em>(.*?)</em>$',
-                            html_conf, re.MULTILINE))):
+                re.finditer(
+                    r'^\s+<div><a href="[^"]*">([0-9]{4})/([0-9]{3,})</a></div>\n\s+'
+                    r'<div class="ms-5 mb-1">'
+                    r'<strong>(.*?)</strong><br>\n\s+<em>(.*?)</em>$',
+                    html_conf, re.MULTILINE))):
             # reversed = to have the a/b/c in the correct order
             entry = {"year": pub.group(1)}
+            if int(entry["year"]) < year:
+                continue
             eprint_id = pub.group(2)
             entry["title"] = html_to_bib_value(
                 make_brackets_balanced(fix_eprint_spaces(html.unescape(pub.group(3)))),
