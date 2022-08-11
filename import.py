@@ -534,11 +534,16 @@ def strip_accents(s):
 # http://stackoverflow.com/questions/4578912/replace-all-accented-characters-by-their-latex-equivalent
 translation_table = {}
 for line in open('utf8ienc.dtx'):
-    m = re.match(r'%.*\DeclareUnicodeCharacter\{(\w+)\}\{(.*)\}', line)
+    m = re.search(r'\\DeclareUnicodeCharacter\{([0-9A-F]+)\}\{(.*)\}', line)
     if m:
         codepoint, latex = m.groups()
         latex = latex.replace('@tabacckludge', '')  # remove useless (??) '@tabacckludge'
         translation_table[int(codepoint, 16)] = "{" + str(latex) + "}"
+# Let latex handle fancy quotes natively
+translation_table[0x2018] = "'"
+translation_table[0x2019] = "'"
+translation_table[0x201c] = "``"
+translation_table[0x201d] = "''"
 # remove \i which is no more used and create issues https://tex.stackexchange.com/a/385250/34384
 # https://github.com/cryptobib/db/issues/96
 translation_table[0x00ec] = r"{\`i}"
