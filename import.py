@@ -240,6 +240,7 @@ author_subs_re = {
     r"Sophie Kuebler-Wachendorff": (r"Sophie {Kuebler-Wachendorff}", r"Kuebler-Wachendorff"),
     r"Young Kun-Ko": (r"Young {Kun-Ko}", r"Kun-Ko"),
     r"S[ée]bastien Kunz-Jacques": (r"S{\'e}bastien {Kunz-Jacques}", r"Kunz-Jacques"),
+    r"Alptekin K[üu]p[çc][üu]": (r"Alptekin K{\"u}p{\c c}{\"u}", r"Kupcu"),
 
     r"H. Andr[ée]s Lagar-Cavilla": (r"H. Andr{\'e}s {Lagar-Cavilla}", r"Lagar-Cavilla"),
     r"Sophie Lambert-Lacroix": (r"Sophie {Lambert-Lacroix}", r"Lambert-Lacroix"),
