@@ -1156,9 +1156,14 @@ def run(confkey, year, dis, overwrite=False, volume=None):
         else:
             howpublished = ""
         if "number" in e:
-            num = 99999 - int(e["number"])
+            if e["number"].isnumeric():
+                # we reverse order of numbers, when it is an integer
+                num = "{:0>5d}".format(99999 - int(e["number"]))
+            else:
+                # when it is not an integer, we do what we can, that is just use it as is...
+                num = "{:5s}".format(e["number"])
         else:
-            num = 0
+            num = "00000"
         if "pages" in e:
             if e["pages"].isdigit():
                 pages = e["pages"]
@@ -1166,7 +1171,7 @@ def run(confkey, year, dis, overwrite=False, volume=None):
                 pages = e["pages"][1:-1].split("--")[0]
         else:
             pages = "0"
-        return "{:0>5d}-{:>10}-{}".format(num, pages, howpublished)
+        return "{}-{:>10}-{}".format(num, pages, howpublished)
 
     for key, e in sorted(iter(entries.items()), key=sort_pages):
         fields_add_cur = fields_add.copy()
