@@ -794,7 +794,7 @@ def can_write(filename, overwrite=False):
     return True
 
 
-def run(confkey, year, dis, overwrite=False):
+def run(confkey, year, dis, overwrite=False, volume=None):
     """ overwrite: if True, overwrite files """
 
     short_year = "{0:02d}".format(year % 100)
@@ -803,10 +803,8 @@ def run(confkey, year, dis, overwrite=False):
     else:
         url_year = year
     conf_dict = confs[confkey]
-    if conf_dict["type"] == "journal":
+    if conf_dict["type"] == "journal" and volume is None:
         volume = year - conf_dict["first_year"] + 1
-    else:
-        volume = None
 
     def subs(s):
         """ replace ${...} in confs information """
@@ -953,6 +951,7 @@ def main():
     parser.add_argument("-f", dest="overwrite", action="store_true", help="overwrite existing files")
     parser.add_argument("confyears", metavar="confyear", type=str,
                         help="list of conferences (ex.: C2012 AC11 STOC95 C2013-1)", nargs="*")
+    parser.add_argument("--volume", dest="volume", type=int, help="overwrite the the automatic volume number computation (by default computed from the year using, useful for journals such as DCC that do not have volume numbers matching years)")
     args = parser.parse_args()
 
     for conf_year in args.confyears:
@@ -970,7 +969,7 @@ def main():
             year += 1900
         short_year = "{0:02d}".format(year % 100)
 
-        run(confkey, year, dis, overwrite=args.overwrite)
+        run(confkey, year, dis, overwrite=args.overwrite, volume=args.volume)
 
 
 if __name__ == "__main__":
