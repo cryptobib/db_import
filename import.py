@@ -1019,6 +1019,7 @@ def run(confkey, year, dis, overwrite=False, volume=None):
     conf_dict = confs[confkey]
     if conf_dict["type"] == "journal" and volume is None:
         volume = year - conf_dict["first_year"] + 1
+        logging.info("Guessed volume to be {}. If incorrect, fix using option `--volume`.".format(volume))
 
     def subs(s):
         """replace ${...} in confs information"""
