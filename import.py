@@ -417,7 +417,7 @@ author_subs_re = {
     r"Emerson R. Murphy-Hill": (r"Emerson R. {Murphy-Hill}", r"Murphy-Hill"),
     r"Guillermo Navarro-Arribas": (r"Guillermo {Navarro-Arribas}", r"Navarro-Arribas"),
     r"Mar[ií]a Naya-Plasencia": (r"Mar{\'i}a {Naya-Plasencia}", r"Naya-Plasencia"),
-    r"Mat[uú]s Nemec": (r"Matus Nemec", r"Nemec"),
+    r"Mat[uú][sš] Nemec": (r"Matus Nemec", r"Nemec"),
     r"Cristina Nita-Rotaru": (r"Cristina {Nita-Rotaru}", r"Nita-Rotaru"),
     r"Juan Arturo Nolazco-Flores": (r"Juan Arturo {Nolazco-Flores}", r"Nolazco-Flores"),
     r"Eduardo Ochoa-Jim[ée]nez": (r"Eduardo {Ochoa-Jim{\'e}nez}", r"Ochoa-Jimenez"),
