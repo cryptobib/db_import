@@ -5,7 +5,6 @@ RANDOM / APPROX
 Journals:
 Journal of the ACM
 Commnications of the ACM
-Designs, Codes and Cryptography
 SIAM Journal of Computing
 IET Information Security
 Theoretical Computer Science
