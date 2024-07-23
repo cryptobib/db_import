@@ -738,14 +738,15 @@ def strip_accents(s):
 # Translation table from UTF8 to pure latex symbols
 # http://stackoverflow.com/questions/4578912/replace-all-accented-characters-by-their-latex-equivalent
 translation_table = {}
-for line in open("utf8ienc.dtx"):
-    m = re.search(r"\\DeclareUnicodeCharacter\{([0-9A-F]+)\}\{(.*)\}", line)
-    if m:
-        codepoint, latex = m.groups()
-        latex = latex.replace(
-            "@tabacckludge", ""
-        )  # remove useless (??) '@tabacckludge'
-        translation_table[int(codepoint, 16)] = "{" + str(latex) + "}"
+with open("utf8ienc.dtx") as f:
+    for line in f:
+        m = re.search(r"\\DeclareUnicodeCharacter\{([0-9A-F]+)\}\{(.*)\}", line)
+        if m:
+            codepoint, latex = m.groups()
+            latex = latex.replace(
+                "@tabacckludge", ""
+            )  # remove useless (??) '@tabacckludge'
+            translation_table[int(codepoint, 16)] = "{" + str(latex) + "}"
 # Let latex handle fancy quotes natively
 translation_table[0x2018] = "'"
 translation_table[0x2019] = "'"
@@ -777,9 +778,9 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
     waitsec = 60
     while True:
         try:
-            f = urllib.request.urlopen(url)
-            content = f.read().decode(encoding)
-            return content
+            with urllib.request.urlopen(url) as f:
+                content = f.read().decode(encoding)
+                return content
         except urllib.error.HTTPError as e:
             if e.code == 429:
                 logging.warning(
@@ -823,7 +824,7 @@ def make_brackets_balanced(s):
 
     o = 0
     for d in delete:
-        s = s[0 : d + o] + s[d + o + 1 :]
+        s = s[0: d + o] + s[d + o + 1:]
         o -= 1
 
     return s + "}" * level
@@ -853,20 +854,20 @@ def authors_to_key(authors_last_names, confkey, short_year):
     elif len(authors_last_names) <= 3:
         # the key contains the first three letters of each last name
         return (
-            confkey
-            + ":"
-            + "".join(strip_accents(a)[:3] for a in authors_last_names)
-            + str(short_year)
+                confkey
+                + ":"
+                + "".join(strip_accents(a)[:3] for a in authors_last_names)
+                + str(short_year)
         )
     else:
         # the key contains the first letter of the first siz authors
         if len(authors_last_names) >= 6:
             authors = authors_last_names[:6]
         return (
-            confkey
-            + ":"
-            + "".join(strip_accents(a)[0] for a in authors_last_names)
-            + str(short_year)
+                confkey
+                + ":"
+                + "".join(strip_accents(a)[0] for a in authors_last_names)
+                + str(short_year)
         )
 
 
@@ -893,18 +894,18 @@ def html_to_bib_value(s, title=False):
                 if not pattern_normal_case.search(s[i]):
                     s[i] = "{" + s[i] + "}"
                 elif (
-                    len(s[i]) > 0
-                    and punctuation_followed_by_upper_case.search(s[i - 1])
-                    and s[i][0].isalpha()
-                    and s[i][0].isupper()
+                        len(s[i]) > 0
+                        and punctuation_followed_by_upper_case.search(s[i - 1])
+                        and s[i][0].isalpha()
+                        and s[i][0].isupper()
                 ):
                     # Protect the first letter after . or ? or !
                     s[i] = "{" + s[i][0] + "}" + s[i][1:]
                 elif (
-                    i == 2
-                    and s[i - 1] in ["(", '"']
-                    and s[i][0].isalpha()
-                    and s[i][0].isupper()
+                        i == 2
+                        and s[i - 1] in ["(", '"']
+                        and s[i][0].isalpha()
+                        and s[i][0].isupper()
                 ):
                     # Protect the first letter of the first word if the title starts with a parenthesis or a quote
                     # in that case s[0] = "" and s[1] = "("
@@ -1089,15 +1090,15 @@ def run(confkey, year, dis, overwrite=False, volume=None):
     if conf_dict["type"] == "misc":
         # EPRINT
         for pub in reversed(
-            list(
-                re.finditer(
-                    r'^\s+<div><a href="[^"]*">([0-9]{4})/([0-9]{3,})</a></div>\n\s+'
-                    r'<div class="ms-5 mb-1">'
-                    r"<strong>(.*?)</strong><br>\n\s+<em>(.*?)</em>$",
-                    html_conf,
-                    re.MULTILINE,
+                list(
+                    re.finditer(
+                        r'^\s+<div><a href="[^"]*">([0-9]{4})/([0-9]{3,})</a></div>\n\s+'
+                        r'<div class="ms-5 mb-1">'
+                        r"<strong>(.*?)</strong><br>\n\s+<em>(.*?)</em>$",
+                        html_conf,
+                        re.MULTILINE,
+                    )
                 )
-            )
         ):
             # reversed = to have the a/b/c in the correct order
             entry = {"year": pub.group(1)}
@@ -1139,8 +1140,8 @@ def run(confkey, year, dis, overwrite=False, volume=None):
     else:
         # DBLP
         for pub in re.finditer(
-            r'href="(https://dblp.uni-trier.de/rec/(?:bibtex/|xml/|)(?:conf|journals)/[^"]*.xml)"',
-            html_conf,
+                r'href="(https://dblp.uni-trier.de/rec/(?:bibtex/|xml/|)(?:conf|journals)/[^"]*.xml)"',
+                html_conf,
         ):
             url_pub = pub.group(1)
             logging.info("Parse: <{}>".format(url_pub))
@@ -1165,10 +1166,6 @@ def run(confkey, year, dis, overwrite=False, volume=None):
     # write result !
     filename = "{}{}{}.bib".format(confkey, short_year, dis)
     logging.info('Write "{0}"'.format(filename))
-    if not can_write(filename, overwrite):
-        return
-    f = open(filename, "w")
-
     pattern_eprint = re.compile(r"^\"Cryptology ePrint Archive, Report (\d*)/(\d*)\"")
 
     def sort_pages(xxx_todo_changeme):
@@ -1204,12 +1201,14 @@ def run(confkey, year, dis, overwrite=False, volume=None):
             pages = "0"
         return "{}-{:>10}-{}".format(num, pages, howpublished)
 
-    for key, e in sorted(iter(entries.items()), key=sort_pages):
-        fields_add_cur = fields_add.copy()
-        if "month" in fields_add_cur and fields_add_cur["month"] == "%months":
-            fields_add_cur["month"] = conf_dict["months"][int(e["number"]) - 1]
-        write_entry(f, key, dict(fields_add_cur, **e), entry_type)
-    f.close()
+    if not can_write(filename, overwrite):
+        return
+    with open(filename, "w") as f:
+        for key, e in sorted(iter(entries.items()), key=sort_pages):
+            fields_add_cur = fields_add.copy()
+            if "month" in fields_add_cur and fields_add_cur["month"] == "%months":
+                fields_add_cur["month"] = conf_dict["months"][int(e["number"]) - 1]
+            write_entry(f, key, dict(fields_add_cur, **e), entry_type)
 
 
 def main():
@@ -1221,7 +1220,7 @@ def main():
         "confyears",
         metavar="confyear",
         type=str,
-        help="list of conferences (ex.: C2012 AC11 STOC95 C2013-1)",
+        help="list of conferences (ex.: C2012 AC11 STOC95 C2013-1 EPRINT24)",
         nargs="*",
     )
     parser.add_argument(
@@ -1229,7 +1228,8 @@ def main():
         dest="volume",
         type=int,
         help="overwrite the the automatic volume number computation "
-             "(by default computed from the year using, useful for journals such as DCC that do not have volume numbers matching years)",
+             "(by default computed from the year using, "
+             "useful for journals such as DCC that do not have volume numbers matching years)",
     )
     args = parser.parse_args()
 
@@ -1237,7 +1237,7 @@ def main():
         res = re.search(r"^([a-zA-Z]+)([0-9]{2,4})([a-zA-Z0-9_-]*)$", conf_year)
         if res is None:
             logging.error(
-                'bad format for conference "{0}" (ex.: C2012 AC11 STOC95 C2013-1)'.format(
+                'bad format for conference "{0}" (ex.: C2012 AC11 STOC95 C2013-1 EPRINT24)'.format(
                     conf_year
                 )
             )
