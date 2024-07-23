@@ -1116,7 +1116,7 @@ def run(confkey, year, dis, overwrite=False, volume=None):
             entry["howpublished"] = '"Cryptology ePrint Archive, Report {}/{}"'.format(
                 entry["year"], eprint_id
             )
-            entry["note"] = '"\\url{{https://eprint.iacr.org/{}/{}}}"'.format(
+            entry["url"] = '"https://eprint.iacr.org/{}/{}"'.format(
                 entry["year"], eprint_id
             )
             entry["author"] = html_to_bib_value(
