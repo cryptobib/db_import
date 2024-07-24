@@ -860,9 +860,9 @@ def authors_to_key(authors_last_names, confkey, short_year):
                 + str(short_year)
         )
     else:
-        # the key contains the first letter of the first siz authors
+        # the key contains the first letter of the first six authors
         if len(authors_last_names) >= 6:
-            authors = authors_last_names[:6]
+            authors_last_names = authors_last_names[:6]
         return (
                 confkey
                 + ":"
