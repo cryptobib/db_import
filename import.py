@@ -168,7 +168,7 @@ author_subs_re = {
     r"Ronald [dD]e Wolf": (r"Ronald {de Wolf}", r"deWolf"),
     r"Thomas Debris-Alazard": (r"Thomas {Debris-Alazard}", r"Debris-Alazard"),
     r"Martin Dehnel-Wild": (r"Martin {Dehnel-Wild}", r"Dehnel-Wild"),
-    r"Rafa[ëe]l del Pino": (r"Rafaël {del Pino}", r"delPino"),
+    r"Rafa[ëe]l [dD]el Pino": (r"Rafael {del Pino}", r"delPino"),
     r"Romar B. dela Cruz": (r"Romar B. {dela Cruz}", r"delaCruz"),
     r"Antoine Delignat-Lavaud": (r"Antoine {Delignat-Lavaud}", r"Delignat-Lavaud"),
     r"Sergi Delgado-Segura": (r"Sergi {Delgado-Segura}", r"Delgado-Segura"),
