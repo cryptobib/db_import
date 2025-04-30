@@ -970,12 +970,18 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                 if val[-1] == ".":
                     val = val[:-1]
             entry[e.tag] = html_to_bib_value(val, title=(e.tag == "title"))
-        if e.tag == "ee" and "doi" in fields:
+        elif e.tag == "ee" and "doi" in fields:
+            # Try to parse out a DOI out of the ee field.
             doi_ee_re = re.compile(r"^https?://(?:(?:dx.)?doi.org|doi.acm.org)/(.*)$")
             p = doi_ee_re.match(e.text)
             if p:
                 if "doi" not in entry:
                     entry["doi"] = html_to_bib_value(p.group(1))
+            else:
+                # If it does not look like a DOI, keep it as a URL
+                if "url" not in entry:
+                    entry["url"] = html_to_bib_value(str(e.text))
+
 
     authors_bibtex = [a[0] for a in authors]
     entry["author"] = html_to_bib_value((" and \n" + " " * 18).join(authors_bibtex))
