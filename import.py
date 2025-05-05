@@ -932,7 +932,7 @@ re_pages = re.compile(
 )  # LIPIcs uses pages of the form "5:1-5:10"
 
 
-def xml_to_entry(xml, confkey, entry_type, fields, short_year):
+def xml_to_entry(xml, confkey, entry_type, fields, short_year, use_ee_as_url):
     """transform a DBLP xml entry of type "entry_type" into a dictionnary ready to be output as bibtex"""
     try:
         tree = XML(xml)
@@ -978,8 +978,8 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year):
                 if "doi" not in entry:
                     entry["doi"] = html_to_bib_value(p.group(1))
             else:
-                # If it does not look like a DOI, keep it as a URL
-                if "url" not in entry:
+                # If it does not look like a DOI and if use_ee_as_url=True, keep it as a URL
+                if use_ee_as_url and "url" not in entry:
                     entry["url"] = html_to_bib_value(str(e.text))
 
 
@@ -1152,7 +1152,8 @@ def run(confkey, year, dis, overwrite=False, volume=None):
             url_pub = pub.group(1)
             logging.info("Parse: <{}>".format(url_pub))
             xml = get_url(url_pub)
-            key, entry = xml_to_entry(xml, confkey, entry_type, fields_dblp, short_year)
+            key, entry = xml_to_entry(xml, confkey, entry_type, fields_dblp, short_year,
+                                      use_ee_as_url=conf_dict["use_ee_as_url"])
 
             if key is None:
                 continue
