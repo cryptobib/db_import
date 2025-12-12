@@ -777,7 +777,7 @@ def unicode_to_latex(s):
 
 def get_url(url, exit_on_failure=True, encoding="utf-8"):
     """return the content of the url (in unicode)"""
-    waitsec = 60
+    waitsec = 15
     while True:
         try:
             with urllib.request.urlopen(url) as f:
