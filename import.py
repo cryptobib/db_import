@@ -128,6 +128,7 @@ author_subs_re = {
     r"Hubert Comon-Lundh": (r"Hubert {Comon-Lundh}", r"Comon-Lundh"),
     r"Daniele Cono D'Elia": (r"Daniele {Cono D'Elia}", r"ConoDElia"),
     r"Henry Corrigan-Gibbs": (r"Henry {Corrigan-Gibbs}", r"Corrigan-Gibbs"),
+    r"Maria Corte-Real Santos": (r"Maria {Corte-Real Santos}", r"Corte-RealSantos"),
     r"Masashi Crete-Nishihata": (r"Masashi {Crete-Nishihata}", r"Crete-Nishihata"),
     r"Nora Cuppens-Boulahia": (r"Nora {Cuppens-Boulahia}", r"Cuppens-Boulahia"),
     r"Dana Dachman-Soled": (r"Dana {Dachman-Soled}", r"Dachman-Soled"),
@@ -241,6 +242,10 @@ author_subs_re = {
     r"Beltran Borja Fiz Pontiveros": (
         r"Beltran Borja {Fiz Pontiveros}",
         r"FizPontiveros",
+    ),
+    r"Antonio Fl[óo]rez-Guti[ée]rrez": (
+        r"Antonio {Fl{\'o}rez-Guti{\'e}rrez}",
+        r"Florez-Gutierrez",
     ),
     r"Eli Fox-Epstein": (r"Eli {Fox-Epstein}", r"Fox-Epstein"),
     r"Amparo F[úu]ster-Sabater": (r"Amparo {F{\'u}ster-Sabater}", r"Fuster-Sabater"),
