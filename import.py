@@ -785,7 +785,14 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
     waitsec = 15
     while True:
         try:
-            with urllib.request.urlopen(url) as f:
+            req = urllib.request.Request(
+                url,
+                # need to pretend to be Mozilla to avoid 403 on eprint
+                headers={
+                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+                }
+            )
+            with urllib.request.urlopen(req) as f:
                 content = f.read().decode(encoding)
                 return content
         except urllib.error.HTTPError as e:
