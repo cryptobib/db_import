@@ -796,20 +796,26 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
                 content = f.read().decode(encoding)
                 return content
         except urllib.error.HTTPError as e:
-            if e.code == 429:
-                logging.warning(
-                    'Error 429 on URL: "{}"\n\tReason: {}\n\tWait {}s'.format(
-                        url, e.reason, waitsec
-                    )
+            # Sometimes requests to DBLP timeout instead of 429,
+            # so we re-try in all cases, even if the error is not 429
+            # The user is responsible to kill the program if this is not appropriate 
+            logging.warning(
+                'Error {} on URL: "{}"\n\tReason: {}\n\tWaiting {}s and retrying'.format(
+                    e.code, url, e.reason, waitsec
                 )
-                time.sleep(waitsec)
-                waitsec *= 2
-            else:
-                logging.exception('Error {} on URL: "{}"'.format(e.code, url))
-                if exit_on_failure:
-                    sys.exit(1)
-                else:
-                    return None
+            )
+            time.sleep(waitsec)
+            waitsec *= 2
+        except urllib.error.URLError as e:
+            # Sometimes requests to DBLP fails at the SSL level
+            # yielding an URLError instead of an HTTPError
+            logging.warning(
+                'Unknown Error on URL: "{}"\n\tReason: {}\n\tWaiting {}s and retrying'.format(
+                    url, e.reason, waitsec
+                )
+            )
+            time.sleep(waitsec)
+            waitsec *= 2
 
 
 pattern_split_authors = re.compile(r"\s+and\s+|,\s+and|,\s+")
