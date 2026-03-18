@@ -27,6 +27,7 @@ from unidecode import unidecode
 import os.path
 import argparse
 import html.parser
+import http
 
 from config import *
 
@@ -814,6 +815,12 @@ def get_url(url, exit_on_failure=True, encoding="utf-8"):
                     url, e.reason, waitsec
                 )
             )
+            time.sleep(waitsec)
+            waitsec *= 2
+
+        except http.client.RemoteDisconnected as e:
+            # Sometimes it just terminates
+            logging.warning("Remote host disconnected on URL: \"{}\"\n\tWaiting {}s and retrying".format(url, waitsec))
             time.sleep(waitsec)
             waitsec *= 2
 
