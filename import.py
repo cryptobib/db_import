@@ -695,6 +695,7 @@ author_subs_re = {
     r"Marcos A. Simpl[íi]cio Jr.": (r"Marcos A. {Simpl{\'i}cio Jr.}", r"SimplicioJr"),
     r"Guy L. Steele Jr.": (r"Guy L. {Steele Jr.}", r"SteeleJr"),
     r"Samuel S. Wagstaff Jr.": (r"Samuel S. {Wagstaff Jr.}", r"WagstaffJr"),
+    r"Marc Ilunga Tshibumbu Mukendi": (r"Marc {Ilunga Tshibumbu Mukendi}", r"Ilunga"),
 }
 
 author_subs_re_compiled = {re.compile(r): s for r, s in author_subs_re.items()}
