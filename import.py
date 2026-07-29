@@ -28,8 +28,20 @@ import os.path
 import argparse
 import html.parser
 import http
+import gzip
 
 from config import *
+
+# Local DBLP XML dump (see fetch_dblp_dump.py), used instead of hitting
+# dblp.org once per publication.
+DBLP_DUMP_DIR = os.environ.get("DBLP_DUMP_DIR", os.path.join(scriptdir, "dblp-dump"))
+DBLP_DUMP_GZ = os.path.join(DBLP_DUMP_DIR, "dblp.xml.gz")
+DBLP_DUMP_DTD = os.path.join(DBLP_DUMP_DIR, "dblp.dtd")
+
+DBLP_RECORD_TAGS = {
+    "article", "inproceedings", "proceedings", "book", "incollection",
+    "phdthesis", "mastersthesis", "www", "data",
+}
 
 logging_colorer.init()
 logging.basicConfig(level=logging.DEBUG)
@@ -959,19 +971,55 @@ re_pages = re.compile(
     r"^([0-9:]*)(--?([0-9:]*))?$"
 )  # LIPIcs uses pages of the form "5:1-5:10"
 
+re_dtd_entity = re.compile(r'<!ENTITY\s+(\w+)\s+"&#(\d+);"\s*>')
 
-def xml_to_entry(xml, confkey, entry_type, fields, short_year, use_ee_as_url):
-    """transform a DBLP xml entry of type "entry_type" into a dictionnary ready to be output as bibtex"""
-    try:
-        tree = XML(xml)
-    except ElementTree.ParseError as e:
-        logging.exception("XML Parsing Error")
-        return None, None
-    elt = tree.find(entry_type.lower())
-    if elt is None:
-        logging.warning('Entry type is not "{0}"'.format(entry_type))
-        return None, None
 
+def load_dtd_entities(dtd_path):
+    """parse the numeric-character-reference entities dblp.dtd defines (e.g. &Aacute; -> chr(193))"""
+    with open(dtd_path, encoding="ascii") as f:
+        return {m.group(1): chr(int(m.group(2))) for m in re_dtd_entity.finditer(f.read())}
+
+
+def lookup_dblp_records(gz_path, dtd_entities, wanted_keys):
+    """stream the local dblp.xml.gz dump once, returning {key: Element} for the requested keys found"""
+    wanted = set(wanted_keys)
+    found = {}
+    if not wanted:
+        return found
+    parser = xml.etree.ElementTree.XMLParser()
+    parser.entity.update(dtd_entities)
+    with gzip.open(gz_path, "rb") as f:
+        context = ElementTree.iterparse(f, events=("start", "end"), parser=parser)
+        _, root = next(context)
+        n = 0
+        for event, elem in context:
+            if event != "end" or elem.tag not in DBLP_RECORD_TAGS:
+                continue
+            key = elem.get("key")
+            if key in wanted:
+                found[key] = elem
+                wanted.discard(key)
+                if not wanted:
+                    break
+            else:
+                elem.clear()
+            n += 1
+            if n % 500000 == 0:
+                root.clear()
+                logging.info(
+                    "Scanned {} dblp dump records, {} key(s) left to find...".format(n, len(wanted))
+                )
+    if wanted:
+        logging.warning(
+            "{} key(s) not found in local dblp dump (maybe too recent, falling back to live fetch): {}".format(
+                len(wanted), ", ".join(sorted(wanted))
+            )
+        )
+    return found
+
+
+def entry_from_elt(elt, confkey, entry_type, fields, short_year, use_ee_as_url):
+    """transform a parsed DBLP xml element (article/inproceedings/...) into a dictionnary ready to be output as bibtex"""
     entry = {}
     authors = []  # list of pairs (full author name, last name for BibTeX key)
     pages_error = None
@@ -1021,6 +1069,23 @@ def xml_to_entry(xml, confkey, entry_type, fields, short_year, use_ee_as_url):
         logging.error('Entry "{}": error in pages ("{}")'.format(key, pages_error))
 
     return key, entry
+
+
+def xml_to_entry(xml, confkey, entry_type, fields, short_year, use_ee_as_url):
+    """transform a live-fetched DBLP xml document into a dictionnary ready to be output as bibtex
+
+    (fallback path for keys missing from the local dump, e.g. too recent)
+    """
+    try:
+        tree = XML(xml)
+    except ElementTree.ParseError as e:
+        logging.exception("XML Parsing Error")
+        return None, None
+    elt = tree.find(entry_type.lower())
+    if elt is None:
+        logging.warning('Entry type is not "{0}"'.format(entry_type))
+        return None, None
+    return entry_from_elt(elt, confkey, entry_type, fields, short_year, use_ee_as_url)
 
 
 def write_entry(f, key, entry, entry_type):
@@ -1173,15 +1238,43 @@ def run(confkey, year, dis, overwrite=False, volume=None):
                 entries[key] = entry
     else:
         # DBLP
+        if not (os.path.exists(DBLP_DUMP_GZ) and os.path.exists(DBLP_DUMP_DTD)):
+            logging.error(
+                'Local DBLP dump not found in "{0}".\n'
+                "Run `python3 fetch_dblp_dump.py` first to download it "
+                "(see db_import/fetch_dblp_dump.py --help).".format(DBLP_DUMP_DIR)
+            )
+            sys.exit(1)
+
+        pubs = []
+        wanted_keys = set()
         for pub in re.finditer(
                 r'href="(https://dblp.uni-trier.de/rec/(?:bibtex/|xml/|)(?:conf|journals)/[^"]*.xml)"',
                 html_conf,
         ):
             url_pub = pub.group(1)
-            logging.info("Parse: <{}>".format(url_pub))
-            xml = get_url(url_pub)
-            key, entry = xml_to_entry(xml, confkey, entry_type, fields_dblp, short_year,
-                                      use_ee_as_url=conf_dict["use_ee_as_url"])
+            m = re.search(r'/rec/(?:bibtex/|xml/|)((?:conf|journals)/[^"]*)\.xml$', url_pub)
+            key_dblp = m.group(1)
+            pubs.append((key_dblp, url_pub))
+            wanted_keys.add(key_dblp)
+
+        logging.info("Looking up {} publication(s) in local DBLP dump...".format(len(wanted_keys)))
+        dtd_entities = load_dtd_entities(DBLP_DUMP_DTD)
+        elements = lookup_dblp_records(DBLP_DUMP_GZ, dtd_entities, wanted_keys)
+
+        for key_dblp, url_pub in pubs:
+            elt = elements.get(key_dblp)
+            if elt is not None:
+                if elt.tag != entry_type.lower():
+                    logging.warning('Entry type of "{0}" is not "{1}"'.format(key_dblp, entry_type))
+                    continue
+                key, entry = entry_from_elt(elt, confkey, entry_type, fields_dblp, short_year,
+                                             use_ee_as_url=conf_dict["use_ee_as_url"])
+            else:
+                logging.info("Not in local dump, falling back to live fetch: <{}>".format(url_pub))
+                xml = get_url(url_pub)
+                key, entry = xml_to_entry(xml, confkey, entry_type, fields_dblp, short_year,
+                                          use_ee_as_url=conf_dict["use_ee_as_url"])
 
             if key is None:
                 continue
