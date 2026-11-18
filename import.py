@@ -1018,6 +1018,52 @@ def lookup_dblp_records(gz_path, dtd_entities, wanted_keys):
     return found
 
 
+def scan_dblp_dump_by_toc(gz_path, dtd_entities, toc_paths, tag, any_volume=False):
+    """stream the whole local dblp.xml.gz dump, returning {suffix: {key: Element}} for all records of type "tag"
+    whose <url> points to one of the given table-of-contents pages (e.g. "db/conf/crypto/crypto2023-1.html")
+
+    suffix is "" for the given pages themselves
+    any_volume: if True, also match the per-volume pages of multi-volume proceedings
+    (e.g. "db/conf/crypto/crypto2023-1.html" for "db/conf/crypto/crypto2023.html"), with suffix "-1", "-2", ...
+
+    (used by --offline, instead of scraping the table of contents from dblp.org)
+    """
+    toc_paths = set(toc_paths)
+    volume_re = re.compile(r"^(.*)(-[0-9]+)\.html$")
+    found = {}
+    nb_found = 0
+    parser = xml.etree.ElementTree.XMLParser()
+    parser.entity.update(dtd_entities)
+    with gzip.open(gz_path, "rb") as f:
+        context = ElementTree.iterparse(f, events=("start", "end"), parser=parser)
+        _, root = next(context)
+        n = 0
+        for event, elem in context:
+            if event != "end" or elem.tag not in DBLP_RECORD_TAGS:
+                continue
+            suffix = None
+            if elem.tag == tag:
+                toc_path = (elem.findtext("url") or "").split("#")[0]
+                if toc_path in toc_paths:
+                    suffix = ""
+                elif any_volume:
+                    m = volume_re.match(toc_path)
+                    if m is not None and m.group(1) + ".html" in toc_paths:
+                        suffix = m.group(2)
+            if suffix is not None:
+                found.setdefault(suffix, {})[elem.get("key")] = elem
+                nb_found += 1
+            else:
+                elem.clear()
+            n += 1
+            if n % 500000 == 0:
+                root.clear()
+                logging.info(
+                    "Scanned {} dblp dump records, {} matching record(s) found so far...".format(n, nb_found)
+                )
+    return found
+
+
 def entry_from_elt(elt, confkey, entry_type, fields, short_year, use_ee_as_url):
     """transform a parsed DBLP xml element (article/inproceedings/...) into a dictionnary ready to be output as bibtex"""
     entry = {}
@@ -1138,8 +1184,10 @@ def can_write(filename, overwrite=False):
     return True
 
 
-def run(confkey, year, dis, overwrite=False, volume=None):
-    """overwrite: if True, overwrite files"""
+def run(confkey, year, dis, overwrite=False, volume=None, offline=False, elements=None):
+    """overwrite: if True, overwrite files
+    offline: if True, do not fetch the table of contents from dblp.org, scan the local dump instead
+    elements: (offline only) records already found in the local dump, do not scan it again"""
 
     short_year = "{0:02d}".format(year % 100)
     if year < 2000:
@@ -1174,14 +1222,19 @@ def run(confkey, year, dis, overwrite=False, volume=None):
         encoding = "utf-8"
 
     html_conf = None
-    for url in confs[confkey]["url"]:
-        logging.info("Parse: <{}>".format(subs(url)))
-        html_conf = get_url(subs(url), False, encoding=encoding)
-        if html_conf is not None:
-            break
-    if html_conf is None:
-        logging.exception("No valid URL")
-        sys.exit(1)
+    if offline:
+        if conf_dict["type"] == "misc":
+            logging.error('Option --offline is not supported for "{0}" (not imported from DBLP)'.format(confkey))
+            sys.exit(1)
+    else:
+        for url in confs[confkey]["url"]:
+            logging.info("Parse: <{}>".format(subs(url)))
+            html_conf = get_url(subs(url), False, encoding=encoding)
+            if html_conf is not None:
+                break
+        if html_conf is None:
+            logging.exception("No valid URL")
+            sys.exit(1)
     entries = {}
     multiple_entries = {}
 
@@ -1246,21 +1299,49 @@ def run(confkey, year, dis, overwrite=False, volume=None):
             )
             sys.exit(1)
 
-        pubs = []
-        wanted_keys = set()
-        for pub in re.finditer(
-                r'href="(https://dblp.uni-trier.de/rec/(?:bibtex/|xml/|)(?:conf|journals)/[^"]*.xml)"',
-                html_conf,
-        ):
-            url_pub = pub.group(1)
-            m = re.search(r'/rec/(?:bibtex/|xml/|)((?:conf|journals)/[^"]*)\.xml$', url_pub)
-            key_dblp = m.group(1)
-            pubs.append((key_dblp, url_pub))
-            wanted_keys.add(key_dblp)
-
-        logging.info("Looking up {} publication(s) in local DBLP dump...".format(len(wanted_keys)))
         dtd_entities = load_dtd_entities(DBLP_DUMP_DTD)
-        elements = lookup_dblp_records(DBLP_DUMP_GZ, dtd_entities, wanted_keys)
+        if offline:
+            if elements is None:
+                # records in the dump have <url>db/conf/.../xxx.html#anchor</url>, i.e., the table of contents page
+                toc_paths = {re.sub(r"^https?://[^/]+/", "", subs(url)) for url in conf_dict["url"]}
+                logging.info("Scanning local DBLP dump for: {}".format(", ".join(sorted(toc_paths))))
+                # without suffix, also look for the volumes of multi-volume proceedings (C2024-1, C2024-2, ...)
+                elements_by_dis = scan_dblp_dump_by_toc(
+                    DBLP_DUMP_GZ, dtd_entities, toc_paths, entry_type.lower(),
+                    any_volume=(dis == "" and conf_dict["type"] == "conf"),
+                )
+                if not elements_by_dis:
+                    logging.error(
+                        "No publication found in local DBLP dump for {} "
+                        "(not in the dump yet, or wrong suffix?)".format(", ".join(sorted(toc_paths)))
+                    )
+                    sys.exit(1)
+                if set(elements_by_dis) != {""}:
+                    all_dis = sorted(elements_by_dis, key=lambda d: int(d[1:] or 0))
+                    logging.info("Found multiple volumes: {}".format(
+                        ", ".join("{}{}{}".format(confkey, year, d) for d in all_dis)
+                    ))
+                    for d in all_dis:
+                        run(confkey, year, d, overwrite=overwrite, volume=volume, offline=True,
+                            elements=elements_by_dis[d])
+                    return
+                elements = elements_by_dis[""]
+            pubs = [(key_dblp, None) for key_dblp in elements]
+        else:
+            pubs = []
+            wanted_keys = set()
+            for pub in re.finditer(
+                    r'href="(https://dblp.uni-trier.de/rec/(?:bibtex/|xml/|)(?:conf|journals)/[^"]*.xml)"',
+                    html_conf,
+            ):
+                url_pub = pub.group(1)
+                m = re.search(r'/rec/(?:bibtex/|xml/|)((?:conf|journals)/[^"]*)\.xml$', url_pub)
+                key_dblp = m.group(1)
+                pubs.append((key_dblp, url_pub))
+                wanted_keys.add(key_dblp)
+
+            logging.info("Looking up {} publication(s) in local DBLP dump...".format(len(wanted_keys)))
+            elements = lookup_dblp_records(DBLP_DUMP_GZ, dtd_entities, wanted_keys)
 
         for key_dblp, url_pub in pubs:
             elt = elements.get(key_dblp)
@@ -1359,6 +1440,13 @@ def main():
              "(by default computed from the year using, "
              "useful for journals such as DCC that do not have volume numbers matching years)",
     )
+    parser.add_argument(
+        "--offline",
+        dest="offline",
+        action="store_true",
+        help="do not fetch the table of contents from dblp.org, "
+             "find the publications by scanning the whole local DBLP dump instead (slower)",
+    )
     args = parser.parse_args()
 
     for conf_year in args.confyears:
@@ -1379,7 +1467,7 @@ def main():
             year += 1900
         short_year = "{0:02d}".format(year % 100)
 
-        run(confkey, year, dis, overwrite=args.overwrite, volume=args.volume)
+        run(confkey, year, dis, overwrite=args.overwrite, volume=args.volume, offline=args.offline)
 
 
 if __name__ == "__main__":
