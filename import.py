@@ -365,6 +365,7 @@ author_subs_re = {
         r"Fran{\c c}oise {Levy-dit-Vehel}",
         r"Levy-dit-Vehel",
     ),
+    r"Davide Li Calsi": (r"Davide {Li Calsi}", r"LiCalsi"),
     r"Adriana L[óo]pez-Alt": (r"Adriana {L{\'o}pez-Alt}", r"Lopez-Alt"),
     r"Conrado Porto Lopes Gouv[êe]a": (
         r"Conrado Porto {Lopes Gouv{\^e}a}",
