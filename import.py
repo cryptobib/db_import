@@ -332,6 +332,7 @@ author_subs_re = {
         r"Dimitrios {Hristu-Varsakelis}",
         r"Hristu-Varsakelis",
     ),
+    r"Pavel Hub[áa][čc]ek": (r"Pavel Hub{\'a}{\v{c}}ek", r"Hubacek"),
     r"Lo[ïi]s Huguenin-Dumittan": (r"Loïs {Huguenin-Dumittan}", r"Huguenin-Dumittan"),
     r"Luis Irun-Briz": (r"Luis {Irun-Briz}", r"Irun-Briz"),
     r"Bastien Jacot-Guillarmod": (r"Bastien {Jacot-Guillarmod}", r"Jacot-Guillarmod"),
